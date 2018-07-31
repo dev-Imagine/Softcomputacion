@@ -1,0 +1,32 @@
+﻿@{
+    softcomputacion.Models.venta oVenta = (softcomputacion.Models.venta)Session["venta"];
+}
+
+<div class="container-fluid">
+    <div class="row">
+       <p class="text-center">Carrito</p>
+    </div>
+    <div class="row">
+        @foreach (softcomputacion.Models.detalleVenta oDetalle in oVenta.detalleVenta)
+        {
+            <div class="col-12 col-md-8">
+                <p>@oDetalle.producto.categoria @oDetalle.producto.subcategoria @oDetalle.producto.nombre</p>
+            </div>
+            <div class="col-12 col-md-1">
+                <p>@oDetalle.cantidad</p>
+            </div>
+            <div class="col-12 col-md-1">
+                <p>@oDetalle.costoIndividual</p>
+            </div>
+            <div class="col-12 col-md-1">
+                <p>@oDetalle.costoGrupal</p>
+            </div>
+            <div class="col-12 col-md-1">
+                <span class="fa fa-plus" style="cursor:pointer" onclick="borrarDetalleSession(@oDetalle.idProducto)"></span>
+            </div>
+        }        
+    </div>
+    <div class="row">
+        <button class="btn btn-outline-dark text-center col-12" >Generar compra</button>
+    </div>
+</div>

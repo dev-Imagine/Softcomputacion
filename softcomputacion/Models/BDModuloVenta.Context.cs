@@ -13,10 +13,10 @@ namespace softcomputacion.Models
     using System.Data.Entity;
     using System.Data.Entity.Infrastructure;
     
-    public partial class BDSoftComputacionEntities : DbContext
+    public partial class BDModuloVentaEntities : DbContext
     {
-        public BDSoftComputacionEntities()
-            : base("name=BDSoftComputacionEntities")
+        public BDModuloVentaEntities()
+            : base("name=BDModuloVentaEntities")
         {
         }
     
@@ -27,12 +27,14 @@ namespace softcomputacion.Models
     
         public virtual DbSet<categoria> categoria { get; set; }
         public virtual DbSet<estado> estado { get; set; }
+        public virtual DbSet<historialStock> historialStock { get; set; }
+        public virtual DbSet<producto> producto { get; set; }
+        public virtual DbSet<proveedor> proveedor { get; set; }
         public virtual DbSet<proveedorXproducto> proveedorXproducto { get; set; }
         public virtual DbSet<subcategoria> subcategoria { get; set; }
         public virtual DbSet<tipoUsuario> tipoUsuario { get; set; }
-        public virtual DbSet<proveedor> proveedor { get; set; }
         public virtual DbSet<usuario> usuario { get; set; }
-        public virtual DbSet<producto> producto { get; set; }
-        public virtual DbSet<historialStock> historialStock { get; set; }
+        public virtual DbSet<detalleVenta> detalleVenta { get; set; }
+        public virtual DbSet<venta> venta { get; set; }
     }
 }

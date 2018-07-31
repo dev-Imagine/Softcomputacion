@@ -168,50 +168,57 @@
     <Compile Include="Controllers\HomeController.cs" />
     <Compile Include="Controllers\ReporteController.cs" />
     <Compile Include="Controllers\UsuarioController.cs" />
+    <Compile Include="Controllers\VentaController.cs" />
     <Compile Include="Global.asax.cs">
       <DependentUpon>Global.asax</DependentUpon>
     </Compile>
+    <Compile Include="Models\BDModuloVenta.Context.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BDModuloVenta.Context.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BDModuloVenta.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\BDModuloVenta.Designer.cs">
+      <AutoGen>True</AutoGen>
+      <DesignTime>True</DesignTime>
+      <DependentUpon>BDModuloVenta.edmx</DependentUpon>
+    </Compile>
     <Compile Include="Models\categoria.cs">
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
-    <Compile Include="Models\DBSoftComputacion.Context.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBSoftComputacion.Context.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DBSoftComputacion.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
-    </Compile>
-    <Compile Include="Models\DBSoftComputacion.Designer.cs">
-      <AutoGen>True</AutoGen>
-      <DesignTime>True</DesignTime>
-      <DependentUpon>DBSoftComputacion.edmx</DependentUpon>
+    <Compile Include="Models\detalleVenta.cs">
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\estado.cs">
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\historialStock.cs">
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\producto.cs">
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\proveedor.cs">
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\proveedorXproducto.cs">
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\subcategoria.cs">
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\tipoUsuario.cs">
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\usuario.cs">
-      <DependentUpon>DBSoftComputacion.tt</DependentUpon>
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\venta.cs">
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicios\clsMetodosGenericos.cs" />
@@ -221,6 +228,7 @@
     <Compile Include="Servicios\srvProveedor.cs" />
     <Compile Include="Servicios\srvReporte.cs" />
     <Compile Include="Servicios\srvUsuario.cs" />
+    <Compile Include="Servicios\srvVenta.cs" />
   </ItemGroup>
   <ItemGroup>
     <Content Include="Content\css\bootstrap.css" />
@@ -245,16 +253,6 @@
     <Content Include="favicon.ico" />
     <Content Include="fonts\glyphicons-halflings-regular.svg" />
     <Content Include="Global.asax" />
-    <Content Include="Models\DBSoftComputacion.Context.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBSoftComputacion.edmx</DependentUpon>
-      <LastGenOutput>DBSoftComputacion.Context.cs</LastGenOutput>
-    </Content>
-    <Content Include="Models\DBSoftComputacion.tt">
-      <Generator>TextTemplatingFileGenerator</Generator>
-      <DependentUpon>DBSoftComputacion.edmx</DependentUpon>
-      <LastGenOutput>DBSoftComputacion.cs</LastGenOutput>
-    </Content>
     <Content Include="ApplicationInsights.config">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
@@ -331,18 +329,28 @@
     <Content Include="Content\fonts\poppins\Poppins-SemiBoldItalic.ttf" />
     <Content Include="Content\fonts\poppins\Poppins-Thin.ttf" />
     <Content Include="Content\fonts\poppins\Poppins-ThinItalic.ttf" />
-    <EntityDeploy Include="Models\DBSoftComputacion.edmx">
-      <Generator>EntityModelCodeGenerator</Generator>
-      <LastGenOutput>DBSoftComputacion.Designer.cs</LastGenOutput>
-    </EntityDeploy>
-    <Content Include="Models\DBSoftComputacion.edmx.diagram">
-      <DependentUpon>DBSoftComputacion.edmx</DependentUpon>
-    </Content>
     <Content Include="fonts\glyphicons-halflings-regular.woff" />
     <Content Include="fonts\glyphicons-halflings-regular.ttf" />
     <Content Include="fonts\glyphicons-halflings-regular.eot" />
+    <EntityDeploy Include="Models\BDModuloVenta.edmx">
+      <Generator>EntityModelCodeGenerator</Generator>
+      <LastGenOutput>BDModuloVenta.Designer.cs</LastGenOutput>
+    </EntityDeploy>
+    <Content Include="Models\BDModuloVenta.edmx.diagram">
+      <DependentUpon>BDModuloVenta.edmx</DependentUpon>
+    </Content>
     <None Include="Properties\PublishProfiles\FolderProfile.pubxml" />
     <None Include="Scripts\jquery-1.10.2.intellisense.js" />
+    <Content Include="Models\BDModuloVenta.Context.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BDModuloVenta.edmx</DependentUpon>
+      <LastGenOutput>BDModuloVenta.Context.cs</LastGenOutput>
+    </Content>
+    <Content Include="Models\BDModuloVenta.tt">
+      <Generator>TextTemplatingFileGenerator</Generator>
+      <DependentUpon>BDModuloVenta.edmx</DependentUpon>
+      <LastGenOutput>BDModuloVenta.cs</LastGenOutput>
+    </Content>
     <Content Include="Scripts\bootstrap.min.js" />
     <Content Include="Scripts\jquery-1.10.2.js" />
     <Content Include="Scripts\jquery-1.10.2.min.js" />
@@ -381,6 +389,8 @@
     <Content Include="Views\Producto\VistaProducto.cshtml" />
     <Content Include="Views\Producto\_PopUpImprimirCodigoBarra.cshtml" />
     <Content Include="Views\Producto\ImprimirCodigoBarra.cshtml" />
+    <Content Include="Views\Venta\Venta.cshtml" />
+    <Content Include="Views\Venta\_CarritoVenta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

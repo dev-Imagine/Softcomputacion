@@ -14,6 +14,12 @@ namespace softcomputacion.Models
     
     public partial class usuario
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public usuario()
+        {
+            this.venta = new HashSet<venta>();
+        }
+    
         public int idUsuario { get; set; }
         public string nombre { get; set; }
         public string apellido { get; set; }
@@ -24,5 +30,7 @@ namespace softcomputacion.Models
         public Nullable<System.DateTime> fechaBaja { get; set; }
     
         public virtual tipoUsuario tipoUsuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<venta> venta { get; set; }
     }
 }

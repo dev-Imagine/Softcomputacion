@@ -1,0 +1,313 @@
+﻿@{
+    ViewBag.Title = "Listar Productos";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    List<softcomputacion.Models.categoria> lstCategorias = (List<softcomputacion.Models.categoria>)ViewBag.lstCategorias;
+    List<softcomputacion.Models.estado> lstEstados = (List<softcomputacion.Models.estado>)ViewBag.lstEstados;
+    string[] filtros = ViewBag.filtros.Split(';');
+    string stColorStock = "";
+    //string stValorUSD = Convert.ToString(ViewBag.ValorUSD);
+    //double ValorUSD = Convert.ToDouble(stValorUSD.ToString().Replace(".", ","));
+    double ValorUSD = (double)ViewBag.ValorUSD;
+    softcomputacion.Models.usuario oUsuario = (softcomputacion.Models.usuario)Session["Usuario"];
+
+}
+
+
+@model PagedList.IPagedList<softcomputacion.Models.producto>
+@using PagedList.Mvc;
+
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryFormPopup" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+<br />
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>Venta</h2>
+        </div>
+    </div>
+    <hr style="border-top: 2px solid #b5262a;" />
+    <div class="row">
+        <div class="col-12 col-lg-12">
+            <div class="row">
+                <div class="col-12 col-lg-12">
+                    @* Form de busqueda *@
+                    <form method="post" action="@Url.Action("ListarProducto", "Producto")" autocomplete="off">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-1">
+                                <div class="wrap-input100 m-b-20">
+                                    <input class="input100" type="number" name="idProducto" placeholder="ID Producto">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="wrap-input100 m-b-20">
+                                    <input class="input100" type="text" name="nombreProducto" placeholder="Nombre del producto" value="@filtros[0]">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">
+                                <div class="wrap-input100 ¡ m-b-20" data-validate="">
+                                    <select id="select-Categorias" onchange="CargarComboSubcategoria()" onload="CargarComboSubcategoria()" class="form-control input100" style="border:0px; height: 55px;" name="idCategoria">
+                                        <option selected value="0">Categoría</option>
+
+                                        @foreach (softcomputacion.Models.categoria oCategoria in lstCategorias)
+                                        {
+                                            if (oCategoria.idCategoria.ToString() == filtros[1])
+                                            {
+                                                <option selected value="@oCategoria.idCategoria">@oCategoria.nombre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@oCategoria.idCategoria">@oCategoria.nombre</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">
+                                <div class="wrap-input100 ¡ m-b-20" data-validate="">
+                                    <select disabled id="select-Subcategoria" class="form-control input100" style="border:0px; height: 55px;" name="idSubCategoria">
+                                        <option selected value="0">Subcategoria</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">
+                                <div class="wrap-input100 ¡ m-b-20" data-validate="">
+                                    <select id="select-Estado" class="form-control input100" style="border:0px; height: 55px;" name="idEstado">
+                                        <option selected value="0">Estado</option>
+
+                                        @foreach (softcomputacion.Models.estado oEstado in lstEstados)
+                                        {
+                                            if (oEstado.idEstado.ToString() == filtros[3])
+                                            {
+                                                <option selected value="@oEstado.idEstado">@oEstado.nombre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@oEstado.idEstado">@oEstado.nombre</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-1">
+                                <div class="container-login100-form-btn m-b-20">
+                                    <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+            <hr style="border-top: 1px solid #b5262a;" />
+            <br />
+        </div>
+        <div class="row container-fluid">
+            <!--Lista de Productos-->
+            <div class="m-b-15 col-12 col-lg-7">
+                @{
+                    double PrecioContadoUSD = 0;
+                    double PrecioListaUSD = 0;
+                    double PrecioGremioUSD = 0;
+                    double PrecioCostoUSD = 0;
+                    double PrecioContadoARS = 0;
+                    double PrecioListaARS = 0;
+                    double PrecioGremioARS = 0;
+                    double PrecioCostoARS = 0;
+                    foreach (var oProducto in Model)
+                    {
+                        PrecioContadoUSD = Convert.ToDouble(oProducto.precioContado);
+                        PrecioListaUSD = Convert.ToDouble(oProducto.precioLista);
+                        PrecioGremioUSD = Convert.ToDouble(oProducto.precioGremio);
+                        PrecioCostoUSD = Convert.ToDouble(oProducto.precioCosto);
+                        PrecioContadoARS = Convert.ToDouble(oProducto.precioContado);
+                        PrecioListaARS = Convert.ToDouble(oProducto.precioLista);
+                        PrecioGremioARS = Convert.ToDouble(oProducto.precioGremio);
+                        PrecioCostoARS = Convert.ToDouble(oProducto.precioCosto);
+                        if (oProducto.precioFijo == false)//precio guardado en USD
+                        {
+                            PrecioContadoARS = PrecioContadoARS * ValorUSD;
+                            PrecioListaARS = PrecioListaARS * ValorUSD;
+                            PrecioGremioARS = PrecioGremioARS * ValorUSD;
+                            PrecioCostoARS = PrecioCostoARS * ValorUSD;
+                        }
+                        else
+                        {
+                            PrecioContadoUSD = PrecioContadoUSD / ValorUSD;
+                            PrecioListaUSD = PrecioListaUSD / ValorUSD;
+                            PrecioGremioUSD = PrecioGremioUSD / ValorUSD;
+                            PrecioCostoUSD = PrecioCostoUSD / ValorUSD;
+                        }
+
+                        stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(oProducto.idEstado);
+
+                        <div id="div-@oProducto.idProducto" class="row item-tabla m-b-15">
+                            <div class="col-12 col-md-11 " style="text-align:left;">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-5">
+                                        <p class="login100-form-title fs-22 p-l-5 text-left">
+                                            @*<strong>Producto:</strong>*@
+                                            <span id="spanNombreProducto-@oProducto.idProducto">
+                                                <strong>@oProducto.categoria.nombre @oProducto.subcategoria.nombre - @oProducto.nombre</strong>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-3">
+                                        <p class="login100-form-title fs-15 text-center">
+                                            <span>Stock Actual:</span>
+                                            <span id="spanActual-@oProducto.idProducto">
+                                                <i style="color: @stColorStock" >@oProducto.stockActual</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-3">
+                                        <select id="select-precio-@oProducto.idProducto" class="form-control input100" style="border:0px; height: 55px;" name="idPrecio">
+                                            @if (oUsuario.idTipoUsuario == 2)
+                                            {
+                                                <option value="@PrecioCostoARS ">Costo: @PrecioCostoARS</option>
+                                            }
+                                            <option selected value="@PrecioContadoARS">Contado: $@PrecioContadoARS</option>
+                                            <option value="@PrecioListaARS">Lista: $@PrecioListaARS</option>
+                                            <option  value="@PrecioGremioARS">Gremio: $@PrecioGremioARS</option>
+                                        </select>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-3">
+                                        <input id="cantidad-@oProducto.idProducto" style="background-color:#f2f2f2;text-align:right; width:58px;" type="number" name="cantidad">
+                                    </div>
+                                </div>
+                            </div>
+                            @* post para agregar a la session de venta. *@
+                                <div class="col-12 col-md-1">
+                                    
+                                        <div class="btn-group w-full" role="group">
+                                            <button onclick="agregarAventa(@oProducto.idProducto)" type="button" class="btn btn-outline-dark" style="width:100%"><i class="fas fa-plus"></i></button>
+                                        </div>
+                                    
+                                </div>
+                            
+                        </div>
+                    }
+                }
+            </div>
+            <div id="div-carrito" class="m-b-15 col-12 col-lg-5">
+
+            </div>
+        </div>
+        <div class="row container-fluid text-center">
+            <div id="div-paginacion" class="col-12">
+                @Html.PagedListPager(Model, nroPagina => Url.Action("Venta", "Venta", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
+            </div>
+            <div class="col-12">
+                @Model.FirstItemOnPage a @Model.LastItemOnPage productos de un total de @Model.TotalItemCount Productos.
+            </div>
+
+
+
+        </div>
+    </div>
+</div>
+
+@section scripts{
+    <script>
+    var stMoneda = "USD";
+
+     function CargarComboSubcategoria() {
+        var url = "@Url.Action("ObtenerSubcategoriaDeCategoria", "Producto")";
+        var idCategoria = document.getElementById("select-Categorias").value;
+        var data = { idCategoria: idCategoria };
+        $.post(url, data).done(function (data) {
+            if (data == "<option selected value=\"0\">Subcategoria</option>" | data == "") {
+                document.getElementById("select-Subcategoria").innerHTML = "<option selected value=\"0\">Subcategoria</option>";
+                document.getElementById("select-Subcategoria").setAttribute("disabled", "true");
+            }
+            else {
+                document.getElementById("select-Subcategoria").innerHTML = data + "";
+                document.getElementById("select-Subcategoria").removeAttribute("disabled");
+            }
+            if ('@filtros[2].ToString()' != "0" || filtros[2].ToString() != "") {
+                $("#select-Subcategoria option[value=" + '@filtros[2].ToString()' + "]").attr("selected", true);
+            }
+        });
+    }
+
+        window.onload = CargarComboSubcategoria;
+
+
+        function agregarAventa(idProducto) {
+            var url = "@Url.Action("_CarritoVenta", "Venta")";
+            var precio = parseFloat($('#select-precio-' + idProducto).val());
+            var cantidad = parseInt($('#cantidad-' + idProducto).val());
+            var data = { idProducto: idProducto, precio: precio, cantidad: cantidad };
+            $.post(url, data).done(function (data) {
+                if (data.length != null) {
+                    $('#div-carrito').html(data);
+                } else
+                {
+                    swal("Ocurrió un error", "Se produjo un error al intentar agregar un producto al carrito", "error");
+                }
+            });
+    }
+
+    //tipoPrecio: Costo,Gremio,Contado,Lista
+     @*function ActualizarPrecios(idProducto, tipoPrecio) {
+         var precio = $('#inp' + tipoPrecio + '-' + idProducto).val();
+         var url = "@Url.Action("ActualizarPrecios", "Producto")";
+         var token = $('input[name="__RequestVerificationToken"]').val();
+         var data = { precio: precio.replace(".", ","), tipoPrecio: tipoPrecio, idProducto: idProducto, stMoneda: stMoneda, __RequestVerificationToken: token };
+         if (parseFloat(precio) >= 0) {
+             $.post(url, data).done(function (data) {
+                 if (data.length != 0) {
+                     data = data.split(';');
+                     $('#inp' + tipoPrecio + '-' + idProducto).attr("Valor-USD", data[0].replace(",", ".") + "");
+                     $('#inp' + tipoPrecio + '-' + idProducto).attr("Valor-ARS", data[1].replace(",", ".") + "");
+                     swal("Exito!", "Los precios han sido actualizados.", "success");
+                 }
+                 else {
+                     swal("Ocurrió un error", "Se produjo un error al intentar actualizar los precios..", "error");
+                 }
+             });
+         } else
+         {
+             swal("Ocurrió un error", "No se puede guardar valores negativos.", "error");
+         }
+
+     }*@
+
+    //function ConvertirPrecios() {
+    //    var boPrecio = $('#btnConversor').attr('aria-pressed');
+    //    //false: Mostrar ARS
+    //    //true: Mostrar USD
+    //    if (boPrecio == "true") {
+    //        stMoneda = "USD";
+    //        $('precio').text('$USD');
+    //        $('precio').addClass('text-success').removeClass('text-primary');
+    //        $(".Valor-USDARS").each(function () {//pasa de ARS a USD
+    //            var precioUSD = $(this).attr('Valor-USD');
+    //            precioUSD = precioUSD * 1;
+    //            $(this).val(parseFloat(precioUSD.toFixed(2).toString().replace(",00", "")));
+    //        });
+    //    }
+    //    else {
+    //        stMoneda = "ARS";
+    //        $('precio').text('$ARS');
+    //        $('precio').addClass('text-primary').removeClass('text-success');
+    //        $(".Valor-USDARS").each(function () {//pasa de USD a ARS
+    //            var precioARS = $(this).attr('Valor-ARS');
+    //            precioARS = precioARS * 1;
+    //            $(this).val(parseFloat(precioARS.toFixed(2).toString().replace(",00", "")));
+    //        });
+    //    }
+    //}
+
+
+    </script>
+}

@@ -12,21 +12,22 @@ namespace softcomputacion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class categoria
+    public partial class venta
     {
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
-        public categoria()
+        public venta()
         {
-            this.producto = new HashSet<producto>();
-            this.subcategoria = new HashSet<subcategoria>();
+            this.detalleVenta = new HashSet<detalleVenta>();
         }
     
-        public int idCategoria { get; set; }
-        public string nombre { get; set; }
+        public int idVenta { get; set; }
+        public System.DateTime fechaEmision { get; set; }
+        public int idUsuario { get; set; }
+        public decimal costoTotal { get; set; }
+        public Nullable<int> cantidadProductosTotal { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<producto> producto { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<subcategoria> subcategoria { get; set; }
+        public virtual ICollection<detalleVenta> detalleVenta { get; set; }
+        public virtual usuario usuario { get; set; }
     }
 }

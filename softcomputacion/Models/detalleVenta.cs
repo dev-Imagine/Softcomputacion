@@ -12,13 +12,16 @@ namespace softcomputacion.Models
     using System;
     using System.Collections.Generic;
     
-    public partial class proveedorXproducto
+    public partial class detalleVenta
     {
-        public int idProveedorXproducto { get; set; }
-        public int idProveedor { get; set; }
+        public int idDetalleVenta { get; set; }
+        public int idVenta { get; set; }
         public int idProducto { get; set; }
+        public decimal costoIndividual { get; set; }
+        public int cantidad { get; set; }
+        public decimal costoGrupal { get; set; }
     
         public virtual producto producto { get; set; }
-        public virtual proveedor proveedor { get; set; }
+        public virtual venta venta { get; set; }
     }
 }
