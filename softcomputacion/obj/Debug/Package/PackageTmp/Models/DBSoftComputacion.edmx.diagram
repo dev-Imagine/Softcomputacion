@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="utf-8"?>
+<edmx:Edmx Version="3.0" xmlns:edmx="http://schemas.microsoft.com/ado/2009/11/edmx">
+ <!-- EF Designer content (DO NOT EDIT MANUALLY BELOW HERE) -->
+  <edmx:Designer xmlns="http://schemas.microsoft.com/ado/2009/11/edmx">
+    <!-- Diagram content (shape and connector positions) -->
+    <edmx:Diagrams>
+      <Diagram DiagramId="f783a26383a640c8817b73ff8291657f" Name="Diagram1" ZoomLevel="82">
+        <EntityTypeShape EntityType="BDSoftComputacionModel.categoria" Width="1.5" PointX="0.75" PointY="3.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDSoftComputacionModel.estado" Width="1.5" PointX="3" PointY="5.5" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDSoftComputacionModel.proveedorXproducto" Width="1.5" PointX="7.5" PointY="6.25" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDSoftComputacionModel.subcategoria" Width="1.5" PointX="3" PointY="8.75" IsExpanded="true" />
+        <EntityTypeShape EntityType="BDSoftComputacionModel.tipoUsuario" Width="1.5" PointX="7.75" PointY="1.375" IsExpanded="true" />
+        <AssociationConnector Association="BDSoftComputacionModel.FK_subcategoria_categoria" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BDSoftComputacionModel.proveedor" Width="1.5" PointX="3.375" PointY="0.875" />
+        <AssociationConnector Association="BDSoftComputacionModel.FK_proveedorXproducto_proveedor" />
+        <EntityTypeShape EntityType="BDSoftComputacionModel.usuario" Width="1.5" PointX="10" PointY="0.75" />
+        <AssociationConnector Association="BDSoftComputacionModel.FK_usuario_tipoUsuario" />
+        <EntityTypeShape EntityType="BDSoftComputacionModel.producto" Width="1.5" PointX="5.25" PointY="5" />
+        <AssociationConnector Association="BDSoftComputacionModel.FK_producto_categoria" />
+        <AssociationConnector Association="BDSoftComputacionModel.FK_producto_estado" />
+        <AssociationConnector Association="BDSoftComputacionModel.FK_producto_subcategoria" />
+        <AssociationConnector Association="BDSoftComputacionModel.FK_proveedorXproducto_producto" />
+        <EntityTypeShape EntityType="BDSoftComputacionModel.historialStock" Width="1.5" PointX="7.5" PointY="9.25" />
+        <AssociationConnector Association="BDSoftComputacionModel.FK_hostorialStock_producto" />
+      </Diagram>
+    </edmx:Diagrams>
+  </edmx:Designer>
+</edmx:Edmx>

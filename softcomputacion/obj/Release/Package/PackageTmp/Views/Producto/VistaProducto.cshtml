@@ -1,0 +1,163 @@
+﻿
+@{
+    @model softcomputacion.Models.producto
+    ViewBag.Title = "VistaProducto";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    string stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(Model.idEstado);
+}
+
+<br /><br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-8 offset-lg-2 text-center">
+            <h2>@Model.nombre</h2>
+        </div>
+    </div>
+    <hr style="border-top: 2px solid #b5262a;" />
+    <br />
+    <div class="row container-fluid">
+        <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+            <input name="oProducto.idProducto" value="@Model.idProducto" class="dis-none">
+
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <p class="login100-form-title p-b-10 fs-17 text-center">
+                            <strong>Categoría:</strong>
+                            <span>
+                                <i>@Model.categoria.nombre</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <p class="login100-form-title p-b-10 fs-17 text-center">
+                            <strong>Subcategoría:</strong>
+                            <span>
+                                <i>@Model.subcategoria.nombre</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-12 m-b-14">
+                        <hr />
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <p class="login100-form-title p-b-10 fs-17 text-center">
+                            <strong>Stock Actual:</strong>
+                            <span>
+                                <i id="iStockActual">@Model.stockActual</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-6">
+                        <p class="login100-form-title p-b-10 fs-17 text-center">
+                            <span class="badge fs-17" style="color: @stColorStock; width: 180px;" id="spnEstadoStock">@Model.estado.nombre</span>
+                        </p>
+                    </div>
+                    <div class="col-12 text-center p-b-20">
+                        <hr />
+                        <span class="fs-24 p-b-5 p-t-5 p-l-20 p-r-20 m-b-5" style="color:#000">PRECIOS</span>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4">
+                        <p class="login100-form-title p-b-10 fs-17 text-center">
+                            <strong>Gremio</strong>
+                            <span>
+                                <i>@Model.precioGremio.ToString().TrimEnd('0').TrimEnd(',')</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4">
+                        <p class="login100-form-title p-b-10 fs-17 text-center">
+                            <strong>Contado</strong>
+                            <span>
+                                <i>@Model.precioContado.ToString().TrimEnd('0').TrimEnd(',')</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-12 col-sm-12 col-md-4">
+                        <p class="login100-form-title p-b-10 fs-17 text-center">
+                            <strong>Lista</strong>
+                            <span>
+                                <i>@Model.precioLista.ToString().TrimEnd('0').TrimEnd(',')</i>
+                            </span>
+                        </p>
+                    </div>
+                    <div class="col-12">
+                        <br />
+                        <hr />
+                        <p class="text-center"><canvas class="img-fluid" id="barcode"></canvas></p>
+                        <div class="text-center" >
+                            <button class="btn btn-danger" onclick="_PopUpImprimirCodigoBarra()">Imprimir</button>
+                        </div>
+                    </div>
+
+                </div>
+        </div>
+        <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+            <br />
+            <hr />
+        </div>
+         
+        <div class="col-12 col-md-8 offset-md-2 col-lg-4 offset-lg-4 col-xl-4 offset-xl-4">
+            
+            <div class="input-group " style="margin-bottom:0px !important">
+                <input class="form-control mr-sm-2 ml-sm-1 mt-10 w-full fs-22 text-center" style="border-color:#b5262a" type="number" max="@Model.stockActual" min="0" id="inpCantidad" placeholder="Cantidad" name="Cantidad" aria-label="Cantidad:" value="1">
+                <div class="input-group-append">
+                    <button class="btn btn-danger w-full fs-22" onclick="descontarStock()" type="submit">Descontar</button>
+                </div>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<div id="div-popup-codigoBarra"></div>
+
+@section scripts{
+<script src="~/Scripts/JsBarcode.all.min.js"></script>
+<script>
+    $(document).ready(function () {
+        var idProducto = '@Model.idProducto';
+        $("#barcode").JsBarcode(idProducto);
+    });
+
+    function descontarStock() {
+        var cantidad = $('#inpCantidad').val();
+        var StockActual = '@Model.stockActual';
+        if (cantidad > 0 && cantidad<= StockActual) {
+            var url = "@Url.Action("DescontarStock", "Producto")";
+            var data = { idProducto:@Model.idProducto, cantidad: cantidad };
+            $.post(url, data).done(function (data) {
+                if (data.length != 0) {
+                    data = data.split(';');
+                    $('#iStockActual').text(data[0]);
+                    $('#spnEstadoStock').text(data[1]);
+                    $('#spnEstadoStock').css("color", data[2]);
+                    swal("Exito! \n \n", "Se a actualizado el stock del producto", "success");
+                }
+                else
+                {
+                    swal("Ocurrió un error \n \n", "No existe stock suficiente.", "error");
+                }
+            });
+        }
+        else
+        {
+            swal("Ocurrió un error \n \n", "No existe stock suficiente.", "error");
+        }
+    }
+
+    function _PopUpImprimirCodigoBarra() {
+        var url = "@Url.Action("_PopUpImprimirCodigoBarra", "Producto")";
+        var data = { idProducto: '@Model.idProducto' };
+        $.post(url, data).done(function (data) {
+            if (data.length > 0) {
+                $('#div-popup-codigoBarra').html(data);
+                $('#popImprimirCodigoBarra').modal('show');
+            }
+        });
+    }
+</script>
+}
+
+
+
+

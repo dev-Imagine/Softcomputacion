@@ -1,0 +1,389 @@
+﻿
+@{
+    ViewBag.Title = "Producto";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    softcomputacion.Models.producto oProducto = (softcomputacion.Models.producto)ViewBag.oProducto;
+    List<softcomputacion.Models.categoria> lstCategorias = (List<softcomputacion.Models.categoria>)ViewBag.lstCategorias;
+    List<softcomputacion.Models.proveedor> lstProveedores = (List<softcomputacion.Models.proveedor>)ViewBag.lstProveedores;
+    string stProveedores = "";
+    foreach (softcomputacion.Models.proveedorXproducto oProveedorxProducto in oProducto.proveedorXproducto.ToList())
+    {
+        stProveedores = stProveedores + oProveedorxProducto.idProveedor + ";";
+    }
+    
+}
+<br /><br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-8 offset-lg-2 text-center">
+            <h2>Nuevo producto</h2>
+        </div>
+    </div>
+    <hr style="border-top: 2px solid #b5262a;" />
+    <br />
+    <div class="row">
+        <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+            <form class="validate-form row" method="post" action="@Url.Action("GuardarModificarProducto", "Producto")" onsubmit="return validarSubcategoria()" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <input name="oProducto.idProducto" value="@oProducto.idProducto" class="dis-none">
+
+                <div class="col-12 col-md-12">
+                    <label for="frmNombre">Nombre producto</label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Nombre">
+                        <input id="frmNombre" class="input100" type="text" name="oProducto.nombre" placeholder="Nombre" value="@oProducto.nombre">
+                    </div>
+                </div>
+
+
+                <div class="col-12 col-md-6">
+                    <label>Categoría &nbsp;&nbsp;<button type="button" class="btn btn-outline-dark btn-agregar" onclick="_PopUpGuardarModificarCategoria(0)"><i class="fas fa-plus"></i></button></label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="">
+                        <select id="select-Categorias" onchange="CargarComboSubcategoria()" class="form-control input100" style="border:0px; height: 55px;" name="oProducto.idCategoria">
+                            <option selected value="0">Categoría</option>
+                            @{
+                                foreach (softcomputacion.Models.categoria oCategoria in lstCategorias)
+                                {
+                                    if (oProducto.idCategoria == oCategoria.idCategoria)
+                                    {
+                                        <option value="@oCategoria.idCategoria" selected>@oCategoria.nombre</option>
+                                    }
+                                    else
+                                    {
+                                        <option value="@oCategoria.idCategoria">@oCategoria.nombre</option>
+                                    }
+                                }
+                            }
+                        </select>
+                    </div>
+
+                </div>
+                <div class="col-12 col-md-6">
+                    <label>Sub categoría &nbsp;&nbsp;<button type="button" class="btn btn-outline-dark btn-agregar" onclick="_PopUpGuardarModificarCategoria(1)"><i class="fas fa-plus"></i></button></label>
+                    @{
+                        if (oProducto.idSubCategoria != 0)
+                        {
+                            <div class="wrap-input100 validate-input m-b-20" data-validate="">
+                                <select id="select-Subcategoria" class="form-control input100" style="border:0px; height: 55px;" name="oProducto.idSubCategoria">
+                                    <option value="@oProducto.idSubCategoria" selected>@oProducto.subcategoria.nombre</option>
+                                </select>
+                            </div>
+                        }
+                        else
+                        {
+                            <div class="wrap-input100 validate-input m-b-20" data-validate="">
+                                <select disabled id="select-Subcategoria" class="form-control input100" style="border:0px; height: 55px;" name="oProducto.idSubCategoria">
+                                    <option value="0">Subcategoria</option>
+                                </select>
+                            </div>
+                        }
+                    }
+                </div>
+
+
+                <div class="col-12">
+                    <label for="frmNombre">Observación</label>
+                    <div class="wrap-input100 m-b-20">
+                        <textarea class="input100 p-t-15" style="height:100px" type="text" name="oProducto.observacion" placeholder="Observacion">@oProducto.observacion</textarea>
+                    </div>
+                </div>
+
+
+
+                <!--stock-->
+
+                <div class="col-12 text-center p-b-20">
+                    <hr />
+                    <span class="fs-24 p-b-5 p-t-5 p-l-20 p-r-20 m-b-5" style="color:#000">STOCK</span>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="frmStockMinimo">Mínimo</label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Stock Minimo">
+                        <input id="frmStockMinimo" class="input100" min="0" type="number" name="oProducto.stockMinimo" placeholder="Mínimo" value="@oProducto.stockMinimo">
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="frmStockActual">Actual</label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Stock Actual">
+                        <input id="frmStockActual" class="input100" min="0" type="number" name="oProducto.stockActual" placeholder="Actual" value="@oProducto.stockActual">
+                    </div>
+                </div>
+                <div class="col-12 col-md-4">
+                    <label for="frmStockIdeal">Ideal</label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Stock Ideal">
+                        <input id="frmStockIdeal" class="input100" min="0" type="number" name="oProducto.stockIdeal" placeholder="Ideal" value="@oProducto.stockIdeal">
+                    </div>
+                </div>
+
+                <!--precios-->
+
+                <div class="col-12 text-center p-b-20">
+                    <hr />
+                    <span class="fs-24 p-b-5 p-t-5 p-l-20 p-r-20 m-b-5" style="color:#000">PRECIOS</span>
+                </div>
+                <div class="col-12">
+                    <div class="funkyradio">
+                        <div class="funkyradio-dark">
+                            @if (oProducto.precioFijo == true)
+                            {
+                                <input type="checkbox" name="oProducto.precioFijo" id="preciodolar" checked value="true" /> <!-- codigo change en document.ready -->
+                            }
+                            else
+                            {
+                                <input type="checkbox" name="oProducto.precioFijo" id="preciodolar" value="false" /> <!-- codigo change en document.ready -->
+                            }
+
+                            <label id="lblPreciodolar" for="preciodolar" style="color:#777;">Precio fijo $ARS</label>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="frmNombre">Costo <precio class="text-success">$USD</precio></label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Precio Costo">
+                        <input id="frmPrecioCosto" class="input100" type="number" min="0" step="0.01" name="precioCosto" placeholder="Costo" value="@Convert.ToString(Math.Round(oProducto.precioCosto, 2)).Replace(",",".").Replace(",00","")">
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="frmPrecioContado">Contado <precio class="text-success">$USD</precio></label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Precio Contado">
+                        <input id="frmPrecioContado" class="input100" type="number" step="0.01" name="precioContado" min="0" placeholder="Precio contado" value="@Convert.ToString(Math.Round(oProducto.precioContado, 2)).Replace(",",".")">
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="frmPrecioLista">Lista <precio class="text-success">$USD</precio></label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Precio Lista">
+                        <input id="frmPrecioLista" class="input100" type="number" step="0.01" name="precioLista" min="0" placeholder="Precio lista" value="@Convert.ToString(Math.Round(oProducto.precioLista, 2)).Replace(",",".")">
+                    </div>
+                </div>
+                <div class="col-12 col-md-3">
+                    <label for="frmPrecioGremio">Gremio <precio class="text-success">$USD</precio></label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Precio Gremio">
+                        <input id="frmPrecioGremio" class="input100" type="number" step="0.01" name="precioGremio" min="0" placeholder="Precio gremio" value="@Convert.ToString(Math.Round(oProducto.precioGremio, 2)).Replace(",",".")">
+                    </div>
+                </div>
+
+                <!--proveedor-->
+
+                <div class="col-12 text-center p-b-20">
+                    <hr />
+                    <span class="fs-24 p-b-5 p-t-5 p-l-20 p-r-20 m-b-5" style="color:#000">PROVEEDORES</span>
+                </div>
+                <div class="col-12">
+                    <label>Proveedores</label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="">
+                        <select id="selectProveedor" class="form-control input100" style="border:0px; height: 55px;" name="opxp.idProveedor" onchange="SeleccionarProveedor()">
+                            <option value="0">Proveedores</option>
+                            @{
+                                foreach (softcomputacion.Models.proveedor oProveedor in lstProveedores)
+                                {
+                                    <option value="@oProveedor.idProveedor">@oProveedor.nombreEmpresa</option>
+                                }
+                            }
+                        </select>
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <div class="row fs-14" id="proveedores-agregados">
+                        @{
+                            if (oProducto.proveedorXproducto.Count() > 0)
+                            {
+                                foreach (softcomputacion.Models.proveedorXproducto oPxp in oProducto.proveedorXproducto.ToList())
+                                {
+                                    <div id="div-proveedor-@oPxp.idProveedor" data-id="@oPxp.idProveedorXproducto" class="col-12 col-md-6">
+                                        <div class="item-seleccionado">
+                                            <span style="float:right">
+                                                <a style="cursor:pointer" onclick="LlamarControladorQuitarProveedor(@oPxp.idProveedor)">
+                                                    <i class="far fa-times-circle" aria-hidden="true"></i>
+                                                </a>
+                                            </span>
+                                            <p style="margin-bottom: 0px;">@oPxp.proveedor.nombreEmpresa</p>
+                                        </div>
+                                    </div>
+                                }
+                            }
+                        }
+
+                        <input id="inpProveedores" name="idProveedores" value="@stProveedores" class="dis-none">
+
+                    </div>
+                </div>
+                <!--codigo de barras-->
+                @if (oProducto.idProducto != 0 && oProducto != null)
+                {
+                    <div class="col-12">
+                        <br />
+                        <hr />
+                        <p class="text-center"><canvas class="img-fluid" id="barcode"></canvas></p>
+                        <div class="text-center">
+                            <button class="btn btn-danger" type="button" onclick="_PopUpImprimirCodigoBarra()">Imprimir</button>
+                        </div>
+                    </div>
+                }
+                <!--btns-->
+                <div class="col-12 col-md-10 offset-md-1 col-lg-10 offset-lg-1">
+                    <div class="container-login100-form-btn m-t-20 m-b-30">
+                        @if (oProducto.idProducto == 0)
+                        {
+                            <button id="btnGuardar" type="submit" class="btn btn-success fs-22" style="width:100%">Guardar</button>
+                        }
+                        else
+                        {
+                            <div id="btnModificar" class="btn-group w-full" role="group">
+                                <button type="reset" class="btn btn-dark fs-22" style="width:50%" onclick="location.href='@Url.Action("ListarProducto","Producto")'">Cancelar</button>
+                                <button type="submit" class="btn btn-success fs-22" style="width:50%">Modificar</button>
+                            </div>
+                        }
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="div-popup-categoria"></div>
+<div id="div-popup-codigoBarra"></div>
+
+
+
+@section scripts{
+<script src="~/Scripts/JsBarcode.all.min.js"></script>
+<script>
+    async function obtenerCodidoBarra(idProducto) {
+        await $("#barcode").JsBarcode(idProducto);
+    }
+    $(document).ready(function () {
+        var idProducto = '@oProducto.idProducto';
+        if (idProducto == 0 || idProducto == null) {
+            $(':input[type="number"]').val('');
+        }
+        barcode
+        if (idProducto != "" && idProducto != 0) {
+            obtenerCodidoBarra(idProducto);
+        }
+
+        $('#preciodolar').change(function () {
+            if ($(this).is(":checked")) {
+                $(this).val(true);
+                $('precio').text('$ARS');
+                $('precio').addClass('text-primary').removeClass('text-success');
+            }
+            else {
+                $(this).val(false);
+                $('precio').text('$USD');
+                $('precio').addClass('text-success').removeClass('text-primary');
+            }
+
+        });
+
+        $('#preciodolar').change();
+    });
+
+    //********** Categoria **********
+
+    function CargarComboSubcategoria() {
+        var url = "@Url.Action("ObtenerSubcategoriaDeCategoria", "Producto")";
+        var idCategoria = document.getElementById("select-Categorias").value;
+        var data = { idCategoria: idCategoria };
+        $.post(url, data).done(function (data) {
+            if (data == "<option selected value=\"0\">Subcategoria</option>" | data == "") {
+                document.getElementById("select-Subcategoria").innerHTML = "<option selected value=\"0\">Subcategoria</option>";
+                document.getElementById("select-Subcategoria").setAttribute("disabled", "true");
+            }
+            else {
+                document.getElementById("select-Subcategoria").innerHTML = data + "";
+                document.getElementById("select-Subcategoria").removeAttribute("disabled");
+            }
+        });
+    }
+
+    function _PopUpGuardarModificarCategoria(idCategoria) {
+        if (idCategoria == 1) {
+            idCategoria = document.getElementById("select-Categorias").value;
+        }
+        var url = "@Url.Action("_PopUpGuardarModificarCategoria", "Producto")";
+        var data = { idCategoria: idCategoria };
+        $.post(url, data).done(function (data) {
+            if (data.length > 0) {
+                $('#div-popup-categoria').html(data);
+                $('#popupCategoria').modal('show');
+            }
+        });
+    }
+
+
+    //********** FIN categorias **********
+
+    //********** proveedores
+    var idProveedores = " ";
+    function SeleccionarProveedor()
+    {
+        var idProveedor = document.getElementById("selectProveedor").value;
+        var NombreProveedor = $("#selectProveedor option:selected").text();
+        ExisteProveedor = false;
+        $("#proveedores-agregados div").each(function () {
+            var idProveedorAgregado = $(this).attr("id");
+            if (idProveedorAgregado == "div-proveedor-" + idProveedor) {
+                ExisteProveedor = true;
+            }
+        });
+        if (idProveedor != 0) {
+            if (ExisteProveedor) {
+                swal("Proveedor ya seleccionado.", "El proveedor " + NombreProveedor + " ya ha sido seleccionado.", "info");
+            } else {
+                $('#proveedores-agregados').append("<div id=\"div-proveedor-" + idProveedor + "\" class=\"col-12 col-md-6\"><div class=\"item-seleccionado\" ><span style=\"float:right\"><a style=\"cursor:pointer\" onclick=\"LlamarControladorQuitarProveedor(" + idProveedor + ")\"><i class=\"far fa-times-circle\" aria-hidden=\"true\"></i></a></span><p style=\"margin-bottom: 0px;\">" + NombreProveedor + "</p></div ></div >");
+                if (idProveedores == "undefined") {
+                    idProveedores = idProveedor;
+                } else
+                {
+                    idProveedores = idProveedores + idProveedor + ";";
+                }
+                $('#inpProveedores').val(idProveedores);
+            }
+            $("#selectProveedor").val(0);
+            $("#selectProveedor").change();
+        }
+
+    }
+
+    function LlamarControladorQuitarProveedor(id_proveedor) {
+        $('#div-proveedor-' + id_proveedor).remove();
+        idProveedores = idProveedores.replace(id_proveedor + ";", '');
+    }
+
+    function vistaParcialProveedor() {
+        var url = "@Url.Action("_frmProveedor", "Proveedor")";
+        var data = { 'oProveedor.idProveedor': 0};
+        $.post(url, data).done(function (data) {
+            if (data.length > 0) {
+                $('#div-frmProveedor').html(data);
+            }
+        });
+    }
+
+    //**********
+
+    function validarSubcategoria() {
+        if ($("#select-Subcategoria").val() == 0) {
+            swal("Error! \n  \n", "Por favor, seleccione una subcategoria para el producto. \n \n");
+            return false;
+        } else {
+            return true;
+        }
+
+    }
+
+    function _PopUpImprimirCodigoBarra() {
+        var url = "@Url.Action("_PopUpImprimirCodigoBarra", "Producto")";
+        var data = { idProducto: '@oProducto.idProducto' };
+        $.post(url, data).done(function (data) {
+            if (data.length > 0) {
+                $('#div-popup-codigoBarra').html(data);
+                $('#popImprimirCodigoBarra').modal('show');
+            }
+        });
+    }
+    
+</script>
+}
+
+

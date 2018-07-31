@@ -1,0 +1,42 @@
+﻿
+@{
+    ViewBag.Title = "Error";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+
+    string stMensajeError = (string)ViewBag.stMensajeError;
+}
+
+<br /><br />
+<div class="row">
+    <div class="col-12 col-sm-12 col-md-10 offset-md-1">
+        <div class="" style="box-shadow: 1px 1px 1px 1px rgba(0,0,0,.2)">
+            <div class="row">
+                <div class="col-12 col-md-12">
+                    <span class="pull-right"><img src="~/Content/images/softcomputacion_icono.png" class="icon img-fluid" style="width:100px;margin-top:0px;margin-left:3px;"></span>
+                </div>
+                <div class="col-12 col-md-12" style=" text-align:center;">
+                    <br />
+                    <span style="color: #666666; font-size:40px">LO SENTIMOS... OCURRIÓ UN ERROR.</span>
+                    <br /><br />
+                </div>
+                <div class="col-12 col-md-12">
+                    <img class="embed-responsive" style="max-width:200px;display:block;margin:auto; margin-top:20px;margin-bottom:20px;" src="~/Content/images/icono_error.png" />
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 offset-md-3">
+                    <p class="" style="text-align:center; font-size:20px">@stMensajeError</p>
+                    <p class="" style="text-align:center; font-size:20px">No te preocupes, vamos a trabajar en solucionarlo.</p>
+                    <br /><br /><br />
+                    <p class="" style="text-align:center; font-size:20px"><i>Puedes ponerte en contacto con nostros enviando un email a</i></p>
+                    <p class="" style="text-align:center; font-size:20px"><i>contacto@dev-imagine.com</i></p>
+                </div>
+                <div class="col-12 col-sm-12 col-md-6 offset-md-3">
+                    <br /><br />
+                    <button class="btn btn-outline-primary btn-block fs-22" type="button" onclick="window.location.href = '@Url.Action("ListarProducto", "Producto", null)'">Volver al inicio</button>
+                    <br />
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+

@@ -1,0 +1,45 @@
+﻿
+@{
+    bool DatosIncorrectos = ViewBag.DatosIncorrectos;
+    string dni = ViewBag.dni;
+    string contraseña = ViewBag.contraseña;
+}
+<div class="limiter">
+    <div class="container-login100">
+        <div class="wrap-login100">
+            <form class="login100-form validate-form" autocomplete="off" method="post" action="@Url.Action("Ingresar","Home")">
+                @Html.AntiForgeryToken()
+                <span class="login100-form-title p-b-10 d-block d-sm-block d-md-none">
+                    <img src="~/Content/images/softcomputacion_icono.png" />
+                </span>
+                <span class="login100-form-title p-b-34">
+                    Ingresar
+                </span>
+
+                <div class="wrap-input100 rs1-wrap-input100 validate-input" data-validate="Ingrese su DNI">
+                    <input id="dni" class="input100" type="text" name="dni" placeholder="Documento" value="@dni">
+                    <span class="focus-input100"></span>
+                </div>
+                <div class="wrap-input100 rs2-wrap-input100 validate-input" data-validate="Ingrese su contraseña">
+                    <input class="input100" type="password" name="contraseña" placeholder="Contraseña" value="@contraseña">
+                    <span class="focus-input100"></span>
+                </div>
+                @if (DatosIncorrectos)
+                {
+                    <p class="w-full text-center text-danger fs-15">Documento o contraseña incorrectos</p>
+                }
+
+                <div class="container-login100-form-btn m-t-20">
+                    <button type="submit" class="login100-form-btn">
+                        comenzar
+                    </button>
+                </div>
+            </form>
+            <div class="login100-more" style="background-image: url('../../Content/images/softcomputacion_perfil_white.jpg');z-index: inherit;"></div>
+        </div>
+    </div>
+</div>
+
+
+
+<div id="dropDownSelect1"></div>

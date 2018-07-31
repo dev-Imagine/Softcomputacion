@@ -1,0 +1,69 @@
+﻿@{
+    @model softcomputacion.Models.proveedor
+}
+
+
+<form class="validate-form" method="post" action="@Url.Action("GuardarModificarProveedor","Proveedor")" onsubmit="return ValidarNombre()" autocomplete="off">
+    @Html.AntiForgeryToken()
+    @if (Model.idProveedor == 0)
+    {
+        <span class="login100-form-title p-b-34">
+            Nuevo proveedor
+        </span>
+    }
+    else
+    {
+        <span class="login100-form-title p-b-5">
+            Modificando proveedor
+        </span>
+        <span class="login100-form-title p-b-34">
+            @Model.nombreEmpresa
+        </span>
+    }
+    
+    <input name="oProveedor.idProveedor" value="@Model.idProveedor" class="dis-none">
+    <div class="wrap-input100 validate-input m-b-20" data-validate="Ingrese el proveedor">
+        <input class="input100" id="nombreEmpresa" type="text" name="oProveedor.nombreEmpresa" placeholder="Proveedor" value="@Model.nombreEmpresa">
+    </div>
+    <div class="wrap-input100 m-b-20">
+        <input class="input100" type="text" name="oProveedor.telefono" placeholder="Teléfono" value="@Model.telefono">
+    </div>
+    <div class="wrap-input100 m-b-20">
+        <input class="input100" type="text" name="oProveedor.otroContacto" placeholder="Otro contacto" value="@Model.otroContacto">
+    </div>
+
+    @*<div class="wrap-input100 validate-input m-b-20" data-validate="Contaco">
+        <select class="form-control input100" style="border:0px; height: 55px;" id="exampleFormControlSelect1">
+            <option>Categoria 1</option>
+            <option>Categoria 2</option>
+            <option>Categoria 3</option>
+            <option>Categoria 4</option>
+            <option>Categoria 5</option>
+        </select>
+    </div>*@
+    @if (Model.idProveedor == 0)
+    {
+        <button type="submit" class="btn btn-success" style="width:100%">Guardar</button>
+    }
+    else
+    {
+        <div class="btn-group w-full" role="group">
+            <button type="button" class="btn btn-dark" style="width:50%" onclick="location.href='@Url.Action("ListaProveedores","Proveedor")'">Cancelar</button>
+            <button type="submit" class="btn btn-success" style="width:50%">Guardar</button>
+        </div>
+    }
+
+</form>
+
+<script>
+    function ValidarNombre() {
+        var nombreEmpresa = $('#nombreEmpresa').val();
+        if (nombreEmpresa.trim() == "") {
+            return false;
+        } else {
+            //verificar existe nombre
+            return true;
+        }
+        
+    }
+</script>

@@ -1,0 +1,247 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="BDSoftComputacionModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityType Name="categoria">
+    <Key>
+      <PropertyRef Name="idCategoria" />
+    </Key>
+    <Property Name="idCategoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="subcategoria" Relationship="Self.FK_subcategoria_categoria" FromRole="categoria" ToRole="subcategoria" />
+    <NavigationProperty Name="producto" Relationship="BDSoftComputacionModel.FK_producto_categoria" FromRole="categoria" ToRole="producto" />
+  </EntityType>
+  <EntityType Name="estado">
+    <Key>
+      <PropertyRef Name="idEstado" />
+    </Key>
+    <Property Name="idEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="producto" Relationship="BDSoftComputacionModel.FK_producto_estado" FromRole="estado" ToRole="producto" />
+  </EntityType>
+  <EntityType Name="proveedorXproducto">
+    <Key>
+      <PropertyRef Name="idProveedorXproducto" />
+    </Key>
+    <Property Name="idProveedorXproducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idProveedor" Type="Int32" Nullable="false" />
+    <Property Name="idProducto" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="proveedor" Relationship="BDSoftComputacionModel.FK_proveedorXproducto_proveedor" FromRole="proveedorXproducto" ToRole="proveedor" />
+    <NavigationProperty Name="producto" Relationship="BDSoftComputacionModel.FK_proveedorXproducto_producto" FromRole="proveedorXproducto" ToRole="producto" />
+  </EntityType>
+  <EntityType Name="subcategoria">
+    <Key>
+      <PropertyRef Name="idSubCategoria" />
+    </Key>
+    <Property Name="idSubCategoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <Property Name="idCategoria" Type="Int32" Nullable="false" />
+    <NavigationProperty Name="categoria" Relationship="Self.FK_subcategoria_categoria" FromRole="subcategoria" ToRole="categoria" />
+    <NavigationProperty Name="producto" Relationship="BDSoftComputacionModel.FK_producto_subcategoria" FromRole="subcategoria" ToRole="producto" />
+  </EntityType>
+  <EntityType Name="tipoUsuario">
+    <Key>
+      <PropertyRef Name="idTipoUsuario" />
+    </Key>
+    <Property Name="idTipoUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
+    <NavigationProperty Name="usuario" Relationship="BDSoftComputacionModel.FK_usuario_tipoUsuario" FromRole="tipoUsuario" ToRole="usuario" />
+  </EntityType>
+  <Association Name="FK_subcategoria_categoria">
+    <End Role="categoria" Type="Self.categoria" Multiplicity="1" />
+    <End Role="subcategoria" Type="Self.subcategoria" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categoria">
+        <PropertyRef Name="idCategoria" />
+      </Principal>
+      <Dependent Role="subcategoria">
+        <PropertyRef Name="idCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityContainer Name="BDSoftComputacionEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="categoria" EntityType="Self.categoria" />
+    <EntitySet Name="estado" EntityType="Self.estado" />
+    <EntitySet Name="proveedorXproducto" EntityType="Self.proveedorXproducto" />
+    <EntitySet Name="subcategoria" EntityType="Self.subcategoria" />
+    <EntitySet Name="tipoUsuario" EntityType="Self.tipoUsuario" />
+    <AssociationSet Name="FK_subcategoria_categoria" Association="Self.FK_subcategoria_categoria">
+      <End Role="categoria" EntitySet="categoria" />
+      <End Role="subcategoria" EntitySet="subcategoria" />
+    </AssociationSet>
+    <EntitySet Name="proveedor" EntityType="BDSoftComputacionModel.proveedor" />
+    <AssociationSet Name="FK_proveedorXproducto_proveedor" Association="BDSoftComputacionModel.FK_proveedorXproducto_proveedor">
+      <End Role="proveedor" EntitySet="proveedor" />
+      <End Role="proveedorXproducto" EntitySet="proveedorXproducto" />
+    </AssociationSet>
+    <EntitySet Name="usuario" EntityType="BDSoftComputacionModel.usuario" />
+    <AssociationSet Name="FK_usuario_tipoUsuario" Association="BDSoftComputacionModel.FK_usuario_tipoUsuario">
+      <End Role="tipoUsuario" EntitySet="tipoUsuario" />
+      <End Role="usuario" EntitySet="usuario" />
+    </AssociationSet>
+    <EntitySet Name="producto" EntityType="BDSoftComputacionModel.producto" />
+    <AssociationSet Name="FK_producto_categoria" Association="BDSoftComputacionModel.FK_producto_categoria">
+      <End Role="categoria" EntitySet="categoria" />
+      <End Role="producto" EntitySet="producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_producto_estado" Association="BDSoftComputacionModel.FK_producto_estado">
+      <End Role="estado" EntitySet="estado" />
+      <End Role="producto" EntitySet="producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_producto_subcategoria" Association="BDSoftComputacionModel.FK_producto_subcategoria">
+      <End Role="subcategoria" EntitySet="subcategoria" />
+      <End Role="producto" EntitySet="producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_proveedorXproducto_producto" Association="BDSoftComputacionModel.FK_proveedorXproducto_producto">
+      <End Role="producto" EntitySet="producto" />
+      <End Role="proveedorXproducto" EntitySet="proveedorXproducto" />
+    </AssociationSet>
+    <EntitySet Name="historialStock" EntityType="BDSoftComputacionModel.historialStock" />
+    <AssociationSet Name="FK_hostorialStock_producto" Association="BDSoftComputacionModel.FK_hostorialStock_producto">
+      <End Role="producto" EntitySet="producto" />
+      <End Role="historialStock" EntitySet="historialStock" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="proveedor">
+    <Key>
+      <PropertyRef Name="idProveedor" />
+    </Key>
+    <Property Name="idProveedor" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombreEmpresa" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="telefono" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="otroContacto" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="fechaBaja" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="proveedorXproducto" Relationship="BDSoftComputacionModel.FK_proveedorXproducto_proveedor" FromRole="proveedor" ToRole="proveedorXproducto" />
+  </EntityType>
+  <Association Name="FK_proveedorXproducto_proveedor">
+    <End Type="BDSoftComputacionModel.proveedor" Role="proveedor" Multiplicity="1" />
+    <End Type="BDSoftComputacionModel.proveedorXproducto" Role="proveedorXproducto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="proveedor">
+        <PropertyRef Name="idProveedor" />
+      </Principal>
+      <Dependent Role="proveedorXproducto">
+        <PropertyRef Name="idProveedor" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="usuario">
+    <Key>
+      <PropertyRef Name="idUsuario" />
+    </Key>
+    <Property Name="idUsuario" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="apellido" Type="String" Nullable="false" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="telefono" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="dni" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="idTipoUsuario" Type="Int32" Nullable="false" />
+    <Property Name="contraseña" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="fechaBaja" Type="DateTime" Precision="3" />
+    <NavigationProperty Name="tipoUsuario" Relationship="BDSoftComputacionModel.FK_usuario_tipoUsuario" FromRole="usuario" ToRole="tipoUsuario" />
+  </EntityType>
+  <Association Name="FK_usuario_tipoUsuario">
+    <End Type="BDSoftComputacionModel.tipoUsuario" Role="tipoUsuario" Multiplicity="1" />
+    <End Type="BDSoftComputacionModel.usuario" Role="usuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="tipoUsuario">
+        <PropertyRef Name="idTipoUsuario" />
+      </Principal>
+      <Dependent Role="usuario">
+        <PropertyRef Name="idTipoUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="producto">
+    <Key>
+      <PropertyRef Name="idProducto" />
+    </Key>
+    <Property Name="idProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="observacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="stockMinimo" Type="Int32" Nullable="false" />
+    <Property Name="stockIdeal" Type="Int32" Nullable="false" />
+    <Property Name="stockActual" Type="Int32" Nullable="false" />
+    <Property Name="precioCosto" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="precioGremio" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="precioContado" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="precioLista" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="idCategoria" Type="Int32" Nullable="false" />
+    <Property Name="idSubCategoria" Type="Int32" Nullable="false" />
+    <Property Name="idEstado" Type="Int32" Nullable="false" />
+    <Property Name="precioFijo" Type="Boolean" Nullable="false" />
+    <NavigationProperty Name="categoria" Relationship="BDSoftComputacionModel.FK_producto_categoria" FromRole="producto" ToRole="categoria" />
+    <NavigationProperty Name="estado" Relationship="BDSoftComputacionModel.FK_producto_estado" FromRole="producto" ToRole="estado" />
+    <NavigationProperty Name="subcategoria" Relationship="BDSoftComputacionModel.FK_producto_subcategoria" FromRole="producto" ToRole="subcategoria" />
+    <NavigationProperty Name="proveedorXproducto" Relationship="BDSoftComputacionModel.FK_proveedorXproducto_producto" FromRole="producto" ToRole="proveedorXproducto" />
+    <NavigationProperty Name="historialStock" Relationship="BDSoftComputacionModel.FK_hostorialStock_producto" FromRole="producto" ToRole="historialStock" />
+  </EntityType>
+  <Association Name="FK_producto_categoria">
+    <End Type="BDSoftComputacionModel.categoria" Role="categoria" Multiplicity="1" />
+    <End Type="BDSoftComputacionModel.producto" Role="producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categoria">
+        <PropertyRef Name="idCategoria" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="idCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_producto_estado">
+    <End Type="BDSoftComputacionModel.estado" Role="estado" Multiplicity="1" />
+    <End Type="BDSoftComputacionModel.producto" Role="producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="estado">
+        <PropertyRef Name="idEstado" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="idEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_producto_subcategoria">
+    <End Type="BDSoftComputacionModel.subcategoria" Role="subcategoria" Multiplicity="1" />
+    <End Type="BDSoftComputacionModel.producto" Role="producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="subcategoria">
+        <PropertyRef Name="idSubCategoria" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="idSubCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_proveedorXproducto_producto">
+    <End Type="BDSoftComputacionModel.producto" Role="producto" Multiplicity="1" />
+    <End Type="BDSoftComputacionModel.proveedorXproducto" Role="proveedorXproducto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="producto">
+        <PropertyRef Name="idProducto" />
+      </Principal>
+      <Dependent Role="proveedorXproducto">
+        <PropertyRef Name="idProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="historialStock">
+    <Key>
+      <PropertyRef Name="idHistorial" />
+    </Key>
+    <Property Name="idHistorial" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fechaHora" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="idProducto" Type="Int32" Nullable="false" />
+    <Property Name="cantidad" Type="Int32" Nullable="false" />
+    <Property Name="tipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="producto" Relationship="BDSoftComputacionModel.FK_hostorialStock_producto" FromRole="historialStock" ToRole="producto" />
+  </EntityType>
+  <Association Name="FK_hostorialStock_producto">
+    <End Type="BDSoftComputacionModel.producto" Role="producto" Multiplicity="1" />
+    <End Type="BDSoftComputacionModel.historialStock" Role="historialStock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="producto">
+        <PropertyRef Name="idProducto" />
+      </Principal>
+      <Dependent Role="historialStock">
+        <PropertyRef Name="idProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
