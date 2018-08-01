@@ -3,30 +3,58 @@
 }
 
 <div class="container-fluid">
-    <div class="row">
-       <p class="text-center">Carrito</p>
+    <div class="row text-center">
+       <p class="">Carrito</p>
     </div>
+    <hr style="border-top: 1px solid #b5262a;" />
+            @if (oVenta != null)
+            {
+                foreach (softcomputacion.Models.detalleVenta oDetalle in oVenta.detalleVenta)
+                {
+                    <div id="divRow">
+                        <div class="row" id="div-carrito-@oDetalle.idProducto">
+                            <div class="col-12 col-md-5">
+                                <p>@oDetalle.producto.categoria.nombre @oDetalle.producto.subcategoria.nombre @oDetalle.producto.nombre</p>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                Cant:<i id="i-cant-@oDetalle.idProducto">@oDetalle.cantidad</i>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <p>$@oDetalle.costoIndividual</p>
+                            </div>
+                            <div class="col-12 col-md-2">
+                                <p>*$@oDetalle.costoGrupal</p>
+                            </div>
+                            <div class="col-12 col-md-1">
+                                <span class="fas fa-trash-alt" style="cursor:pointer" onclick="borrarDetalle(@oDetalle.idProducto)"></span>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }        
+    
     <div class="row">
-        @foreach (softcomputacion.Models.detalleVenta oDetalle in oVenta.detalleVenta)
-        {
-            <div class="col-12 col-md-8">
-                <p>@oDetalle.producto.categoria @oDetalle.producto.subcategoria @oDetalle.producto.nombre</p>
-            </div>
-            <div class="col-12 col-md-1">
-                <p>@oDetalle.cantidad</p>
-            </div>
-            <div class="col-12 col-md-1">
-                <p>@oDetalle.costoIndividual</p>
-            </div>
-            <div class="col-12 col-md-1">
-                <p>@oDetalle.costoGrupal</p>
-            </div>
-            <div class="col-12 col-md-1">
-                <span class="fa fa-plus" style="cursor:pointer" onclick="borrarDetalleSession(@oDetalle.idProducto)"></span>
-            </div>
-        }        
-    </div>
-    <div class="row">
-        <button class="btn btn-outline-dark text-center col-12" >Generar compra</button>
+        <button onclick="generarCompra()" class="btn btn-outline-dark text-center col-12" >Generar compra</button>
     </div>
 </div>
+
+    <script>
+
+        function borrarDetalle(idProducto) {
+            var url = "@Url.Action("borrarDetalle", "Venta")";
+            var data = { idProducto: idProducto };
+            $.post(url, data).done(function (data) {
+                if (data == "true") {
+                    var stockActual = $('#iSpan-' + idProducto).text();
+                    var stockDescontar = $('#i-cant-' + idProducto).text();
+                    var stockEstimado = parseInt(stockActual) + parseInt(stockDescontar);
+                    $('#iSpan-' + idProducto).text(stockEstimado);
+                    $('#div-carrito-' + idProducto).remove();
+                   
+                } else
+                {
+                    swal("Ocurrió un error", "Se produjo un error al intentar agregar un producto al carrito", "error");
+                }
+            });
+        }
+    </script>

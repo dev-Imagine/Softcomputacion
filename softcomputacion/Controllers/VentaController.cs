@@ -12,18 +12,7 @@ namespace softcomputacion.Controllers
 {
     public class VentaController : Controller
     {
-        // GET: Venta
-        public ActionResult venta()
-        {
-            usuario oUsuario = (usuario)Session["Usuario"];
-            if (oUsuario == null || oUsuario.idTipoUsuario != 2)
-            {
-                Session.Clear();
-                return RedirectToAction("Index", "Home");
-            }
-            return View();
-        }
-
+        
         public ActionResult Venta(int nroPagina = 1, int tamañoPagina = 10, bool paginacion = false)
         {
             try
@@ -58,7 +47,7 @@ namespace softcomputacion.Controllers
 
         }
         [HttpPost]
-        public ActionResult Venta(string nombreProducto = "", int idEstado = 0, int idCategoria = 0, int idSubCategoria = 0)
+        public ActionResult Venta(string nombreProducto = "", int idEstado = 0, int idCategoria = 0, int idSubCategoria = 0, int idProducto = 0)
         {
             try
             {
@@ -71,7 +60,7 @@ namespace softcomputacion.Controllers
                 srvEstado sEstado = new srvEstado();
                 srvProducto sProducto = new srvProducto();
                 srvCategoria sCategoria = new srvCategoria();
-                List<producto> lstProductos = sProducto.ObtenerProductos(nombreProducto, idCategoria, idSubCategoria, idEstado);
+                List<producto> lstProductos = sProducto.ObtenerProductos(nombreProducto, idCategoria, idSubCategoria, idEstado, idProducto);
                 Session["lstProducto"] = lstProductos;
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
                 ViewBag.lstEstados = sEstado.ObtenerEstados();
@@ -91,8 +80,10 @@ namespace softcomputacion.Controllers
         //Vistas Parciales
 
         [HttpPost]
-        public PartialViewResult _CarritoVenta(int idProducto, double precio, int cantidad)
+        public PartialViewResult _CarritoVenta(int idProducto, string precio, string cantidad)
         {
+            decimal precioD = Convert.ToDecimal(precio);
+            int cantidadI = Convert.ToInt32(cantidad);
             try
             {
                 venta oVenta = new venta();
@@ -106,7 +97,7 @@ namespace softcomputacion.Controllers
                     oVenta = (venta)Session["venta"];
                 }
                 srvVenta sVenta = new srvVenta();
-                oVenta = sVenta.agregarDetalle(oVenta, idProducto, precio, cantidad);
+                oVenta = sVenta.agregarDetalle(oVenta, idProducto, precioD, cantidadI);
                 Session["venta"] = oVenta;
                 return PartialView();
             }
@@ -140,6 +131,24 @@ namespace softcomputacion.Controllers
                 {
                     return 0;
                 }
+            }
+        }
+
+        public string borrarDetalle(int idProducto)
+        {
+            try
+            {
+                venta oVenta = new venta();
+                oVenta = (venta)Session["venta"];
+                detalleVenta oDetalle = new detalleVenta();
+                oDetalle = oVenta.detalleVenta.Where(x => x.idProducto == idProducto).First();                
+                oVenta.detalleVenta.Remove(oDetalle);
+                return "true";
+            }
+            catch (Exception)
+            {
+
+                return "false";
             }
         }
 

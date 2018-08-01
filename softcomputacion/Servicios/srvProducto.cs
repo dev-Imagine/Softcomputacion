@@ -90,7 +90,7 @@ namespace softcomputacion.Servicios
             }
         }
 
-        public List<producto> ObtenerProductos(string nombre = "", int idCategoria = 0, int idSubCategoria=0, int idEstado=0)
+        public List<producto> ObtenerProductos(string nombre = "", int idCategoria = 0, int idSubCategoria=0, int idEstado=0, int idProducto = 0)
         {
             try
             {
@@ -98,6 +98,21 @@ namespace softcomputacion.Servicios
                 nombre = nombre.ToUpper();
                 using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
                 {
+                    if (idProducto != 0)
+                    {
+                        lstProductos = bd.producto.Where(x => x.idProducto == idProducto).ToList();
+                        foreach (producto opro in lstProductos)
+                        {
+                            int id;
+                            id = opro.categoria.idCategoria;
+                            id = opro.subcategoria.idSubCategoria;
+                            id = opro.subcategoria.categoria.idCategoria;
+                            id = opro.estado.idEstado;
+                            id = opro.proveedorXproducto.Count();
+
+                        }
+                        return lstProductos;
+                    }
                     if (nombre == "") lstProductos = bd.producto.ToList();
                     else lstProductos = bd.producto.Where(x => x.nombre.Contains(nombre)).ToList();
                     if (idCategoria != 0) lstProductos = lstProductos.Where(x => x.idCategoria == idCategoria).ToList();
