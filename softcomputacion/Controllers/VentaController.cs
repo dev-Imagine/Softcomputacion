@@ -13,11 +13,10 @@ namespace softcomputacion.Controllers
     public class VentaController : Controller
     {
         
-        public ActionResult Venta(int nroPagina = 1, int tamañoPagina = 10, bool paginacion = false)
+        public ActionResult Venta(int nroPagina = 1, int tamañoPagina = 6, bool paginacion = false)
         {
             try
             {
-
                 usuario oUsuario = (usuario)Session["Usuario"];
                 if (oUsuario == null)
                 {
@@ -66,7 +65,7 @@ namespace softcomputacion.Controllers
                 ViewBag.lstEstados = sEstado.ObtenerEstados();
                 ViewBag.filtros = Convert.ToString(nombreProducto + ";" + idCategoria + ";" + idSubCategoria + ";" + idEstado);
                 ViewBag.ValorUSD = GetValorUsd();
-                PagedList<producto> model = new PagedList<producto>(lstProductos.ToList(), 1, 10);
+                PagedList<producto> model = new PagedList<producto>(lstProductos.ToList(), 1, 6);
                 return View(model);
             }
             catch (Exception)
@@ -93,7 +92,7 @@ namespace softcomputacion.Controllers
                 }
                 else
                 {
-                    Session["venta"] = Session["venta"];
+                    //Session["venta"] = Session["venta"];
                     oVenta = (venta)Session["venta"];
                 }
                 srvVenta sVenta = new srvVenta();
@@ -103,10 +102,8 @@ namespace softcomputacion.Controllers
             }
             catch (Exception)
             {
-
                 return null;
             }
-              
         }
 
         //Metodos
@@ -147,11 +144,8 @@ namespace softcomputacion.Controllers
             }
             catch (Exception)
             {
-
                 return "false";
             }
         }
-
-
     }
 }

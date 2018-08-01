@@ -113,22 +113,14 @@
         </div>
         <div class="row container-fluid">
             <!--Lista de Productos-->
-            <div class="m-b-15 col-12 col-lg-7">
+            <div class="m-b-15 col-12 col-md-12 col-lg-8">
                 @{
-                    double PrecioContadoUSD = 0;
-                    double PrecioListaUSD = 0;
-                    double PrecioGremioUSD = 0;
-                    double PrecioCostoUSD = 0;
                     double PrecioContadoARS = 0;
                     double PrecioListaARS = 0;
                     double PrecioGremioARS = 0;
                     double PrecioCostoARS = 0;
                     foreach (var oProducto in Model)
                     {
-                        PrecioContadoUSD = Convert.ToDouble(oProducto.precioContado);
-                        PrecioListaUSD = Convert.ToDouble(oProducto.precioLista);
-                        PrecioGremioUSD = Convert.ToDouble(oProducto.precioGremio);
-                        PrecioCostoUSD = Convert.ToDouble(oProducto.precioCosto);
                         PrecioContadoARS = Convert.ToDouble(oProducto.precioContado);
                         PrecioListaARS = Convert.ToDouble(oProducto.precioLista);
                         PrecioGremioARS = Convert.ToDouble(oProducto.precioGremio);
@@ -140,78 +132,61 @@
                             PrecioGremioARS = PrecioGremioARS * ValorUSD;
                             PrecioCostoARS = PrecioCostoARS * ValorUSD;
                         }
-                        else
-                        {
-                            PrecioContadoUSD = PrecioContadoUSD / ValorUSD;
-                            PrecioListaUSD = PrecioListaUSD / ValorUSD;
-                            PrecioGremioUSD = PrecioGremioUSD / ValorUSD;
-                            PrecioCostoUSD = PrecioCostoUSD / ValorUSD;
-                        }
-
                         stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(oProducto.idEstado);
 
-                        <div id="div-@oProducto.idProducto" class="row item-tabla m-b-15">
-                            <div class="col-12 col-md-11 " style="text-align:left;">
-                                <div class="row">
-                                    <div class="col-12 col-sm-12 col-md-4">
-                                        <p class="login100-form-title fs-18 p-l-5 text-left">
-                                            @*<strong>Producto:</strong>*@
-                                            <span id="spanNombreProducto-@oProducto.idProducto">
-                                                <strong>@oProducto.categoria.nombre @oProducto.subcategoria.nombre - @oProducto.nombre</strong>
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div class="col-12 col-sm-6 col-md-1">
-                                        <p class="login100-form-title fs-18 text-center">
-                                            <span>Stock Actual:</span>
-                                            <span id="spanActual-@oProducto.idProducto">
-                                                <i id="iSpan-@oProducto.idProducto" style="color: @stColorStock" >@oProducto.stockActual</i>
-                                            </span>
-                                        </p>
-                                    </div>
-                                    <div class="col-12 col-sm-6 col-md-4">
-                                        <select id="select-precio-@oProducto.idProducto" class="form-control input100" style="border:0px; height: 55px;" name="idPrecio">
-                                            @if (oUsuario.idTipoUsuario == 2)
-                                            {
-                                                <option value="@PrecioCostoARS ">Costo: @PrecioCostoARS</option>
-                                            }
-                                            <option selected value="@PrecioContadoARS">Contado: $@PrecioContadoARS</option>
-                                            <option value="@PrecioListaARS">Lista: $@PrecioListaARS</option>
-                                            <option  value="@PrecioGremioARS">Gremio: $@PrecioGremioARS</option>
-                                        </select>
-                                    </div>
-                                    <div class="col-12 col-sm-6 col-md-1">
-                                        <input id="cantidad-@oProducto.idProducto" style="text-align:right; width:58px;" type="number" name="cantidad" >
-                                    </div>
+                <div id="div-@oProducto.idProducto" class="row item-tabla m-b-15">
+                            <div class="col-12 col-sm-12 col-md-12 col-lg-6">
+                                <p class="login100-form-title fs-18 p-l-5 text-left">
+                                    <span id="spanNombreProducto-@oProducto.idProducto">
+                                        <strong>@oProducto.categoria.nombre @oProducto.subcategoria.nombre - @oProducto.nombre</strong>
+                                    </span>
+                                </p>
+                                <p class="text-center fs-18">
+                                    <span>Stock:</span>
+                                    <span id="spanActual-@oProducto.idProducto">
+                                        <i id="iSpan-@oProducto.idProducto" style="color: @stColorStock">@oProducto.stockActual</i>
+                                    </span>
+                                </p>
+                            </div>
+                            @*<div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                                <p class="login100-form-title fs-18 text-center">
+                                    <span>Stock:</span>
+                                    <span id="spanActual-@oProducto.idProducto">
+                                        <i id="iSpan-@oProducto.idProducto" style="color: @stColorStock">@oProducto.stockActual</i>
+                                    </span>
+                                </p>
+                            </div>*@
+                            <div class="col-12 col-sm-6 col-md-6 col-lg-4">
+                                <select id="select-precio-@oProducto.idProducto" class="form-control input100 p-l-5 p-r-5" style="border:0px;" name="idPrecio">
+                                    <option selected value="@PrecioContadoARS">Contado: $@PrecioContadoARS</option>
+                                    <option value="@PrecioListaARS">Lista: $@PrecioListaARS</option>
+                                    <option value="@PrecioGremioARS">Gremio: $@PrecioGremioARS</option>
+                                </select>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-6 col-lg-1 p-l-3 p-r-3">
+                                <input class="form-control" id="cantidad-@oProducto.idProducto" style="text-align:center; width:100%;" type="number" name="cantidad" value="1">
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-1 p-l-0 p-r-0">
+                                @* post para agregar a la session de venta. *@
+                                <div class="btn-group w-full" role="group">
+                                    <button onclick="agregarACarrito(@oProducto.idProducto)" type="button" class="btn btn-outline-dark" style="width:100%"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
-                            @* post para agregar a la session de venta. *@
-                                <div class="col-12 col-md-1">
-                                    
-                                        <div class="btn-group w-full" role="group">
-                                            <button onclick="agregarACarrito(@oProducto.idProducto)" type="button" class="btn btn-outline-dark" style="width:100%"><i class="fas fa-plus"></i></button>
-                                        </div>
-                                    
-                                </div>
-                            
                         </div>
                     }
                 }
+                <div class="row container-fluid text-center">
+                    <div id="div-paginacion" class="col-12">
+                        @Html.PagedListPager(Model, nroPagina => Url.Action("Venta", "Venta", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
+                    </div>
+                    <div class="col-12">
+                        @Model.FirstItemOnPage a @Model.LastItemOnPage productos de un total de @Model.TotalItemCount Productos.
+                    </div>
+                </div>
             </div>
-            <div id="div-carrito" class="m-b-15 col-12 col-lg-5">
+            <div id="div-carrito" class="m-b-15 col-12 col-md-12 col-lg-4">
                 @Html.Partial("_CarritoVenta")
             </div>
-        </div>
-        <div class="row container-fluid text-center">
-            <div id="div-paginacion" class="col-12">
-                @Html.PagedListPager(Model, nroPagina => Url.Action("Venta", "Venta", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
-            </div>
-            <div class="col-12">
-                @Model.FirstItemOnPage a @Model.LastItemOnPage productos de un total de @Model.TotalItemCount Productos.
-            </div>
-
-
-
         </div>
     </div>
 </div>
