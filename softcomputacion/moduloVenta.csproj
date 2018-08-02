@@ -391,6 +391,7 @@
     <Content Include="Views\Producto\ImprimirCodigoBarra.cshtml" />
     <Content Include="Views\Venta\Venta.cshtml" />
     <Content Include="Views\Venta\_CarritoVenta.cshtml" />
+    <Content Include="Views\Venta\GenerarVenta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

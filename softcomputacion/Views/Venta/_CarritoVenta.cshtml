@@ -45,10 +45,12 @@
                 }
             }        
             <hr style="border-top: 1px solid #b5262a;" />
-            <div class="row">
-                <div class="col-12">
-                    <button onclick="generarCompra()" class="btn btn-outline-dark text-center col-12">Generar compra</button>
-                </div>      
+            <div class="row text-center">
+                <form method="post" target="_blank" action="@Url.Action("GenerarVenta", "Venta")">
+                    <div class="col-12">
+                        <button onclick="" class="btn btn-outline-dark col-12">Generar Venta</button>
+                    </div>
+                </form>
             </div>
     </div>
 

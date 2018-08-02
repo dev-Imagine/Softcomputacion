@@ -1,0 +1,47 @@
+﻿@{
+    @model  softcomputacion.Models.venta
+}
+
+<div class="container">
+    <div class="row ">
+        <div class="col-12">
+            Fecha de emision: <i> @Model.fechaEmision.Date</i>
+            Usuario: <i> @Model.usuario.apellido,@Model.usuario.nombre</i>
+        </div>
+    </div>
+    <hr style="border-top: 1px solid #b5262a; margin-top:5px;" />
+    
+                @foreach (softcomputacion.Models.detalleVenta oDetalle in Model.detalleVenta)
+                {
+                <div id="divRow">
+                     <div class="row" id="div-carrito-@oDetalle.idProducto">
+                            <div class="col-12 col-md-10 col-lg-10">
+                                <div class="row">
+                                    <div class="col-12 col-md-12">
+                                        <p class="fs-18"><strong>@oDetalle.producto.categoria.nombre @oDetalle.producto.subcategoria.nombre @oDetalle.producto.nombre</strong></p>
+                                    </div>
+                                    <div class="col-6 col-sm-6 col-md-6 p-l-5 p-r-5 text-center">
+                                        <p class="fs-16">Cantidad: <i id="i-cant-@oDetalle.idProducto">@oDetalle.cantidad</i></p>
+                                    </div>
+                                    <div class="col-6 col-sm-6 col-md-6 p-l-5 p-r-5 text-right">
+                                        <p class="fs-16">P/Unit: $@oDetalle.costoIndividual</p>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-2 col-lg-2 p-l-0 p-r-0 text-center">                               
+                                <p class="fs-20"><strong>*$@oDetalle.costoGrupal</strong></p>
+                            </div>
+                        <div class="col-12">
+                            <div class="clearfix">
+                                <span class="fas fa-trash-alt float-right" style="cursor:pointer; font-size: 15px;" onclick="borrarDetalle(@oDetalle.idProducto)"></span>
+                            </div>
+                        </div>
+                    </div>
+            </div>
+        }    
+    <hr style="border-top: 1px solid #b5262a;" /> 
+    <div>
+        <p class="text-right fs-20">Costo total: @Model.costoTotal</p>
+    </div>
+</div>

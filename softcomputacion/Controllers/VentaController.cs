@@ -147,5 +147,35 @@ namespace softcomputacion.Controllers
                 return "false";
             }
         }
+
+        [HttpPost]
+        public ActionResult GenerarVenta()
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                venta model = new venta();
+                model = (venta)Session["venta"];
+                model.idUsuario = oUsuario.idUsuario;
+                model.usuario = oUsuario;
+                srvVenta sVenta = new srvVenta();                
+                if (model.detalleVenta.Count == 0)
+                {
+                    return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+                }
+                model = sVenta.guardarVenta(model);
+                Session["venta"] = null;
+                return View(model);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
+        }
     }
 }
