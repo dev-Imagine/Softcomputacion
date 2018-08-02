@@ -29,91 +29,96 @@
         <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
             <input name="oProducto.idProducto" value="@Model.idProducto" class="dis-none">
 
-                <div class="row">
-                    <div class="col-12 col-sm-6 col-md-6">
-                        <p class="login100-form-title p-b-10 fs-17 text-center">
-                            <strong>Categoría:</strong>
-                            <span>
-                                <i>@Model.categoria.nombre</i>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6">
-                        <p class="login100-form-title p-b-10 fs-17 text-center">
-                            <strong>Subcategoría:</strong>
-                            <span>
-                                <i>@Model.subcategoria.nombre</i>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="col-12 m-b-14">
-                        <hr />
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6">
-                        <p class="login100-form-title p-b-10 fs-17 text-center">
-                            <strong>Stock Actual:</strong>
-                            <span>
-                                <i id="iStockActual">@Model.stockActual</i>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="col-12 col-sm-6 col-md-6">
-                        <p class="login100-form-title p-b-10 fs-17 text-center">
-                            <span class="badge fs-17" style="color: @stColorStock; width: 180px;" id="spnEstadoStock">@Model.estado.nombre</span>
-                        </p>
-                    </div>
-                    <div class="col-12 text-center p-b-20">
-                        <hr />
-                        <span class="fs-24 p-b-5 p-t-5 p-l-20 p-r-20 m-b-5" style="color:#000">PRECIOS</span>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-4">
-                        <p class="login100-form-title p-b-10 fs-17 text-center">
-                            <strong>Gremio <precio class="text-primary">$ARS</precio></strong>
-                            <span>
-                                <i>@dGremio</i>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-4">
-                        <p class="login100-form-title p-b-10 fs-17 text-center">
-                            <strong>Contado <precio class="text-primary">$ARS</precio></strong>
-                            <span>
-                                <i>@dContado</i>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="col-12 col-sm-12 col-md-4">
-                        <p class="login100-form-title p-b-10 fs-17 text-center">
-                            <strong>Lista <precio class="text-primary">$ARS</precio></strong>
-                            <span>
-                                <i>@dLista</i>
-                            </span>
-                        </p>
-                    </div>
-                    <div class="col-12">
-                        <br />
-                        <hr />
-                        <p class="text-center"><canvas class="img-fluid" id="barcode"></canvas></p>
-                        <div class="text-center" >
-                            <button class="btn btn-danger" type="button" onclick="_PopUpImprimirCodigoBarra()">Imprimir</button>
-                        </div>
-                    </div>
-
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-6">
+                    <p class="login100-form-title p-b-10 fs-17 text-center">
+                        <strong>Categoría:</strong>
+                        <span>
+                            <i>@Model.categoria.nombre</i>
+                        </span>
+                    </p>
                 </div>
+                <div class="col-12 col-sm-6 col-md-6">
+                    <p class="login100-form-title p-b-10 fs-17 text-center">
+                        <strong>Subcategoría:</strong>
+                        <span>
+                            <i>@Model.subcategoria.nombre</i>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-12 m-b-14">
+                    <hr />
+                </div>
+                <div class="col-12 col-sm-6 col-md-6">
+                    <p class="login100-form-title p-b-10 fs-17 text-center">
+                        <strong>Stock Actual:</strong>
+                        <span>
+                            <i id="iStockActual">@Model.stockActual</i>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-12 col-sm-6 col-md-6">
+                    <p class="login100-form-title p-b-10 fs-17 text-center">
+                        <span class="badge fs-17" style="color: @stColorStock; width: 180px;" id="spnEstadoStock">@Model.estado.nombre</span>
+                    </p>
+                </div>
+                <div class="col-12 text-center p-b-20">
+                    <hr />
+                    <span class="fs-24 p-b-5 p-t-5 p-l-20 p-r-20 m-b-5" style="color:#000">PRECIOS</span>
+                </div>
+                <div class="col-12 col-sm-12 col-md-4">
+                    <p class="login100-form-title p-b-10 fs-17 text-center">
+                        <strong>Gremio <precio class="text-primary">$ARS</precio></strong>
+                        <span>
+                            <i>@dGremio</i>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-12 col-sm-12 col-md-4">
+                    <p class="login100-form-title p-b-10 fs-17 text-center">
+                        <strong>Contado <precio class="text-primary">$ARS</precio></strong>
+                        <span>
+                            <i>@dContado</i>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-12 col-sm-12 col-md-4">
+                    <p class="login100-form-title p-b-10 fs-17 text-center">
+                        <strong>Lista <precio class="text-primary">$ARS</precio></strong>
+                        <span>
+                            <i>@dLista</i>
+                        </span>
+                    </p>
+                </div>
+                <div class="col-12">
+                    <br />
+                    <hr />
+                    <p class="text-center"><canvas class="img-fluid" id="barcode"></canvas></p>
+                    <div class="text-center">
+                        <button class="btn btn-danger" type="button" onclick="_PopUpImprimirCodigoBarra()">Imprimir</button>
+                    </div>
+                </div>
+
+            </div>
         </div>
         <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
             <br />
             <hr />
         </div>
-         
+
         <div class="col-12 col-md-8 offset-md-2 col-lg-4 offset-lg-4 col-xl-4 offset-xl-4">
-            
             <div class="input-group " style="margin-bottom:0px !important">
                 <input class="form-control mr-sm-2 ml-sm-1 mt-10 w-full fs-22 text-center" style="border-color:#b5262a" type="number" max="@Model.stockActual" min="0" id="inpCantidad" placeholder="Cantidad" name="Cantidad" aria-label="Cantidad:" value="1">
                 <div class="input-group-append">
-                    <button class="btn btn-danger w-full fs-22" onclick="descontarStock()" type="submit">Descontar</button>
+                    <button class="btn btn-danger w-full fs-22" onclick="descontarStock()" type="button">Descontar</button>
                 </div>
             </div>
+        </div>
+        <div class="col-12 col-md-8 offset-md-2 col-lg-4 offset-lg-4 col-xl-4 offset-xl-4">
+            <form method="post" action="@Url.Action("NuevaVenta","Venta", new { idProducto = Model.idProducto })">
+                <br />
+                <button class="btn btn-outline-success w-full fs-22" type="submit"><i class="fas fa-shopping-cart"></i> Agregar a venta</button>
+            </form>
         </div>
 
     </div>

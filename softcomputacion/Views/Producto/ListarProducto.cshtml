@@ -5,8 +5,6 @@
     List<softcomputacion.Models.estado> lstEstados = (List<softcomputacion.Models.estado>)ViewBag.lstEstados;
     string[] filtros = ViewBag.filtros.Split(';');
     string stColorStock = "";
-    //string stValorUSD = Convert.ToString(ViewBag.ValorUSD);
-    //double ValorUSD = Convert.ToDouble(stValorUSD.ToString().Replace(".", ","));
     double ValorUSD = (double)ViewBag.ValorUSD;
     softcomputacion.Models.usuario oUsuario = (softcomputacion.Models.usuario)Session["Usuario"];
 

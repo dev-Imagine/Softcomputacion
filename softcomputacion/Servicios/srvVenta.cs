@@ -103,5 +103,33 @@ namespace softcomputacion.Servicios
                 throw ex;
             }
         }
+        public List<venta> ObtenerVentasUsuario(int idUsuario = 0)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    List<venta> lstVenta;
+                    if (idUsuario==0)
+                    {
+                        lstVenta = bd.venta.ToList();
+                    }
+                    else
+                    {
+                        lstVenta = bd.venta.Where(x => x.idUsuario == idUsuario).ToList();
+                    }
+                    string temp = "";
+                    foreach (venta oVenta in lstVenta.ToList())
+                    {
+                        temp = oVenta.usuario.nombre;
+                    }
+                    return lstVenta;
+                }
+            }
+            catch (Exception)
+            {
+                return new List<venta>();
+            }
+        }
     }
 }

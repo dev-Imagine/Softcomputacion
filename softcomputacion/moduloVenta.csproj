@@ -392,6 +392,7 @@
     <Content Include="Views\Venta\NuevaVenta.cshtml" />
     <Content Include="Views\Venta\_CarritoVenta.cshtml" />
     <Content Include="Views\Venta\VistaVenta.cshtml" />
+    <Content Include="Views\Venta\ListarVentas.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

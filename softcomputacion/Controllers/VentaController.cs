@@ -94,7 +94,52 @@ namespace softcomputacion.Controllers
                 return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
             }
         }
-
+        public ActionResult ListarVentas()
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                srvUsuario sUsuario = new srvUsuario();
+                ViewBag.Ususarios = sUsuario.ObtenerUsuarios();
+                srvVenta sVenta = new srvVenta();
+                List<venta> lstVentas = sVenta.ObtenerVentasUsuario(oUsuario.idUsuario);
+                ViewBag.filtros = ";;";
+                return View(lstVentas);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
+        }
+        [HttpPost]
+        public ActionResult ListarVentas(int idUsuario = 0)
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                srvVenta sVenta = new srvVenta();
+                List<venta> lstVentas;
+                srvUsuario sUsuario = new srvUsuario();
+                ViewBag.Ususarios = sUsuario.ObtenerUsuarios();
+                lstVentas = sVenta.ObtenerVentasUsuario(idUsuario);
+                ViewBag.filtros = ";"+";"+ idUsuario;
+                return View(lstVentas);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
+        }
         //Vistas Parciales
 
         [HttpPost]

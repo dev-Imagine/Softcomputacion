@@ -39,7 +39,7 @@
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-1">
                                 <div class="wrap-input100 m-b-20">
-                                    <input class="input100" type="number" name="idProducto" placeholder="ID Producto">
+                                    <input class="input100" type="number" name="idProducto" placeholder="Código">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-4">
@@ -134,7 +134,7 @@
                         }
                         stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(oProducto.idEstado);
 
-                <div id="div-@oProducto.idProducto" class="row item-tabla m-b-15">
+                        <div id="div-@oProducto.idProducto" class="row item-tabla m-b-15">
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6">
                                 <p class="login100-form-title fs-18 p-l-5 text-left">
                                     <span id="spanNombreProducto-@oProducto.idProducto">
@@ -161,7 +161,7 @@
                             <div class="col-12 col-md-12 col-lg-1 p-l-0 p-r-0">
                                 @* post para agregar a la session de venta. *@
                                 <div class="btn-group w-full" role="group">
-                                    <button onclick="agregarACarrito(@oProducto.idProducto)" type="button" class="btn btn-outline-dark" style="width:100%"><i class="fas fa-plus"></i></button>
+                                    <button onclick="agregarACarrito(@oProducto.idProducto)" type="button" class="btn btn-outline-success" style="width:100%"><i class="fas fa-plus"></i></button>
                                 </div>
                             </div>
                         </div>

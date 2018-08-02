@@ -865,3 +865,8 @@ input[type=number]::-webkit-outer-spin-button {
             opacity: 1;
             font-size: 1rem;
         }
+
+.item-lista-venta:hover {
+    background-color: #d0d0d0;
+    cursor:pointer;
+}
