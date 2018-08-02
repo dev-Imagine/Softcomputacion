@@ -13,7 +13,7 @@ namespace softcomputacion.Controllers
     public class VentaController : Controller
     {
         
-        public ActionResult Venta(int nroPagina = 1, int tamañoPagina = 6, bool paginacion = false)
+        public ActionResult NuevaVenta(int nroPagina = 1, int tamañoPagina = 6, bool paginacion = false)
         {
             try
             {
@@ -46,7 +46,7 @@ namespace softcomputacion.Controllers
 
         }
         [HttpPost]
-        public ActionResult Venta(string nombreProducto = "", int idEstado = 0, int idCategoria = 0, int idSubCategoria = 0, int idProducto = 0)
+        public ActionResult NuevaVenta(string nombreProducto = "", int idEstado = 0, int idCategoria = 0, int idSubCategoria = 0, int idProducto = 0)
         {
             try
             {
@@ -74,7 +74,26 @@ namespace softcomputacion.Controllers
             }
 
         }
-
+        public ActionResult VistaVenta(int idVenta)
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                
+                srvVenta sVenta = new srvVenta();
+                venta oVenta = sVenta.ObtenerVenta(idVenta);
+                return View(oVenta);
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
+        }
 
         //Vistas Parciales
 
@@ -159,18 +178,16 @@ namespace softcomputacion.Controllers
                     Session.Clear();
                     return RedirectToAction("Index", "Home");
                 }
-                venta model = new venta();
-                model = (venta)Session["venta"];
-                model.idUsuario = oUsuario.idUsuario;
-                model.usuario = oUsuario;
+                venta oVenta = (venta)Session["venta"];
+                oVenta.idUsuario = oUsuario.idUsuario;
                 srvVenta sVenta = new srvVenta();                
-                if (model.detalleVenta.Count == 0)
+                if (oVenta.detalleVenta.Count == 0)
                 {
                     return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
                 }
-                model = sVenta.guardarVenta(model);
+                oVenta = sVenta.guardarVenta(oVenta);
                 Session["venta"] = null;
-                return View(model);
+                return RedirectToAction("VistaVenta", new { idVenta = oVenta.idVenta });
             }
             catch (Exception)
             {

@@ -1,5 +1,5 @@
 ﻿@{
-    ViewBag.Title = "Listar Productos";
+    ViewBag.Title = "Nueva venta";
     Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
     List<softcomputacion.Models.categoria> lstCategorias = (List<softcomputacion.Models.categoria>)ViewBag.lstCategorias;
     List<softcomputacion.Models.estado> lstEstados = (List<softcomputacion.Models.estado>)ViewBag.lstEstados;
@@ -26,7 +26,7 @@
 <div class="container-fluid">
     <div class="row">
         <div class="col-12 text-center">
-            <h2>Venta</h2>
+            <h2>Nueva venta</h2>
         </div>
     </div>
     <hr style="border-top: 2px solid #b5262a;" />
@@ -35,7 +35,7 @@
             <div class="row">
                 <div class="col-12 col-lg-12">
                     @* Form de busqueda *@
-                    <form method="post" action="@Url.Action("Venta", "Venta")" autocomplete="off">
+                    <form method="post" action="@Url.Action("NuevaVenta", "Venta")" autocomplete="off">
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-1">
                                 <div class="wrap-input100 m-b-20">
@@ -148,14 +148,6 @@
                                     </span>
                                 </p>
                             </div>
-                            @*<div class="col-12 col-sm-6 col-md-4 col-lg-2">
-                                <p class="login100-form-title fs-18 text-center">
-                                    <span>Stock:</span>
-                                    <span id="spanActual-@oProducto.idProducto">
-                                        <i id="iSpan-@oProducto.idProducto" style="color: @stColorStock">@oProducto.stockActual</i>
-                                    </span>
-                                </p>
-                            </div>*@
                             <div class="col-12 col-sm-6 col-md-6 col-lg-4">
                                 <select id="select-precio-@oProducto.idProducto" class="form-control input100 p-l-5 p-r-5" style="border:0px;" name="idPrecio">
                                     <option selected value="@PrecioContadoARS">Contado: $@PrecioContadoARS</option>
@@ -177,7 +169,7 @@
                 }
                 <div class="row container-fluid text-center">
                     <div id="div-paginacion" class="col-12">
-                        @Html.PagedListPager(Model, nroPagina => Url.Action("Venta", "Venta", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
+                        @Html.PagedListPager(Model, nroPagina => Url.Action("NuevaVenta", "Venta", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
                     </div>
                     <div class="col-12">
                         @Model.FirstItemOnPage a @Model.LastItemOnPage productos de un total de @Model.TotalItemCount Productos.

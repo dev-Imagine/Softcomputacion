@@ -58,16 +58,43 @@ namespace softcomputacion.Servicios
                     {
                         totalCosto = totalCosto + oDetalle.costoGrupal;
                         totalCantidadProductos = totalCantidadProductos + oDetalle.cantidad;
-                        oProducto = oDetalle.producto;
+                        //oProducto = oDetalle.producto;
+                        //oProducto.stockActual = oProducto.stockActual - oDetalle.cantidad;
+                        //sProducto.GuardarModificarProducto(oProducto);
+                        oProducto = bd.producto.Where(x => x.idProducto == oDetalle.idProducto).FirstOrDefault();
                         oProducto.stockActual = oProducto.stockActual - oDetalle.cantidad;
-                        sProducto.GuardarModificarProducto(oProducto);
+                        bd.Entry(oProducto).State = System.Data.Entity.EntityState.Modified;
+                        oDetalle.producto = null;
                     }
                     oVenta.fechaEmision = System.DateTime.Now;
                     oVenta.cantidadProductosTotal = totalCantidadProductos;
                     oVenta.costoTotal = totalCosto;
                     bd.Entry(oVenta).State = System.Data.Entity.EntityState.Added;
                     bd.SaveChanges();
-                    int idUsuario = oVenta.usuario.idUsuario;
+                    return oVenta;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public venta ObtenerVenta(int idVenta)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    venta oVenta = bd.venta.Where(x => x.idVenta == idVenta).FirstOrDefault();
+                    string temp ="";
+                    temp = oVenta.usuario.nombre;
+                    foreach (detalleVenta oDetalle  in oVenta.detalleVenta)
+                    {
+                        temp = oDetalle.producto.nombre;
+                        temp = oDetalle.producto.subcategoria.nombre;
+                        temp = oDetalle.producto.categoria.nombre;
+                    }
                     return oVenta;
                 }
             }
