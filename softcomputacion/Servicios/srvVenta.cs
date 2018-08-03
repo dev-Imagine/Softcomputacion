@@ -109,31 +109,22 @@ namespace softcomputacion.Servicios
             {
                 using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
                 {
+                    DateTime fDesde = Convert.ToDateTime(fechaDesde);
+                    DateTime fHasta = Convert.ToDateTime(fechaHasta).AddHours(23.59).AddSeconds(59);
                     List<venta> lstVenta;
                     if (idUsuario==0)
                     {
-                        lstVenta = bd.venta.ToList();
+                        lstVenta = bd.venta.Where(x => x.fechaEmision >= fDesde && x.fechaEmision <= fHasta).ToList();
                     }
                     else
                     {
-                        lstVenta = bd.venta.Where(x => x.idUsuario == idUsuario).ToList();
+                        lstVenta = bd.venta.Where(x => x.idUsuario == idUsuario && x.fechaEmision >= fDesde && x.fechaEmision <= fHasta).ToList();
                     }
                     string temp = "";
                     foreach (venta oVenta in lstVenta.ToList())
                     {
                         temp = oVenta.usuario.nombre;
                     }
-
-                    if (fechaDesde == fechaHasta)
-                    {
-                        lstVenta = lstVenta.Where(x => x.fechaEmision >= Convert.ToDateTime(fechaDesde) && x.fechaEmision <= Convert.ToDateTime(fechaHasta).AddHours(23.59).AddSeconds(59)).ToList();
-                    }
-                    else
-                    {
-                        lstVenta = lstVenta.Where(x => x.fechaEmision >= Convert.ToDateTime(fechaDesde) && x.fechaEmision <= Convert.ToDateTime(fechaHasta)).ToList();
-                    }
-                    
-
                     return lstVenta;
                 }
             }

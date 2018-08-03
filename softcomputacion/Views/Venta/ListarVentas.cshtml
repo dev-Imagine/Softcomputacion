@@ -6,18 +6,21 @@
     List<softcomputacion.Models.usuario> lstUsuario = (List<softcomputacion.Models.usuario>)ViewBag.Ususarios;
     // 0-fechaDesde 1-fechaHasta 2-idUsuario
     string[] filtros = ViewBag.filtros.Split(';');
-    //if (filtros[0] == "") {
-    //    filtros[0] = null;
-    //}
-    //if (filtros[1] == "")
-    //{
-    //    filtros[1] = null;
-    //}
+    if (filtros[0] != "")
+    {
+        DateTime fDesde = Convert.ToDateTime(filtros[0]);
+        filtros[0] = fDesde.Day.ToString().PadLeft(2, '0') + "/" + fDesde.Month.ToString().PadLeft(2, '0') + "/" + fDesde.Year.ToString();
+    }
+    if (filtros[1] != "")
+    {
+        DateTime fHasta = Convert.ToDateTime(filtros[1]);
+        filtros[1] = fHasta.Day.ToString().PadLeft(2, '0') + "/" + fHasta.Month.ToString().PadLeft(2, '0') + "/" + fHasta.Year.ToString();
+    }
 
 }
-@*@model PagedList.IPagedList<softcomputacion.Models.venta>
-    @using PagedList.Mvc;*@
-@model List<softcomputacion.Models.venta>
+@model PagedList.IPagedList<softcomputacion.Models.venta>
+    @using PagedList.Mvc;
+@*@model List<softcomputacion.Models.venta>*@
 
 <br />
 <br />
@@ -32,22 +35,22 @@
     <div class="row">
         <div class="col-12 col-lg-12">
             <div class="row">
-                <div class="col-12 col-lg-11">
+                <div class="col-12 offset-xl-1 col-xl-10">
                     @* Form de busqueda *@
                     <form method="post" action="@Url.Action("ListarVentas", "Venta")" autocomplete="off">
                         <div class="row">
-                            <div class="col-12 col-md-6 col-lg-4">
+                            <div class="col-12 col-md-4 col-lg-3">
                                 <div class="wrap-input100 m-b-20">
-                                    <input class="input100" type="date"  name="fechaDesde" id="dpfechaDesde" placeholder="Fecha desde" value="@filtros[0]">
+                                    <input class="input100" type="text" name="fechaDesde" id="dpfechaDesde" placeholder="Fecha desde" value="@filtros[0]" onfocus="(this.type='date')">
                                 </div>
                             </div>
-                            <div class="col-12 col-md-6 col-lg-4">
+                            <div class="col-12 col-md-4 col-lg-3">
                                 <div class="wrap-input100 m-b-20">
-                                    <input class="input100" type="date"  name="fechaHasta" id="dpfechaHasta"  placeholder="Fecha hasta" value="@filtros[1]">
+                                    <input class="input100" type="text" name="fechaHasta" id="dpfechaHasta"  placeholder="Fecha hasta" value="@filtros[1]" onfocus="(this.type='date')">
                                 </div>
                             </div>
 
-                            <div class="col-12 col-md-6 col-lg-2">
+                            <div class="col-12 col-md-4 col-lg-4">
                                 <div class="wrap-input100 ¡ m-b-20" data-validate="">
                                     <select id="select-Usuario" class="form-control input100" style="border:0px; height: 55px;" name="idUsuario">
                                         <option selected value="0">Usuario</option>
@@ -78,17 +81,6 @@
                         </div>
                     </form>
                 </div>
-
-                @*@if (oUsuario.idTipoUsuario == 2)
-                    {
-                        <div class="col-12 col-md-12 col-lg-1">
-                            <div class="container-login100-form-btn m-b-20">
-                                <button class="btn fs-22 btn-dark w-full" style="height:56px;" onclick="location.href='@Url.Action("Producto","Producto")'">
-                                    <i class="fas fa-plus"></i>
-                                </button>
-                            </div>
-                        </div>
-                    }*@
             </div>
 
 
@@ -98,7 +90,7 @@
         </div>
         <div class="row container-fluid">
             <!--Lista de Productos-->
-            <div class="m-b-15 col-12 col-lg-12">
+            <div class="m-b-15 col-12 offset-xl-1 col-xl-10">
                 @{
                     string stFechaHs = "";
                     string stTotal = "";
@@ -141,20 +133,15 @@
                 }
             </div>
         </div>
-        @*<div class="row container-fluid text-center">
+        <div class="row container-fluid text-center">
                 <div id="div-paginacion" class="col-12">
-                    @Html.PagedListPager(Model, nroPagina => Url.Action("ListarProducto", "Producto", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
+                    @Html.PagedListPager(Model, nroPagina => Url.Action("ListarVentas", "Venta", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
                 </div>
                 <div class="col-12">
-                    @Model.FirstItemOnPage a @Model.LastItemOnPage productos de un total de @Model.TotalItemCount Productos.
+                    @Model.FirstItemOnPage a @Model.LastItemOnPage ventas de un total de @Model.TotalItemCount ventas.
                 </div>
-            </div>*@
+            </div>
     </div>
 </div>
 
-<script>
-    function submitDivVenta(idVenta) {
-        alert(1);
-       // location.href = ;
-    }
-</script>
+

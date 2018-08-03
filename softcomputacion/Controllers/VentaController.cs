@@ -5,7 +5,6 @@ using System.Web;
 using softcomputacion.Models;
 using softcomputacion.Servicios;
 using PagedList;
-using System.Net.Http;
 using System.Web.Mvc;
 
 namespace softcomputacion.Controllers
@@ -35,7 +34,8 @@ namespace softcomputacion.Controllers
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
                 ViewBag.lstEstados = sEstado.ObtenerEstados();
                 ViewBag.filtros = ";;;";
-                ViewBag.ValorUSD = GetValorUsd();
+                ProductoController ProductoController = new ProductoController();
+                ViewBag.ValorUSD = ProductoController.GetValorUsd();
                 PagedList<producto> model = new PagedList<producto>(lstProductos.ToList(), nroPagina, tamañoPagina);
                 return View(model);
             }
@@ -64,7 +64,8 @@ namespace softcomputacion.Controllers
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
                 ViewBag.lstEstados = sEstado.ObtenerEstados();
                 ViewBag.filtros = Convert.ToString(nombreProducto + ";" + idCategoria + ";" + idSubCategoria + ";" + idEstado);
-                ViewBag.ValorUSD = GetValorUsd();
+                ProductoController ProductoController = new ProductoController();
+                ViewBag.ValorUSD = ProductoController.GetValorUsd();
                 PagedList<producto> model = new PagedList<producto>(lstProductos.ToList(), 1, 6);
                 return View(model);
             }
@@ -94,7 +95,7 @@ namespace softcomputacion.Controllers
                 return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
             }
         }
-        public ActionResult ListarVentas()
+        public ActionResult ListarVentas(int nroPagina = 1, int tamañoPagina = 10, bool paginacion = false)
         {
             try
             {
@@ -106,10 +107,16 @@ namespace softcomputacion.Controllers
                 }
                 srvUsuario sUsuario = new srvUsuario();
                 ViewBag.Ususarios = sUsuario.ObtenerUsuarios();
-                srvVenta sVenta = new srvVenta();
-                List<venta> lstVentas = sVenta.ObtenerVentasUsuario("01/01/1000", "01/01/3000",oUsuario.idUsuario);
+                List<venta> lstVentas= (List<venta>)Session["lstVentas"];
+                if (lstVentas == null || lstVentas.Count == 0 || paginacion == false)
+                {
+                    srvVenta sVenta = new srvVenta();
+                    lstVentas = sVenta.ObtenerVentasUsuario("01/01/1000", "01/01/3000", oUsuario.idUsuario);
+                    Session["lstVentas"] = lstVentas;
+                }
                 ViewBag.filtros = ";;";
-                return View(lstVentas);
+                PagedList<venta> ModelVentas = new PagedList<venta>(lstVentas.ToList(), nroPagina, tamañoPagina);
+                return View(ModelVentas);
             }
             catch (Exception)
             {
@@ -119,6 +126,7 @@ namespace softcomputacion.Controllers
         [HttpPost]
         public ActionResult ListarVentas( string fechaDesde, string fechaHasta, int idUsuario = 0)
         {
+            ViewBag.filtros = fechaDesde + ";" + fechaHasta + ";" + idUsuario;
             if (fechaDesde == "") fechaDesde = "01/01/1000";
             if (fechaHasta == "") fechaHasta = "01/01/3000";
             try
@@ -134,16 +142,17 @@ namespace softcomputacion.Controllers
                 srvUsuario sUsuario = new srvUsuario();
                 ViewBag.Ususarios = sUsuario.ObtenerUsuarios();
                 lstVentas = sVenta.ObtenerVentasUsuario(fechaDesde,fechaHasta,idUsuario);
-                ViewBag.filtros =  fechaDesde+";" + fechaHasta + ";" +  idUsuario;
-                return View(lstVentas);
+                Session["lstVentas"] = lstVentas;
+                PagedList<venta> ModelVentas = new PagedList<venta>(lstVentas.ToList(), 1, 10);
+                return View(ModelVentas);
             }
             catch (Exception)
             {
                 return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
             }
         }
-        //Vistas Parciales
 
+        //Vistas Parciales
         [HttpPost]
         public PartialViewResult _CarritoVenta(int idProducto, string precio, string cantidad)
         {
@@ -173,30 +182,6 @@ namespace softcomputacion.Controllers
         }
 
         //Metodos
-        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
-        public double GetValorUsd()
-        {
-            using (var client = new HttpClient())
-            {
-                client.BaseAddress = new Uri("http://ws.geeklab.com.ar");
-                var responseTask = client.GetAsync("dolar/get-dolar-json.php");
-                responseTask.Wait();
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
-                {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
-                    //  {\"libre\":\"28.41\",\"blue\":\"28.65\"}
-                    string stResult = readTask.Result.Substring(10, 5).Replace(".", ",");
-                    return Convert.ToDouble(stResult);
-                }
-                else //web api sent error response 
-                {
-                    return 0;
-                }
-            }
-        }
-
         public string borrarDetalle(int idProducto)
         {
             try
@@ -213,7 +198,6 @@ namespace softcomputacion.Controllers
                 return "false";
             }
         }
-
         [HttpPost]
         public ActionResult GenerarVenta()
         {
