@@ -107,7 +107,7 @@ namespace softcomputacion.Controllers
                 srvUsuario sUsuario = new srvUsuario();
                 ViewBag.Ususarios = sUsuario.ObtenerUsuarios();
                 srvVenta sVenta = new srvVenta();
-                List<venta> lstVentas = sVenta.ObtenerVentasUsuario(oUsuario.idUsuario);
+                List<venta> lstVentas = sVenta.ObtenerVentasUsuario("01/01/1000", "01/01/3000",oUsuario.idUsuario);
                 ViewBag.filtros = ";;";
                 return View(lstVentas);
             }
@@ -117,10 +117,12 @@ namespace softcomputacion.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ListarVentas(int idUsuario = 0)
+        public ActionResult ListarVentas( string fechaDesde, string fechaHasta, int idUsuario = 0)
         {
+            if (fechaDesde == "") fechaDesde = "01/01/1000";
+            if (fechaHasta == "") fechaHasta = "01/01/3000";
             try
-            {
+            {                
                 usuario oUsuario = (usuario)Session["Usuario"];
                 if (oUsuario == null)
                 {
@@ -131,8 +133,8 @@ namespace softcomputacion.Controllers
                 List<venta> lstVentas;
                 srvUsuario sUsuario = new srvUsuario();
                 ViewBag.Ususarios = sUsuario.ObtenerUsuarios();
-                lstVentas = sVenta.ObtenerVentasUsuario(idUsuario);
-                ViewBag.filtros = ";"+";"+ idUsuario;
+                lstVentas = sVenta.ObtenerVentasUsuario(fechaDesde,fechaHasta,idUsuario);
+                ViewBag.filtros =  fechaDesde+";" + fechaHasta + ";" +  idUsuario;
                 return View(lstVentas);
             }
             catch (Exception)

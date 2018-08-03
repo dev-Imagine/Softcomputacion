@@ -103,7 +103,7 @@ namespace softcomputacion.Servicios
                 throw ex;
             }
         }
-        public List<venta> ObtenerVentasUsuario(int idUsuario = 0)
+        public List<venta> ObtenerVentasUsuario(string fechaDesde, string fechaHasta,int idUsuario = 0)
         {
             try
             {
@@ -123,6 +123,17 @@ namespace softcomputacion.Servicios
                     {
                         temp = oVenta.usuario.nombre;
                     }
+
+                    if (fechaDesde == fechaHasta)
+                    {
+                        lstVenta = lstVenta.Where(x => x.fechaEmision >= Convert.ToDateTime(fechaDesde) && x.fechaEmision <= Convert.ToDateTime(fechaHasta).AddHours(23.59).AddSeconds(59)).ToList();
+                    }
+                    else
+                    {
+                        lstVenta = lstVenta.Where(x => x.fechaEmision >= Convert.ToDateTime(fechaDesde) && x.fechaEmision <= Convert.ToDateTime(fechaHasta)).ToList();
+                    }
+                    
+
                     return lstVenta;
                 }
             }

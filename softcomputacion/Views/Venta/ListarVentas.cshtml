@@ -6,6 +6,14 @@
     List<softcomputacion.Models.usuario> lstUsuario = (List<softcomputacion.Models.usuario>)ViewBag.Ususarios;
     // 0-fechaDesde 1-fechaHasta 2-idUsuario
     string[] filtros = ViewBag.filtros.Split(';');
+    //if (filtros[0] == "") {
+    //    filtros[0] = null;
+    //}
+    //if (filtros[1] == "")
+    //{
+    //    filtros[1] = null;
+    //}
+
 }
 @*@model PagedList.IPagedList<softcomputacion.Models.venta>
     @using PagedList.Mvc;*@
@@ -30,12 +38,12 @@
                         <div class="row">
                             <div class="col-12 col-md-6 col-lg-4">
                                 <div class="wrap-input100 m-b-20">
-                                    <input class="input100" type="text" name="fechaDesde" placeholder="Fecha desde" value="@filtros[0]">
+                                    <input class="input100" type="date"  name="fechaDesde" id="dpfechaDesde" placeholder="Fecha desde" value="@filtros[0]">
                                 </div>
                             </div>
                             <div class="col-12 col-md-6 col-lg-4">
                                 <div class="wrap-input100 m-b-20">
-                                    <input class="input100" type="text" name="fechaHasta" placeholder="Fecha hasta" value="@filtros[1]">
+                                    <input class="input100" type="date"  name="fechaHasta" id="dpfechaHasta"  placeholder="Fecha hasta" value="@filtros[1]">
                                 </div>
                             </div>
 
@@ -147,6 +155,6 @@
 <script>
     function submitDivVenta(idVenta) {
         alert(1);
-        location.href = ;
+       // location.href = ;
     }
 </script>
