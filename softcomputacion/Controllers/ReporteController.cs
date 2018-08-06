@@ -56,7 +56,7 @@ namespace softcomputacion.Controllers
 
         //Post Busqueda.
         [HttpPost]
-        public ActionResult ReporteStockES(string fechaDesde, string fechaHasta, int idProducto = 0)
+        public ActionResult ReporteStockES(DateTime? fechaDesde = null, DateTime? fechaHasta = null, int idProducto = 0)
         {
             try
             {
@@ -66,11 +66,31 @@ namespace softcomputacion.Controllers
                     Session.Clear();
                     return RedirectToAction("Index", "Home");
                 }
-                ViewBag.filtros = fechaDesde + ";" + fechaHasta + ";" + idProducto;
-                if (fechaDesde == "") fechaDesde = "01/01/1000";
-                if (fechaHasta == "") fechaHasta = "01/01/3000";
+                ViewBag.filtros = "";
+                DateTime dt;
+                if (fechaDesde == null)
+                {
+                    fechaDesde = Convert.ToDateTime("01/01/2000");
+                }
+                else
+                {
+                    dt = Convert.ToDateTime(fechaDesde);
+                    ViewBag.filtros = ViewBag.filtros + clsMetodosGenericos.ObtenerMes(dt.Month) + " de " + dt.Year;
+                }
+                ViewBag.filtros = ViewBag.filtros + ";";
+                if (fechaHasta == null)
+                {
+                    fechaHasta = Convert.ToDateTime("01/01/3000");
+                }
+                else
+                {
+                    dt = Convert.ToDateTime(fechaHasta);
+                    ViewBag.filtros = ViewBag.filtros + clsMetodosGenericos.ObtenerMes(dt.Month) + " de " + dt.Year;
+                    fechaHasta = dt.AddMonths(1).AddDays(-1);
+                }
+                ViewBag.filtros = ViewBag.filtros + ";" + idProducto;
                 srvReporte sReporte = new srvReporte();
-                List<ReporteESstock> model = sReporte.obtenerReporteESstock(fechaDesde, fechaHasta, idProducto);
+                List<ReporteESstock> model = sReporte.obtenerReporteESstock(Convert.ToDateTime(fechaDesde), Convert.ToDateTime(fechaHasta), idProducto);
                 return View(model.OrderBy(x => x.año).ThenBy(x => x.mes).ToList());
             }
             catch (Exception)
@@ -81,7 +101,7 @@ namespace softcomputacion.Controllers
             
         }
         [HttpPost]
-        public ActionResult ReporteVenta(string fechaDesde, string fechaHasta)
+        public ActionResult ReporteVenta(DateTime? fechaDesde = null, DateTime? fechaHasta = null)
         {
             try
             {
@@ -91,11 +111,30 @@ namespace softcomputacion.Controllers
                     Session.Clear();
                     return RedirectToAction("Index", "Home");
                 }
-                ViewBag.filtros = fechaDesde + ";" + fechaHasta;
-                if (fechaDesde == "") fechaDesde = "01/01/1000";
-                if (fechaHasta == "") fechaHasta = "01/01/3000";
+                ViewBag.filtros = "";
+                DateTime dt;
+                if (fechaDesde == null)
+                {
+                    fechaDesde = Convert.ToDateTime("01/01/2000");
+                }
+                else
+                {
+                    dt = Convert.ToDateTime(fechaDesde);
+                    ViewBag.filtros = ViewBag.filtros + clsMetodosGenericos.ObtenerMes(dt.Month) + " de " + dt.Year;
+                }
+                ViewBag.filtros = ViewBag.filtros + ";";
+                if (fechaHasta == null)
+                {
+                    fechaHasta = Convert.ToDateTime("01/01/3000");
+                }
+                else
+                {
+                    dt =  Convert.ToDateTime(fechaHasta);
+                    ViewBag.filtros = ViewBag.filtros + clsMetodosGenericos.ObtenerMes(dt.Month) + " de " + dt.Year;
+                    fechaHasta = dt.AddMonths(1).AddDays(-1);
+                }
                 srvReporte sReporte = new srvReporte();
-                List<ReporteESstock> model = sReporte.obtenerReporteVentas(fechaDesde, fechaHasta);
+                List<ReporteESstock> model = sReporte.obtenerReporteVentas(Convert.ToDateTime(fechaDesde), Convert.ToDateTime(fechaHasta));
                 return View(model.OrderBy(x => x.año).ThenBy(x => x.mes).ToList());
             }
             catch (Exception)

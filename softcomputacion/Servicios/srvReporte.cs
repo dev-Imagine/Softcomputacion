@@ -34,26 +34,26 @@ namespace softcomputacion.Servicios
         }
 
         //Obtener reporte entrada y salida stock
-        public List<ReporteESstock> obtenerReporteESstock(string fechaDesde, string fechaHasta, int idProducto)
+        public List<ReporteESstock> obtenerReporteESstock(DateTime fechaDesde, DateTime fechaHasta, int idProducto)
         {
             try
             {
                 List<ReporteESstock> lstReporteStock = new List<ReporteESstock>();
                 
                 List<historialStock> lstHistorialStock = new List<historialStock>();
-                DateTime fDesde = Convert.ToDateTime(fechaDesde);
-                DateTime fHasta = Convert.ToDateTime(fechaHasta).AddHours(23.59).AddSeconds(59);
+
+                fechaHasta = fechaHasta.AddHours(23.59).AddSeconds(59);
                 bool busquedaPorId = false;
                 using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
                 {
                     if (idProducto != 0)
                     {
-                        lstHistorialStock = bd.historialStock.Where(x => x.idProducto == idProducto && x.fechaHora >= fDesde && x.fechaHora <= fHasta).ToList();
+                        lstHistorialStock = bd.historialStock.Where(x => x.idProducto == idProducto && x.fechaHora >= fechaDesde && x.fechaHora <= fechaHasta).ToList();
                         busquedaPorId = true;
                     }
                     else
                     {
-                        lstHistorialStock = bd.historialStock.Where(x=> x.fechaHora >= fDesde && x.fechaHora <= fHasta).ToList();
+                        lstHistorialStock = bd.historialStock.Where(x=> x.fechaHora >= fechaDesde && x.fechaHora <= fechaHasta).ToList();
                     }
                     int mes = 0;
                     int año = 0;
@@ -145,23 +145,21 @@ namespace softcomputacion.Servicios
                 }
                 return lstReporteStock;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                return new List<ReporteESstock>();
             }
         }
 
 
 
-        public List<ReporteESstock> obtenerReporteVentas(string fechaDesde, string fechaHasta)
+        public List<ReporteESstock> obtenerReporteVentas(DateTime fechaDesde, DateTime fechaHasta)
         {
             try
             {
                 List<ReporteESstock> lstReporteStock = new List<ReporteESstock>();
                 List<venta> lstVenta = new List<venta>();
-                srvVenta sVenta = new srvVenta();
-                DateTime fDesde = Convert.ToDateTime(fechaDesde);
-                DateTime fHasta = Convert.ToDateTime(fechaHasta).AddHours(23.59).AddSeconds(59);               
+                srvVenta sVenta = new srvVenta();          
                 using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
                 {
                     lstVenta = sVenta.ObtenerVentasUsuario(fechaDesde, fechaHasta, 0);
@@ -201,9 +199,9 @@ namespace softcomputacion.Servicios
                 }
                 return lstReporteStock;
             }
-            catch (Exception ex)
+            catch (Exception)
             {
-                throw ex;
+                return new List<ReporteESstock>();
             }
         }
     }
