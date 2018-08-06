@@ -1,0 +1,86 @@
+﻿@{
+    ViewBag.Title = "Reportes";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    List<softcomputacion.Models.ReporteESstock> lstReporte = new List<softcomputacion.Models.ReporteESstock>();
+}
+@model List<softcomputacion.Models.ReporteESstock>
+<br /><br />
+<div class="row">
+    <div class="col-12 col-md-2">
+        @Html.Partial("_IndiceReporte")
+    </div>
+    <div class="col-12 col-md-10" style="border:solid 1px #808080;">
+        <div class="row">
+            <div class="col-12 offset-xl-1 col-xl-10">
+                @* Form de busqueda *@
+                <form method="post" action="@Url.Action("ReporteStockES", "Reporte")" autocomplete="off">
+                    <div class="row">
+                        <div class="col-12 col-md-2 col-lg-3">
+                            <div class="wrap-input100 m-b-20">
+                                <input class="input100" type="text" name="idProducto" id="idProducto" placeholder="Codigo" value="0">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2 col-lg-3">
+                            <div class="wrap-input100 m-b-20">
+                                <input class="input100" type="text" name="fechaDesde" id="dpfechaDesde" placeholder="Fecha desde"  onfocus="(this.type='date')">
+                            </div>
+                        </div>
+                        <div class="col-12 col-md-2 col-lg-3">
+                            <div class="wrap-input100 m-b-20">
+                                <input class="input100" type="text" name="fechaHasta" id="dpfechaHasta" placeholder="Fecha hasta"  onfocus="(this.type='date')">
+                            </div>
+                        </div>
+
+                        <div class="col-12 col-md-12 col-lg-1">
+                            <div class="container-login100-form-btn m-b-20">
+                                <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
+                                    <i class="fas fa-search"></i>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </div>
+
+        <div class="row col-12">
+            @if (Model != null)
+            {
+                foreach (var oReporteES in Model)
+                {
+                    <div  style="border-bottom:solid #ff0000 1px;" class="row col-12">                        
+                        <div class="col-12 col-md-3 col-lg-2">
+                            <i> @oReporteES.mes / @oReporteES.año </i>
+                        </div>
+                        <div class="col-12 col-md-4 col-lg-4">
+                            <strong>@oReporteES.productoNombre</strong>
+                        </div>
+                        <div class="col-12 col-md-3 col-lg-2">
+                            <i>Codigo: <strong> @oReporteES.idProducto</strong></i>
+                        </div>
+                        <div class="col-12 col-md-3 col-lg-2">
+                            <i>Entrada: <strong> @oReporteES.entrada</strong></i>
+                        </div>
+                        <div class="col-12 col-md-2 col-lg-2">
+                            <i>Salida: <strong> @oReporteES.salida</strong></i>
+                        </div>
+                    </div>
+
+                    
+
+                }
+            }
+
+         </div>
+
+
+    </div>
+</div>
+
+
+
+<script>
+
+</script>
+
+

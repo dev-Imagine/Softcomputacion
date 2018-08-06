@@ -192,6 +192,7 @@
                 var id = $(this).attr('id').split('-');
                 descontarStockAlRefrescar(id[2]);
             });
+            
         });
 
 
@@ -236,13 +237,13 @@
             } else {
                 swal("Ocurrió un error", "La cantidad debe ser mayor a 0 y menor o igual al stock Actual", "error");
             }
-            
+
     }
 
-        function descontarStockDirecto(idProducto) {            
-            var stockActual = $('#iSpan-' + idProducto).text();            
-            var stockDescontar = $('#cantidad-' + idProducto).val();            
-            var stockEstimado = parseInt(stockActual) - parseInt(stockDescontar);            
+        function descontarStockDirecto(idProducto) {
+            var stockActual = $('#iSpan-' + idProducto).text();
+            var stockDescontar = $('#cantidad-' + idProducto).val();
+            var stockEstimado = parseInt(stockActual) - parseInt(stockDescontar);
             $('#iSpan-' + idProducto).text(stockEstimado);
         }
 
@@ -252,7 +253,6 @@
             var stockEstimado = parseInt(stockActual) - parseInt(stockDescontar);
             $('#iSpan-' + idProducto).text(stockEstimado);
         }
-
-
+        
     </script>
 }

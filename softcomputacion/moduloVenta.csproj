@@ -208,6 +208,7 @@
     <Compile Include="Models\proveedorXproducto.cs">
       <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\ReporteESstock.cs" />
     <Compile Include="Models\subcategoria.cs">
       <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
@@ -393,10 +394,12 @@
     <Content Include="Views\Venta\_CarritoVenta.cshtml" />
     <Content Include="Views\Venta\VistaVenta.cshtml" />
     <Content Include="Views\Venta\ListarVentas.cshtml" />
+    <Content Include="Views\Reporte\ReporteStockES.cshtml" />
+    <Content Include="Views\Reporte\_IndiceReporte.cshtml" />
+    <Content Include="Views\Reporte\ReporteVenta.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
-    <Folder Include="Views\Reporte\" />
   </ItemGroup>
   <ItemGroup>
     <None Include="packages.config" />
