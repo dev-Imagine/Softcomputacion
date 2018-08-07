@@ -5,16 +5,20 @@
     string[] arrFiltros = Convert.ToString(ViewBag.filtros).Split(';');
 }
 @model List<softcomputacion.Models.ReporteESstock>
-<div class="row">
-    @Html.Partial("_IndiceReporte")
-   
+<div class="container-fluid">
+    <div class="row">
+        @Html.Partial("_IndiceReporte")
         <div class="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+            <div class="row">
+                <div class="col-12">
+                    <br />
+                    <h1 class="text-center"> VENTAS </h1>
+                    <br />
+                </div>
+            </div>
             @* Form de busqueda *@
             <form method="post" action="@Url.Action("ReporteVenta", "Reporte")" autocomplete="off">
                 <div class="row">
-                    <div class="col-12">
-                        <br />
-                    </div>
                     <div class="col-12 col-sm-6 col-md-4 col-lg-5">
                         <div class="wrap-input100 m-b-20">
                             <input class="input100" type="text" name="fechaDesde" id="dpfechaDesde" placeholder="Desde" value="@arrFiltros[0]" onfocus="(this.type='month')">
@@ -66,5 +70,5 @@
         </div>
 
 
-   
+    </div>
 </div>

@@ -9,12 +9,16 @@
     <div class="row">
         @Html.Partial("_IndiceReporte")
         <div class="col-12 col-md-12 offset-lg-2 col-lg-8 offset-xl-2 col-xl-8" style="">
+            <div class="row">
+                <div class="col-12">
+                    <br />
+                    <h1 class="text-center"> ENTRADA Y SALIDA DE PRODUCTOS </h1>
+                    <br />
+                </div>
+            </div>
             @* Form de busqueda *@
             <form method="post" action="@Url.Action("ReporteStockES", "Reporte")" autocomplete="off">
                 <div class="row">
-                    <div class="col-12">
-                        <br />
-                    </div>
                     <div class="col-6 col-md-3 col-lg-3">
                         <div class="wrap-input100 m-b-20">
                             <input class="input100" type="number" name="idProducto" id="idProducto" placeholder="Codigo" value="@arrFiltros[2]">

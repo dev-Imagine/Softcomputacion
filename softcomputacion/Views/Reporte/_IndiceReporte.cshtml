@@ -1,12 +1,12 @@
 ﻿<div style="width:100%; padding-top:13px;">
-    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#d8d8d8;">
+    <nav class="navbar navbar-expand-lg navbar-light" style="background-color:#f2f2f2;box-shadow: 3px 3px 4px rgba(0,0,0,.2)">
         <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarNavAltMarkup" aria-controls="navbarNavAltMarkup" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
         </button>
         <div class="collapse navbar-collapse" id="navbarNavAltMarkup">
             <div class="navbar-nav">
-                <a class="p-t-0 p-b-0 fs-20 nav-item nav-link active" href="@Url.Action("ReporteVenta","Reporte",null)"> Ventas </a>
-                <a class="p-t-0 p-b-0 fs-20 nav-item nav-link active" href="@Url.Action("ReporteStockES","Reporte",null)"> E/S de productos </a>
+                <button class="btn btn-outline-dark nav-item p-t-0 p-b-0 m-l-5 fs-20" onclick="location.href='@Url.Action("ReporteVenta","Reporte",null)'"> Ventas </button>
+                <button class="btn btn-outline-dark nav-item p-t-0 p-b-0 m-l-5 fs-20" onclick="location.href='@Url.Action("ReporteStockES","Reporte",null)'"> E/S de productos </button>
             </div>
         </div>
     </nav>
