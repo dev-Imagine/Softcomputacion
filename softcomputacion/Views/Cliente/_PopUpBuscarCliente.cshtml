@@ -11,20 +11,17 @@
                     <span aria-hidden="true">&times;</span>
                 </button>
             </div>
-            <div class="modal-body col-12" id="div-frmBusquedaCliente">
-                <div class="row">
-                        <div class="col-3">
-                            <input class="form-control mr-sm-2 ml-sm-1 mt-10 w-full fs-17 text-center" id="idCliente" name="oCliente.idCliente" type="number" title="Codigo de Cliente" value="0">
+            <div class="modal-body " id="div-frmBusquedaCliente">
+                <form action="/" method="post" autocomplete="off" onsubmit="return SubmitForm()">
+
+                    <div class="input-group m-b-26">
+                        <input type="text" class="form-control" placeholder="Cliente" aria-label="Nombre apellido cliente" id="NombreApellido">
+                        <div class="input-group-append">
+                            <button type="button" onclick="llenarSessionCliente()" class="btn btn-danger" style="width:100%">Buscar</button>
                         </div>
-                        <div class="col-4">
-                            <input class="form-control mr-sm-2 ml-sm-1 mt-10 w-full fs-17" id="nombreCliente" name="oCliente.nombre" title="Nombre de Cliente" placeholder="Nombre" value="">
-                        </div>
-                        <div class="col-5">
-                            <input class="form-control mr-sm-2 ml-sm-1 mt-10 w-full fs-17" id="apellidoCliente" name="oCliente.apellido" title="Apellido de Cliente" placeholder="Apellido" value="">
-                        </div>
-                        <button type="button" onclick="llenarSessionCliente()" class="btn btn-success m-t-20" style="width:100%">Buscar</button>
-                </div>
-                <div id="popUpListaCliente"></div>
+                    </div>
+                </form>
+                <div id="popUpListaCliente" style="min-height:200px"></div>
             </div>
         </div>
     </div>
@@ -32,14 +29,20 @@
 
 
 <script>
-
+    function SubmitForm() {
+        
+        alert();
+        llenarSessionCliente();
+        return false;
+    }
     function llenarSessionCliente() {
-
         var url = "@Url.Action("llenarSessionCliente", "Cliente")";
-        var idCliente = parseInt($('#idCliente').val());
-        var nombre = $('#nombreCliente').val();
-        var apellido = $('#apellidoCliente').val();
-        var data = { idCliente: idCliente, nombre: nombre, apellido: apellido };
+        var NombreApellido = $('#NombreApellido').val();
+        if (NombreApellido.length < 3) {
+            return;
+        }
+        $('#NombreApellido').val(null);
+        var data = { NombreApellido: NombreApellido};
         $.post(url, data).done(function (data) {
             if (data != "0") {
                 var data1 = {};

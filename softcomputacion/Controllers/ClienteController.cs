@@ -18,12 +18,12 @@ namespace softcomputacion.Controllers
 
         //Metodos
         [HttpPost]
-        public string llenarSessionCliente(int idCliente, string nombre, string apellido)
+        public string llenarSessionCliente(string NombreApellido)
         {
             try
             {
                 srvCliente sCliente = new srvCliente();
-                List<cliente> lstCliente = sCliente.ObtenerClientes(idCliente, nombre, apellido);
+                List<cliente> lstCliente = sCliente.BuscarClientes(NombreApellido);
                 Session["Clientes"] = lstCliente;
                 if (lstCliente.Count == 0)
                 {
@@ -33,11 +33,9 @@ namespace softcomputacion.Controllers
                 {
                     return "1";
                 }
-                
             }
             catch (Exception)
             {
-
                 return "0";
             }
         }
