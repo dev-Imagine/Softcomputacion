@@ -51,14 +51,28 @@
                 </div>
             </div>
         <hr style="border-top: 1px solid #b5262a;" />
+            <div class="row ">
+                <div class="col-12 col-md-6">                    
+                    <strong class="text-left fs-17 pCliente" id="0" style="color:#000">CLIENTE: CONSUMIDOR FINAL </strong>
+                    <span onclick="BorrarCliente()" class="fas fa-trash-alt" style="cursor:pointer"></span>
+                </div>
+                <div class="col-12 col-md-6">
+                    <div class="col-12">
+                        <button onclick="_PopUpBuscarCliente()" class="btn btn-info m-b-10 w-100">Buscar Cliente</button>
+                    </div>
+                </div>
+            </div>
         <div class="row text-center">
             <div class="col-12 col-sm-12">
                 <form method="post" target="_blank" action="@Url.Action("GenerarVenta", "Venta")">
+                    <input name="idCliente" id="inpIdCliente" value="0" class="dis-none">
                     <button class="btn btn-dark w-100">Generar venta</button>
                 </form>
             </div>
         </div>
     </div>
+
+<div id="div-popup-BuscarCliente"></div>
 
     <script>
 
@@ -72,11 +86,38 @@
                     var stockEstimado = parseInt(stockActual) + parseInt(stockDescontar);
                     $('#iSpan-' + idProducto).text(stockEstimado);
                     $('#div-carrito-' + idProducto).remove();
-                   
+
                 } else
                 {
                     swal("Ocurrió un error", "Se produjo un error al intentar agregar un producto al carrito", "error");
                 }
             });
+        }
+
+        function _PopUpBuscarCliente() {
+        
+        var url = "@Url.Action("_PopUpBuscarCliente", "Cliente")";
+        var data = {};
+        $.post(url, data).done(function (data) {
+            if (data.length > 0) {
+                $('#div-popup-BuscarCliente').html(data);
+                $('#popupBuscarCliente').modal('show');
+            }
+        });
+        }
+
+        function SelecionarCliente(idCliente) {
+            $('.pCliente').removeAttr('id');
+            $('.pCliente').attr('id', idCliente);
+            $('#' + idCliente).text("CLIENTE: " + $('#pNombreApellido' + "-" + idCliente).text());
+            $('#inpIdCliente').val(idCliente)
+            $('#popupBuscarCliente').modal('toggle');
+        }
+
+        function BorrarCliente() {
+            $('#inpIdCliente').val(0);
+            $('.pCliente').removeAttr('id');
+            $('.pCliente').text("CLIENTE: CONSUMIDOR FINAL" );
+
         }
     </script>

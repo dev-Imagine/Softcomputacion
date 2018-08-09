@@ -162,6 +162,7 @@
     <Compile Include="App_Start\BundleConfig.cs" />
     <Compile Include="App_Start\FilterConfig.cs" />
     <Compile Include="App_Start\RouteConfig.cs" />
+    <Compile Include="Controllers\ClienteController.cs" />
     <Compile Include="Controllers\ErrorController.cs" />
     <Compile Include="Controllers\ProductoController.cs" />
     <Compile Include="Controllers\ProveedorController.cs" />
@@ -188,6 +189,9 @@
       <DependentUpon>BDModuloVenta.edmx</DependentUpon>
     </Compile>
     <Compile Include="Models\categoria.cs">
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\cliente.cs">
       <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\detalleVenta.cs">
@@ -224,6 +228,7 @@
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Servicios\clsMetodosGenericos.cs" />
     <Compile Include="Servicios\srvCategoria.cs" />
+    <Compile Include="Servicios\srvCliente.cs" />
     <Compile Include="Servicios\srvEstado.cs" />
     <Compile Include="Servicios\srvProducto.cs" />
     <Compile Include="Servicios\srvProveedor.cs" />
@@ -397,6 +402,8 @@
     <Content Include="Views\Reporte\ReporteStockES.cshtml" />
     <Content Include="Views\Reporte\_IndiceReporte.cshtml" />
     <Content Include="Views\Reporte\ReporteVenta.cshtml" />
+    <Content Include="Views\Cliente\_PopUpBuscarCliente.cshtml" />
+    <Content Include="Views\Cliente\_ListaCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

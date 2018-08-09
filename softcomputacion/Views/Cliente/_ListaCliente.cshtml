@@ -1,0 +1,22 @@
+﻿@{ 
+    List<softcomputacion.Models.cliente> lstCliente = (List<softcomputacion.Models.cliente>)Session["Clientes"];
+}
+<div class="container-fluid">
+    @foreach (var oCliente in lstCliente)
+    {
+        <div class="row m-t-8">
+            <div class="col-12 col-md-4">
+                <p>Codigo: @oCliente.idCliente</p>
+            </div>
+            <div class="col-12 col-md-6">
+                <p class="" id="pNombreApellido-@oCliente.idCliente">@oCliente.nombre @oCliente.apellido</p>
+            </div>
+            <div class="col-12 col-md-2">
+                <button type="button" class="btn btn-success" style="width:100%" onclick="SelecionarCliente(@oCliente.idCliente.ToString())"><i class="fas fa-check"></i></button>
+            </div>
+        </div>
+    }
+</div>
+
+
+

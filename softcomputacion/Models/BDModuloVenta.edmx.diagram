@@ -15,18 +15,20 @@
         <EntityTypeShape EntityType="BDModuloVentaModel.subcategoria" Width="1.5" PointX="3" PointY="11.5" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModuloVentaModel.tipoUsuario" Width="1.5" PointX="0.75" PointY="14.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModuloVentaModel.usuario" Width="1.5" PointX="3" PointY="14.25" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModuloVentaModel.venta" Width="1.5" PointX="5.25" PointY="14.5" IsExpanded="true" />
         <AssociationConnector Association="BDModuloVentaModel.FK_producto_categoria" ManuallyRouted="false" />
         <AssociationConnector Association="BDModuloVentaModel.FK_subcategoria_categoria" ManuallyRouted="false" />
         <AssociationConnector Association="BDModuloVentaModel.FK_detalleVenta_producto" ManuallyRouted="false" />
-        <AssociationConnector Association="BDModuloVentaModel.FK_detalleVenta_venta" ManuallyRouted="false" />
         <AssociationConnector Association="BDModuloVentaModel.FK_producto_estado" ManuallyRouted="false" />
         <AssociationConnector Association="BDModuloVentaModel.FK_hostorialStock_producto" ManuallyRouted="false" />
         <AssociationConnector Association="BDModuloVentaModel.FK_producto_subcategoria" ManuallyRouted="false" />
         <AssociationConnector Association="BDModuloVentaModel.FK_proveedorXproducto_producto" ManuallyRouted="false" />
         <AssociationConnector Association="BDModuloVentaModel.FK_proveedorXproducto_proveedor" ManuallyRouted="false" />
         <AssociationConnector Association="BDModuloVentaModel.FK_usuario_tipoUsuario" ManuallyRouted="false" />
-        <AssociationConnector Association="BDModuloVentaModel.FK_venta_usuario" ManuallyRouted="false" />
+        <EntityTypeShape EntityType="BDModuloVentaModel.cliente" Width="1.5" PointX="2.625" PointY="3.75" />
+        <EntityTypeShape EntityType="BDModuloVentaModel.venta" Width="1.5" PointX="5.25" PointY="13.125" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_venta_cliente" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_detalleVenta_venta" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_venta_usuario" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

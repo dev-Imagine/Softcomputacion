@@ -4,13 +4,21 @@
   <edmx:Runtime>
     <!-- SSDL content -->
     <edmx:StorageModels>
-      <Schema Namespace="BDModuloVentaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
+    <Schema Namespace="BDModuloVentaModel.Store" Provider="System.Data.SqlClient" ProviderManifestToken="2012" Alias="Self" xmlns:store="http://schemas.microsoft.com/ado/2007/12/edm/EntityStoreSchemaGenerator" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm/ssdl">
         <EntityType Name="categoria">
           <Key>
             <PropertyRef Name="idCategoria" />
           </Key>
           <Property Name="idCategoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
           <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+        </EntityType>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="idCliente" />
+          </Key>
+          <Property Name="idCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+          <Property Name="apellido" Type="varchar" MaxLength="50" Nullable="false" />
         </EntityType>
         <EntityType Name="detalleVenta">
           <Key>
@@ -114,6 +122,7 @@
           <Property Name="idUsuario" Type="int" Nullable="false" />
           <Property Name="costoTotal" Type="money" Nullable="false" />
           <Property Name="cantidadProductosTotal" Type="int" />
+          <Property Name="idCliente" Type="int" />
         </EntityType>
         <Association Name="FK_detalleVenta_producto">
           <End Role="producto" Type="Self.producto" Multiplicity="1" />
@@ -235,6 +244,18 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <Association Name="FK_venta_cliente">
+          <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+          <End Role="venta" Type="Self.venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="idCliente" />
+            </Principal>
+            <Dependent Role="venta">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
         <Association Name="FK_venta_usuario">
           <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
           <End Role="venta" Type="Self.venta" Multiplicity="*" />
@@ -249,6 +270,7 @@
         </Association>
         <EntityContainer Name="BDModuloVentaModelStoreContainer">
           <EntitySet Name="categoria" EntityType="Self.categoria" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="detalleVenta" EntityType="Self.detalleVenta" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="estado" EntityType="Self.estado" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="historialStock" EntityType="Self.historialStock" Schema="dbo" store:Type="Tables" />
@@ -299,13 +321,16 @@
             <End Role="tipoUsuario" EntitySet="tipoUsuario" />
             <End Role="usuario" EntitySet="usuario" />
           </AssociationSet>
+          <AssociationSet Name="FK_venta_cliente" Association="Self.FK_venta_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="venta" EntitySet="venta" />
+          </AssociationSet>
           <AssociationSet Name="FK_venta_usuario" Association="Self.FK_venta_usuario">
             <End Role="usuario" EntitySet="usuario" />
             <End Role="venta" EntitySet="venta" />
           </AssociationSet>
         </EntityContainer>
-      </Schema>
-    </edmx:StorageModels>
+      </Schema></edmx:StorageModels>
     <!-- CSDL content -->
     <edmx:ConceptualModels>
       <Schema Namespace="BDModuloVentaModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
@@ -329,7 +354,7 @@
           <Property Name="cantidad" Type="Int32" Nullable="false" />
           <Property Name="costoGrupal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <NavigationProperty Name="producto" Relationship="Self.FK_detalleVenta_producto" FromRole="detalleVenta" ToRole="producto" />
-          <NavigationProperty Name="venta" Relationship="Self.FK_detalleVenta_venta" FromRole="detalleVenta" ToRole="venta" />
+          <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="detalleVenta" ToRole="venta" />
         </EntityType>
         <EntityType Name="estado">
           <Key>
@@ -427,19 +452,7 @@
           <Property Name="contraseña" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
           <Property Name="fechaBaja" Type="DateTime" Precision="3" />
           <NavigationProperty Name="tipoUsuario" Relationship="Self.FK_usuario_tipoUsuario" FromRole="usuario" ToRole="tipoUsuario" />
-          <NavigationProperty Name="venta" Relationship="Self.FK_venta_usuario" FromRole="usuario" ToRole="venta" />
-        </EntityType>
-        <EntityType Name="venta">
-          <Key>
-            <PropertyRef Name="idVenta" />
-          </Key>
-          <Property Name="idVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="fechaEmision" Type="DateTime" Nullable="false" Precision="3" />
-          <Property Name="idUsuario" Type="Int32" Nullable="false" />
-          <Property Name="costoTotal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="cantidadProductosTotal" Type="Int32" />
-          <NavigationProperty Name="detalleVenta" Relationship="Self.FK_detalleVenta_venta" FromRole="venta" ToRole="detalleVenta" />
-          <NavigationProperty Name="usuario" Relationship="Self.FK_venta_usuario" FromRole="venta" ToRole="usuario" />
+          <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_venta_usuario" FromRole="usuario" ToRole="venta" />
         </EntityType>
         <Association Name="FK_producto_categoria">
           <End Role="categoria" Type="Self.categoria" Multiplicity="1" />
@@ -474,18 +487,6 @@
             </Principal>
             <Dependent Role="detalleVenta">
               <PropertyRef Name="idProducto" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_detalleVenta_venta">
-          <End Role="venta" Type="Self.venta" Multiplicity="1" />
-          <End Role="detalleVenta" Type="Self.detalleVenta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="venta">
-              <PropertyRef Name="idVenta" />
-            </Principal>
-            <Dependent Role="detalleVenta">
-              <PropertyRef Name="idVenta" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -561,18 +562,6 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
-        <Association Name="FK_venta_usuario">
-          <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
-          <End Role="venta" Type="Self.venta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="usuario">
-              <PropertyRef Name="idUsuario" />
-            </Principal>
-            <Dependent Role="venta">
-              <PropertyRef Name="idUsuario" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <EntityContainer Name="BDSoftComputacionEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="categoria" EntityType="Self.categoria" />
           <EntitySet Name="detalleVenta" EntityType="Self.detalleVenta" />
@@ -584,7 +573,6 @@
           <EntitySet Name="subcategoria" EntityType="Self.subcategoria" />
           <EntitySet Name="tipoUsuario" EntityType="Self.tipoUsuario" />
           <EntitySet Name="usuario" EntityType="Self.usuario" />
-          <EntitySet Name="venta" EntityType="Self.venta" />
           <AssociationSet Name="FK_producto_categoria" Association="Self.FK_producto_categoria">
             <End Role="categoria" EntitySet="categoria" />
             <End Role="producto" EntitySet="producto" />
@@ -595,10 +583,6 @@
           </AssociationSet>
           <AssociationSet Name="FK_detalleVenta_producto" Association="Self.FK_detalleVenta_producto">
             <End Role="producto" EntitySet="producto" />
-            <End Role="detalleVenta" EntitySet="detalleVenta" />
-          </AssociationSet>
-          <AssociationSet Name="FK_detalleVenta_venta" Association="Self.FK_detalleVenta_venta">
-            <End Role="venta" EntitySet="venta" />
             <End Role="detalleVenta" EntitySet="detalleVenta" />
           </AssociationSet>
           <AssociationSet Name="FK_producto_estado" Association="Self.FK_producto_estado">
@@ -625,11 +609,80 @@
             <End Role="tipoUsuario" EntitySet="tipoUsuario" />
             <End Role="usuario" EntitySet="usuario" />
           </AssociationSet>
-          <AssociationSet Name="FK_venta_usuario" Association="Self.FK_venta_usuario">
+          <EntitySet Name="cliente" EntityType="BDModuloVentaModel.cliente" />
+          <EntitySet Name="venta" EntityType="BDModuloVentaModel.venta" />
+          <AssociationSet Name="FK_venta_cliente" Association="BDModuloVentaModel.FK_venta_cliente">
+            <End Role="cliente" EntitySet="cliente" />
+            <End Role="venta" EntitySet="venta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_detalleVenta_venta" Association="BDModuloVentaModel.FK_detalleVenta_venta">
+            <End Role="venta" EntitySet="venta" />
+            <End Role="detalleVenta" EntitySet="detalleVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_venta_usuario" Association="BDModuloVentaModel.FK_venta_usuario">
             <End Role="usuario" EntitySet="usuario" />
             <End Role="venta" EntitySet="venta" />
           </AssociationSet>
         </EntityContainer>
+        <EntityType Name="cliente">
+          <Key>
+            <PropertyRef Name="idCliente" />
+          </Key>
+          <Property Name="idCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <Property Name="apellido" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+          <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="cliente" ToRole="venta" />
+        </EntityType>
+        <EntityType Name="venta">
+          <Key>
+            <PropertyRef Name="idVenta" />
+          </Key>
+          <Property Name="idVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="fechaEmision" Type="DateTime" Nullable="false" Precision="3" />
+          <Property Name="idUsuario" Type="Int32" Nullable="false" />
+          <Property Name="costoTotal" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="cantidadProductosTotal" Type="Int32" />
+          <Property Name="idCliente" Type="Int32" />
+          <NavigationProperty Name="cliente" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="venta" ToRole="cliente" />
+          <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="venta" ToRole="detalleVenta" />
+          <NavigationProperty Name="usuario" Relationship="BDModuloVentaModel.FK_venta_usuario" FromRole="venta" ToRole="usuario" />
+        </EntityType>
+        <Association Name="FK_venta_cliente">
+          <End Type="BDModuloVentaModel.cliente" Role="cliente" Multiplicity="0..1" />
+          <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="cliente">
+              <PropertyRef Name="idCliente" />
+            </Principal>
+            <Dependent Role="venta">
+              <PropertyRef Name="idCliente" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_detalleVenta_venta">
+          <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="1" />
+          <End Type="BDModuloVentaModel.detalleVenta" Role="detalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="venta">
+              <PropertyRef Name="idVenta" />
+            </Principal>
+            <Dependent Role="detalleVenta">
+              <PropertyRef Name="idVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_venta_usuario">
+          <End Type="BDModuloVentaModel.usuario" Role="usuario" Multiplicity="1" />
+          <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="usuario">
+              <PropertyRef Name="idUsuario" />
+            </Principal>
+            <Dependent Role="venta">
+              <PropertyRef Name="idUsuario" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -746,14 +799,24 @@
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
+          <EntitySetMapping Name="cliente">
+            <EntityTypeMapping TypeName="BDModuloVentaModel.cliente">
+              <MappingFragment StoreEntitySet="cliente">
+                <ScalarProperty Name="apellido" ColumnName="apellido" />
+                <ScalarProperty Name="nombre" ColumnName="nombre" />
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
           <EntitySetMapping Name="venta">
             <EntityTypeMapping TypeName="BDModuloVentaModel.venta">
               <MappingFragment StoreEntitySet="venta">
-                <ScalarProperty Name="idVenta" ColumnName="idVenta" />
-                <ScalarProperty Name="fechaEmision" ColumnName="fechaEmision" />
-                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
-                <ScalarProperty Name="costoTotal" ColumnName="costoTotal" />
+                <ScalarProperty Name="idCliente" ColumnName="idCliente" />
                 <ScalarProperty Name="cantidadProductosTotal" ColumnName="cantidadProductosTotal" />
+                <ScalarProperty Name="costoTotal" ColumnName="costoTotal" />
+                <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+                <ScalarProperty Name="fechaEmision" ColumnName="fechaEmision" />
+                <ScalarProperty Name="idVenta" ColumnName="idVenta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

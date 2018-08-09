@@ -7,6 +7,14 @@
     <Property Name="idCategoria" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
     <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
+  <EntityType Name="cliente">
+    <Key>
+      <PropertyRef Name="idCliente" />
+    </Key>
+    <Property Name="idCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="apellido" Type="varchar" MaxLength="50" Nullable="false" />
+  </EntityType>
   <EntityType Name="detalleVenta">
     <Key>
       <PropertyRef Name="idDetalleVenta" />
@@ -109,6 +117,7 @@
     <Property Name="idUsuario" Type="int" Nullable="false" />
     <Property Name="costoTotal" Type="money" Nullable="false" />
     <Property Name="cantidadProductosTotal" Type="int" />
+    <Property Name="idCliente" Type="int" />
   </EntityType>
   <Association Name="FK_detalleVenta_producto">
     <End Role="producto" Type="Self.producto" Multiplicity="1" />
@@ -230,6 +239,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_venta_cliente">
+    <End Role="cliente" Type="Self.cliente" Multiplicity="0..1" />
+    <End Role="venta" Type="Self.venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cliente">
+        <PropertyRef Name="idCliente" />
+      </Principal>
+      <Dependent Role="venta">
+        <PropertyRef Name="idCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_venta_usuario">
     <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
     <End Role="venta" Type="Self.venta" Multiplicity="*" />
@@ -244,6 +265,7 @@
   </Association>
   <EntityContainer Name="BDModuloVentaModelStoreContainer">
     <EntitySet Name="categoria" EntityType="Self.categoria" Schema="dbo" store:Type="Tables" />
+    <EntitySet Name="cliente" EntityType="Self.cliente" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="detalleVenta" EntityType="Self.detalleVenta" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="estado" EntityType="Self.estado" Schema="dbo" store:Type="Tables" />
     <EntitySet Name="historialStock" EntityType="Self.historialStock" Schema="dbo" store:Type="Tables" />
@@ -293,6 +315,10 @@
     <AssociationSet Name="FK_usuario_tipoUsuario" Association="Self.FK_usuario_tipoUsuario">
       <End Role="tipoUsuario" EntitySet="tipoUsuario" />
       <End Role="usuario" EntitySet="usuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK_venta_cliente" Association="Self.FK_venta_cliente">
+      <End Role="cliente" EntitySet="cliente" />
+      <End Role="venta" EntitySet="venta" />
     </AssociationSet>
     <AssociationSet Name="FK_venta_usuario" Association="Self.FK_venta_usuario">
       <End Role="usuario" EntitySet="usuario" />

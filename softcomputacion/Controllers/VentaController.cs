@@ -199,7 +199,7 @@ namespace softcomputacion.Controllers
             }
         }
         [HttpPost]
-        public ActionResult GenerarVenta()
+        public ActionResult GenerarVenta(int idCliente)
         {
             try
             {
@@ -210,6 +210,7 @@ namespace softcomputacion.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 venta oVenta = (venta)Session["venta"];
+                oVenta.idCliente = idCliente;
                 oVenta.idUsuario = oUsuario.idUsuario;
                 srvVenta sVenta = new srvVenta();                
                 if (oVenta.detalleVenta.Count == 0)
