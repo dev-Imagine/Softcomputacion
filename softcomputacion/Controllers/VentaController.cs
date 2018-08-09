@@ -31,6 +31,10 @@ namespace softcomputacion.Controllers
                     Session["lstProducto"] = new List<producto>();
                     lstProductos = new List<producto>();
                 }
+                if (Session["venta"] == null)
+                {
+                    Session["venta"] = new venta();
+                }
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
                 ViewBag.lstEstados = sEstado.ObtenerEstados();
                 ViewBag.filtros = ";;;";
@@ -55,6 +59,10 @@ namespace softcomputacion.Controllers
                 {
                     Session.Clear();
                     return RedirectToAction("Index", "Home");
+                }
+                if (Session["venta"] == null)
+                {
+                    Session["venta"] = new venta();
                 }
                 srvEstado sEstado = new srvEstado();
                 srvProducto sProducto = new srvProducto();
@@ -199,7 +207,7 @@ namespace softcomputacion.Controllers
             }
         }
         [HttpPost]
-        public ActionResult GenerarVenta(int idCliente)
+        public ActionResult GenerarVenta()
         {
             try
             {
@@ -210,13 +218,13 @@ namespace softcomputacion.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 venta oVenta = (venta)Session["venta"];
-                oVenta.idCliente = idCliente;
                 oVenta.idUsuario = oUsuario.idUsuario;
                 srvVenta sVenta = new srvVenta();                
                 if (oVenta.detalleVenta.Count == 0)
                 {
                     return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
                 }
+                oVenta.cliente = null;
                 oVenta = sVenta.guardarVenta(oVenta);
                 Session["venta"] = null;
                 return RedirectToAction("VistaVenta", new { idVenta = oVenta.idVenta });
@@ -225,6 +233,30 @@ namespace softcomputacion.Controllers
             {
                 return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
             }
+        }
+
+        public JsonResult SeleccionarClienteVenta(cliente oCliente)
+        {
+            try
+            {
+                if (oCliente.idCliente==0)
+                {
+                    throw new Exception();
+                }
+                venta oVenta = (venta)Session["venta"];
+                oVenta.idCliente = oCliente.idCliente;
+                oVenta.cliente = oCliente;
+            }
+            catch (Exception)
+            {
+                oCliente.nombre = "Consumidor";
+                oCliente.nombre = "Final";
+                oCliente.idCliente = 0;
+                venta oVenta = (venta)Session["venta"];
+                oVenta.idCliente = 0;
+                oVenta.cliente = null;
+            }
+            return Json(oCliente);
         }
     }
 }

@@ -1,6 +1,13 @@
 ﻿@{
     softcomputacion.Models.venta oVenta = (softcomputacion.Models.venta)Session["venta"];
     double total = 0;
+    if (oVenta.cliente==null)
+    {
+        oVenta.idCliente = 0;
+        oVenta.cliente = new softcomputacion.Models.cliente();
+        oVenta.cliente.nombre = "CONSUMIDOR";
+        oVenta.cliente.apellido = "FINAL";
+    }
 }
 
 <div class="container-fluid">
@@ -53,7 +60,7 @@
     <hr style="border-top: 1px solid #b5262a;" />
     <div class="row">
         <div class="col-12 col-md-6 col-lg-12 text-center m-b-5 m-t-8" style="color:#666666">
-            <span>CLIENTE: <strong class="text-left fs-17 pCliente" id="0">CONSUMIDOR FINAL &nbsp;&nbsp;&nbsp;</strong></span>
+            <span>CLIENTE: <strong class="text-left fs-17 pCliente" id="@oVenta.idCliente">@oVenta.cliente.nombre @oVenta.cliente.apellido &nbsp;&nbsp;&nbsp;</strong></span>
             <span onclick="BorrarCliente()" class="far fa-times-circle text-danger fs-24" style="cursor:pointer;position: fixed;"></span>
         </div>
         <div class="col-12 col-md-6 col-lg-12 text-center">
@@ -64,7 +71,6 @@
     <div class="row text-center">
         <div class="col-12 col-sm-12">
             <form method="post" target="_blank" action="@Url.Action("GenerarVenta", "Venta")">
-                <input name="idCliente" id="inpIdCliente" value="0" class="dis-none">
                 <button class="btn btn-dark w-100">Generar venta</button>
             </form>
         </div>
@@ -95,22 +101,26 @@
 
         function _PopUpBuscarCliente() {
         
-        var url = "@Url.Action("_PopUpBuscarCliente", "Cliente")";
-        var data = {};
-        $.post(url, data).done(function (data) {
-            if (data.length > 0) {
-                $('#div-popup-BuscarCliente').html(data);
-                $('#popupBuscarCliente').modal('show');
-            }
-        });
+            var url = "@Url.Action("_PopUpBuscarCliente", "Cliente")";
+            var data = {};
+            $.post(url, data).done(function (data) {
+                if (data.length > 0) {
+                    $('#div-popup-BuscarCliente').html(data);
+                    $('#popupBuscarCliente').modal('show');
+                }
+            });
         }
 
-        function SelecionarCliente(idCliente) {
-            $('.pCliente').removeAttr('id');
-            $('.pCliente').attr('id', idCliente);
-            $('#' + idCliente).html($('#pNombreApellido' + "-" + idCliente).text() + " &nbsp;&nbsp;&nbsp;");
-            $('#inpIdCliente').val(idCliente)
-            $('#popupBuscarCliente').modal('toggle');
+        function SelecionarCliente(idCliente, apellido, nombre) {
+            var url = "@Url.Action("SeleccionarClienteVenta", "Venta")";
+            var data = { 'oCliente.idCliente': idCliente, 'oCliente.apellido': apellido, 'oCliente.nombre': nombre };
+            $.post(url, data).done(function (data) {
+                $('.pCliente').removeAttr('id');
+                $('.pCliente').attr('id', data.idCliente);
+                $('#' + data.idCliente).html(data.apellido + " " + data.nombre + " &nbsp;&nbsp;&nbsp;");
+                $('#popupBuscarCliente').modal('toggle');
+            });
+            
         }
 
         function BorrarCliente() {

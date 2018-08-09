@@ -9,7 +9,7 @@
                 <p class="fs-16 m-t-8" id="pNombreApellido-@oCliente.idCliente">@oCliente.nombre @oCliente.apellido</p>
             </div>
             <div class="col-2 col-md-2 p-l-0 p-r-0">
-                <button type="button" class="btn btn-outline-info" style="width:100%" onclick="SelecionarCliente(@oCliente.idCliente.ToString())"><i class="fas fa-check"></i></button>
+                <button type="button" class="btn btn-outline-info" style="width:100%" onclick="SelecionarCliente('@oCliente.idCliente.ToString()', '@oCliente.apellido', '@oCliente.nombre')"><i class="fas fa-check"></i></button>
             </div>
         </div>
     }

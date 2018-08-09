@@ -3,6 +3,13 @@
 }
 @{ 
     string stFecha = Model.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Year;
+    if (Model.cliente == null || Model.idCliente == 0)
+    {
+        Model.idCliente = 0;
+        Model.cliente = new softcomputacion.Models.cliente();
+        Model.cliente.nombre = "CONSUMIDOR";
+        Model.cliente.apellido = "FINAL";
+    }
 }
 
 <div class="container">
@@ -17,8 +24,11 @@
         <div class="col-12">
             <div class="clearfix">
                 <h6><span class="float-left">Usuario: <i> @Model.usuario.apellido, @Model.usuario.nombre</i></span></h6>
-                <h6><span class="float-right">Fecha: <i> @stFecha </i></span></h6>
+                <h6><span class="float-right">Cliente: <i> @Model.cliente.nombre @Model.cliente.apellido </i></span></h6>
             </div>
+        </div>
+        <div class="col-12 text-center">
+            <h6><span>Fecha: <i> @stFecha</i></span></h6>
         </div>
     </div>
 

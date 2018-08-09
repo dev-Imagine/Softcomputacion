@@ -58,9 +58,6 @@ namespace softcomputacion.Servicios
                     {
                         totalCosto = totalCosto + oDetalle.costoGrupal;
                         totalCantidadProductos = totalCantidadProductos + oDetalle.cantidad;
-                        //oProducto = oDetalle.producto;
-                        //oProducto.stockActual = oProducto.stockActual - oDetalle.cantidad;
-                        //sProducto.GuardarModificarProducto(oProducto);
                         oProducto = bd.producto.Where(x => x.idProducto == oDetalle.idProducto).FirstOrDefault();
                         oProducto.stockActual = oProducto.stockActual - oDetalle.cantidad;
                         bd.Entry(oProducto).State = System.Data.Entity.EntityState.Modified;
@@ -69,6 +66,7 @@ namespace softcomputacion.Servicios
                     oVenta.fechaEmision = System.DateTime.Now;
                     oVenta.cantidadProductosTotal = totalCantidadProductos;
                     oVenta.costoTotal = totalCosto;
+                    oVenta.cliente = null;
                     bd.Entry(oVenta).State = System.Data.Entity.EntityState.Added;
                     bd.SaveChanges();
                     return oVenta;
