@@ -1,0 +1,122 @@
+﻿@{
+    softcomputacion.Models.venta oVenta = (softcomputacion.Models.venta)Session["venta"];
+    double total = 0;
+}
+
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12">
+            <p class="text-center fs-20"><i class="fas fa-shopping-cart fs-24"></i> PRODUCTOS</p>
+        </div>
+
+    </div>
+    <hr style="border-top: 1px solid #b5262a; margin-top:5px;" />
+    @if (oVenta != null)
+    {
+        foreach (softcomputacion.Models.detalleVenta oDetalle in oVenta.detalleVenta)
+        {
+            total = total + Convert.ToDouble(oDetalle.costoGrupal);
+            <div id="divRow">
+                <div class="row" id="div-carrito-@oDetalle.idProducto">
+                    <div class="col-12 col-md-10 col-lg-10">
+                        <div class="row">
+                            <div class="col-12 col-md-12">
+                                <p class="fs-18" style="color:#000"><strong>@oDetalle.producto.categoria.nombre @oDetalle.producto.subcategoria.nombre @oDetalle.producto.nombre</strong></p>
+                            </div>
+                            <div class="col-6 col-sm-6 col-md-6 p-l-5 p-r-5 text-center">
+                                <p class="fs-14">Cantidad: <i id="i-cant-@oDetalle.idProducto">@oDetalle.cantidad</i></p>
+                            </div>
+                            <div class="col-6 col-sm-6 col-md-6 p-l-5 p-r-5 text-right">
+                                <p class="fs-14">P/Unit: $@oDetalle.costoIndividual</p>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-2 col-lg-2 p-l-0 p-r-0 text-center">
+                        <p class="fs-20" style="color:#000">*$@oDetalle.costoGrupal</p>
+                    </div>
+                    <div class="col-12">
+                        <div class="clearfix">
+                            <span class="fas fa-trash-alt float-right" style="cursor:pointer; font-size: 15px;" onclick="borrarDetalle(@oDetalle.idProducto)"></span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <hr />
+        }
+    }
+    <div class="row ">
+        <div class="col-12">
+            <p class="text-right fs-20" style="color:#000">Total: $@total</p>
+        </div>
+    </div>
+    <hr style="border-top: 1px solid #b5262a;" />
+    <div class="row">
+        <div class="col-12 col-md-6 col-lg-12 text-center m-b-5 m-t-8" style="color:#666666">
+            <span>CLIENTE: <strong class="text-left fs-17 pCliente" id="0">CONSUMIDOR FINAL &nbsp;&nbsp;&nbsp;</strong></span>
+            <span onclick="BorrarCliente()" class="far fa-times-circle text-danger fs-24" style="cursor:pointer;position: fixed;"></span>
+        </div>
+        <div class="col-12 col-md-6 col-lg-12 text-center">
+            <button onclick="_PopUpBuscarCliente()" class="btn btn-info w-50"><i class="fas fa-share"></i> Cliente</button>
+        </div>
+    </div>
+    <hr style="border-top: 1px solid #b5262a;" />
+    <div class="row text-center">
+        <div class="col-12 col-sm-12">
+            <form method="post" target="_blank" action="@Url.Action("GenerarVenta", "Venta")">
+                <input name="idCliente" id="inpIdCliente" value="0" class="dis-none">
+                <button class="btn btn-dark w-100">Generar venta</button>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="div-popup-BuscarCliente"></div>
+
+    <script>
+
+        function borrarDetalle(idProducto) {
+            var url = "@Url.Action("borrarDetalle", "Venta")";
+            var data = { idProducto: idProducto };
+            $.post(url, data).done(function (data) {
+                if (data == "true") {
+                    var stockActual = $('#iSpan-' + idProducto).text();
+                    var stockDescontar = $('#i-cant-' + idProducto).text();
+                    var stockEstimado = parseInt(stockActual) + parseInt(stockDescontar);
+                    $('#iSpan-' + idProducto).text(stockEstimado);
+                    $('#div-carrito-' + idProducto).remove();
+
+                } else
+                {
+                    swal("Ocurrió un error", "Se produjo un error al intentar agregar un producto al carrito", "error");
+                }
+            });
+        }
+
+        function _PopUpBuscarCliente() {
+        
+        var url = "@Url.Action("_PopUpBuscarCliente", "Cliente")";
+        var data = {};
+        $.post(url, data).done(function (data) {
+            if (data.length > 0) {
+                $('#div-popup-BuscarCliente').html(data);
+                $('#popupBuscarCliente').modal('show');
+            }
+        });
+        }
+
+        function SelecionarCliente(idCliente) {
+            $('.pCliente').removeAttr('id');
+            $('.pCliente').attr('id', idCliente);
+            $('#' + idCliente).html($('#pNombreApellido' + "-" + idCliente).text() + " &nbsp;&nbsp;&nbsp;");
+            $('#inpIdCliente').val(idCliente)
+            $('#popupBuscarCliente').modal('toggle');
+        }
+
+        function BorrarCliente() {
+            $('#inpIdCliente').val(0);
+            $('.pCliente').removeAttr('id');
+            $('.pCliente').html("CONSUMIDOR FINAL &nbsp;&nbsp;&nbsp;");
+
+        }
+    </script>

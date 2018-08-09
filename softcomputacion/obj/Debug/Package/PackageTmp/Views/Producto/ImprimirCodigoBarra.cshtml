@@ -1,0 +1,23 @@
+﻿
+
+<div class="container-fluid">
+    <div class="row">
+        @for (int i = 0; i < ViewBag.cantidad; i++)
+        {
+            <div class="col-12 col-md-2 col-lg-1" >
+                <p class="text-center">@ViewBag.nombre</p>
+                <p class="text-center"><canvas class="img-fluid" id="barcode"></canvas></p>
+            </div>
+        }
+        
+    </div>
+</div>
+@section scripts{
+    <script src="~/Scripts/JsBarcode.all.min.js"></script>
+    <script>
+        $(document).ready(function () {
+        var idProducto = '@ViewBag.idProducto';
+        $(".img-fluid").JsBarcode(idProducto);
+    });
+    </script>
+}

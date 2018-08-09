@@ -1,0 +1,74 @@
+﻿@{
+    ViewBag.Title = "Reportes";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    List<softcomputacion.Models.ReporteESstock> lstReporte = new List<softcomputacion.Models.ReporteESstock>();
+    string[] arrFiltros = Convert.ToString(ViewBag.filtros).Split(';');
+}
+@model List<softcomputacion.Models.ReporteESstock>
+<div class="container-fluid">
+    <div class="row">
+        @Html.Partial("_IndiceReporte")
+        <div class="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+            <div class="row">
+                <div class="col-12">
+                    <br />
+                    <h1 class="text-center"> VENTAS </h1>
+                    <br />
+                </div>
+            </div>
+            @* Form de busqueda *@
+            <form method="post" action="@Url.Action("ReporteVenta", "Reporte")" autocomplete="off">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-5">
+                        <div class="wrap-input100 m-b-20">
+                            <input class="input100" type="text" name="fechaDesde" id="dpfechaDesde" placeholder="Desde" value="@arrFiltros[0]" onfocus="(this.type='month')">
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-5">
+                        <div class="wrap-input100 m-b-20">
+                            <input class="input100" type="text" name="fechaHasta" id="dpfechaHasta" placeholder="Hasta" value="@arrFiltros[1]" onfocus="(this.type='month')">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4 col-lg-2">
+                        <div class="container-login100-form-btn m-b-20">
+                            <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <br />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+            @if (Model != null)
+            {
+                foreach (var oReporteES in Model)
+                {
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-4 text-center">
+                            <i> @oReporteES.mes.ToString().PadLeft(2, '0') / @oReporteES.año </i>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 text-center">
+                            <i>Ventas totales: <strong> @oReporteES.cantVentaTotal</strong></i>
+                        </div>
+                        <div class="col-12 col-md-4 text-center">
+                            <i>Ingresos totales: <strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
+                        </div>
+                        <div class="col-12">
+                            <hr class="m-t-8 m-b-8" />
+                        </div>
+                    </div>
+
+                }
+            }
+
+        </div>
+
+
+    </div>
+</div>

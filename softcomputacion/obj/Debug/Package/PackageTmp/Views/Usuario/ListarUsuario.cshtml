@@ -1,0 +1,230 @@
+﻿
+
+@{
+    ViewBag.Title = "Listar Usuario";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    List<softcomputacion.Models.usuario> lstUsuarios = (List<softcomputacion.Models.usuario>)ViewBag.lstUsuarios;
+}
+@using (Html.BeginForm(null, null, FormMethod.Post, new { id = "__AjaxAntiForgeryFormPopup" }))
+{
+    @Html.AntiForgeryToken()
+}
+
+<br />
+<br />
+<div class="container-fluid">
+        <div class="row">
+        <div class="col-12 text-center">
+            <h2>Usuarios</h2>
+        </div>
+    </div>
+    <hr style="border-top: 2px solid #b5262a;" />
+    <br />
+    <div class="row">
+            <!--Lista de Usuarios-->
+            <div class="m-b-15 col-12 col-lg-8">
+                   @foreach (var oUsuario in lstUsuarios)
+                   {
+                   
+                        <div id="div-@oUsuario.idUsuario" class="row item-tabla m-b-15">
+                            <div class="col-12">
+                                <div class="row">
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p class="login100-form-title p-b-10 fs-13 ">
+                                            <strong>Apellido:</strong>
+                                            <span id="spanApellido-@oUsuario.idUsuario">
+                                                 <i>@oUsuario.apellido</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p class="login100-form-title p-b-10 fs-13 ">
+                                            <strong>Nombre:</strong>
+                                            <span id="spanNombre-@oUsuario.idUsuario">
+                                                <i>@oUsuario.nombre</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p class="login100-form-title p-b-10 fs-13 " style="text-transform: inherit;">
+                                            <strong>Contraseña:</strong>
+                                            <span id="spanContraseña-@oUsuario.idUsuario">
+                                                <i>@oUsuario.contraseña</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p class="login100-form-title p-b-10 fs-13 ">
+                                            <strong>Tel:</strong>
+                                            <span id="spanTelefono-@oUsuario.idUsuario">
+                                                <i>@oUsuario.telefono</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div  class="col-12 col-sm-6 col-md-4">
+                                        <p class="login100-form-title p-b-10 fs-13 ">
+                                            <strong>DNI:</strong>
+                                            <span id="spanDni-@oUsuario.idUsuario">
+                                                <i>@oUsuario.dni</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p class="login100-form-title p-b-10 fs-13 ">
+                                            <strong>Tipo:</strong>
+                                            <span id="spanTipo-@oUsuario.idUsuario">
+                                                <i>@oUsuario.tipoUsuario.nombre</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12">
+                                <div class="btn-group w-full" role="group">
+                                    <button type="button" class="btn btn-outline-dark" style="width:50%" onclick="ModificarUsuario(@oUsuario.idUsuario, @oUsuario.idTipoUsuario)"><i class="fas fa-pen"></i></button>
+                                    <button type="button" class="btn btn-outline-danger" style="width:50%" onclick="EliminarUsuario(@oUsuario.idUsuario)"><i class="fas fa-times"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                   }
+                
+            </div>
+        <div id="div-frmUsuario" class="col-12 col-lg-4">
+            <form class="validate-form" method="post" action="@Url.Action("GuardarModificarUsuario","Usuario")" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <span id="spanFRM1" class="login100-form-title p-b-5">
+                    Usuario
+                </span>
+                <span id="spanFRM2"class="login100-form-title p-b-34">
+                    
+                </span>
+
+
+                <input name="oUsuario.idUsuario" value="0" id="frmIdUsuario" class="dis-none">
+                <div class="wrap-input100 validate-input m-b-20" data-validate="Nombre">
+                    <input class="input100" type="text" name="oUsuario.nombre" id="frmNombre" placeholder="Nombre" value="">
+                </div>
+                <div class="wrap-input100 validate-input m-b-20" data-validate="Apellido">
+                    <input class="input100" type="text" name="oUsuario.apellido" id="frmApellido" placeholder="Apellido" value="">
+                </div>
+                <div class="wrap-input100 validate-input m-b-20" data-validate="Contraseña">
+                    <input class="input100" type="password" name="oUsuario.contraseña" id="frmContraseña" placeholder="Contraseña" value="">
+                </div>
+                <div class="wrap-input100 m-b-20">
+                    <input class="input100" type="number" name="oUsuario.telefono" id="frmTelefono" placeholder="Teléfono" value="">
+                </div>
+                <div class="wrap-input100 validate-input m-b-20" data-validate="DNI">
+                    <input class="input100" type="number" name="oUsuario.dni" min="10000000" max="99999999" id="frmDni" placeholder="DNI" value="">
+
+                </div>
+                <div class="wrap-input100 validate-input m-b-20" data-validate="">
+                    <select class="form-control input100" style="border:0px; height: 55px;" id="frmIdTipoUsuario" name="oUsuario.idTipoUsuario">
+                        <option value="1">Usuario</option>
+                        <option value="2">Super Usuario</option>
+
+                    </select>
+                </div>
+
+
+                <div class="container-login100-form-btn">
+                    
+                    <div id="btnModificar" hidden class="btn-group w-full" role="group">
+                        <button type="reset" class="btn btn-dark" style="width:50%" onclick="CancelarModificar()">Cancelar</button>
+                        <button type="submit" class="btn btn-success" style="width:50%">Modificar</button>
+                    </div>
+                    <button id="btnGuardar" type="submit" class="btn btn-success" style="width:100%">Guardar</button>
+                    
+                </div>
+                </form>
+            </div>
+     </div>
+        
+</div>
+
+
+<script>
+    function EliminarUsuario(idUsuario) {
+        swal({
+            title: "¿Estás seguro?",
+            text: "¿Estás seguro que deseas eliminar el usuario?. Una vez eliminado no se podrá recuperar!",
+            type: "warning",
+            dangerMode: true,
+            showCancelButton: true,
+            confirmButtonClass: "btn-outline-primary",
+            confirmButtonText: "Aceptar",
+            cancelButtonClass: "btn-outline-dark",
+            cancelButtonText: "Cancelar",
+            closeOnConfirm: false,
+            closeOnCancel: false
+        },
+            function (isConfirm) {
+                if (isConfirm) {
+                    //eliminar
+                    LlamarControladorEliminarUsuario(idUsuario)
+                } else {
+                    swal("Cancelado", "", "error");
+                }
+            });
+
+    }
+
+    function LlamarControladorEliminarUsuario(idUsuario) {
+        var url = "@Url.Action("EliminarUsuario", "Usuario")";
+        var token = $('input[name="__RequestVerificationToken"]').val();
+        var data = { idUsuario: idUsuario, __RequestVerificationToken: token };
+            $.post(url, data).done(function (data) {
+                if (data == "True") {
+                    $('#div-' + idUsuario).remove();
+                    swal("Exito!", "El proveedor ha sido eliminado.", "success");
+                }
+                else {
+                    swal("Ocurrió un error", "Se produjo un error al intentar eliminar el Usuario.", "error");
+                }
+            });
+    }
+
+
+
+    function ModificarUsuario(idUsuario, idTipo) {
+        var id = idUsuario;
+        var nombre = $('#spanNombre-' + idUsuario).text();
+        var apellido = $('#spanApellido-' + idUsuario).text();
+        $('#spanFRM1').text("Modificando");
+        $('#spanFRM2').html( apellido + ", " + nombre)
+        var contraseña = $('#spanContraseña-' + idUsuario).text();
+        $('#frmIdUsuario').val(id);
+        $('#frmNombre').val($.trim(nombre));
+        $('#frmApellido').val($.trim(apellido));
+        $('#frmContraseña').val($.trim(contraseña));
+        $('#frmTelefono').val(parseInt($('#spanTelefono-' + idUsuario).text()));
+        $('#frmDni').val(parseInt($('#spanDni-' + idUsuario).text()));
+        
+        if (idTipo == 1) {
+            $("#frmIdTipoUsuario option[value=1]").attr("selected", true);
+        } else
+        {
+            $("#frmIdTipoUsuario option[value=2]").attr("selected", true);
+        }
+        $('#btnGuardar').hide();
+        $('#btnModificar').removeAttr("hidden");
+        $('#btnModificar').show();
+        
+    }
+
+    function CancelarModificar() {
+        $('#spanFRM1').text("USUARIO");
+        $('#spanFRM2').text("");
+        $('#frmIdUsuario').val(0);
+        $('#frmIdUsuario').val("");
+        $('#frmNombre').val("");
+        $('#frmApellido').val("");
+        $('#frmContraseña').val("");
+        $('#frmTelefono').val("");
+        $('#frmDni').val("");
+        $("#frmIdTipoUsuario option[value=1]").attr("selected", true);
+        $('#btnGuardar').show();
+        $('#btnModificar').hide();
+    }
+</script>
+

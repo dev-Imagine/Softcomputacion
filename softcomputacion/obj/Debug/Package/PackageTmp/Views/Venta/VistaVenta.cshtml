@@ -1,0 +1,61 @@
+﻿@{
+    @model  softcomputacion.Models.venta
+}
+@{ 
+    string stFecha = Model.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Year;
+}
+
+<div class="container">
+    <div class="row ">
+        <div class="col-12">
+            <p class="navbar-brand" style="font-size:28px"><img class="img-fluid" style="height: 100px;" src="~/Content/images/softcomputacion_icono.png" />SoftComputación</p>
+            <hr style="margin-top:0" />
+        </div>
+        <div class="col-12 text-center">
+            <h2><span>Nro venta: @Model.idVenta </span></h2>
+        </div>
+        <div class="col-12">
+            <div class="clearfix">
+                <h6><span class="float-left">Usuario: <i> @Model.usuario.apellido, @Model.usuario.nombre</i></span></h6>
+                <h6><span class="float-right">Fecha: <i> @stFecha </i></span></h6>
+            </div>
+        </div>
+    </div>
+
+    <hr style="border-top: 1px solid #b5262a; margin-top:5px;" />
+    <br />
+
+    <div class="col-12">
+        @foreach (softcomputacion.Models.detalleVenta oDetalle in Model.detalleVenta)
+        {
+            <div id="divRow">
+                <div class="row">
+                    <div class="col-12 col-lg-6">
+                        <p style="font-size:20px; color:#000"><i>@oDetalle.producto.categoria.nombre @oDetalle.producto.subcategoria.nombre @oDetalle.producto.nombre</i></p>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2 text-center">
+                        <p >Cantidad: <i>@oDetalle.cantidad</i></p>
+                    </div>
+                    <div class="col-6 col-md-4 col-lg-2 text-center">
+                        <p>P/Unit: $@Convert.ToString(Math.Round(oDetalle.costoIndividual, 2)).Replace(",", ".").Replace(",00", "")</p>
+                    </div>
+
+                    <div class="col-12 col-md-4 col-lg-2 text-center text-sm-center text-md-right">
+                        <p style="font-size:22px; color:#000">*$@Convert.ToString(Math.Round(oDetalle.costoGrupal, 2)).Replace(",", ".").Replace(",00", "")</p>
+                    </div>
+                    <div class="col-12">
+                        <hr />
+                    </div>
+                </div>
+            </div>
+        }
+    </div>
+
+    <hr style="border-top: 1px solid #b5262a; margin-bottom:5px;" />
+
+    <div class="row ">
+        <div class="col-12">
+            <p class="text-right" style="font-size:30px; color:#000">Total: $@Convert.ToString(Math.Round(Model.costoTotal, 2)).Replace(",", ".").Replace(",00", "")</p>
+        </div>
+    </div>
+</div>

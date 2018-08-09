@@ -1,0 +1,146 @@
+﻿
+@{
+    ViewBag.Title = "Listar ventas";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    softcomputacion.Models.usuario oUsuario = (softcomputacion.Models.usuario)Session["Usuario"];
+    List<softcomputacion.Models.usuario> lstUsuario = (List<softcomputacion.Models.usuario>)ViewBag.Ususarios;
+    // 0-fechaDesde 1-fechaHasta 2-idUsuario
+    string[] filtros = ViewBag.filtros.Split(';');
+    if (filtros[0] != "")
+    {
+        DateTime fDesde = Convert.ToDateTime(filtros[0]);
+        filtros[0] = fDesde.Day.ToString().PadLeft(2, '0') + "/" + fDesde.Month.ToString().PadLeft(2, '0') + "/" + fDesde.Year.ToString();
+    }
+    if (filtros[1] != "")
+    {
+        DateTime fHasta = Convert.ToDateTime(filtros[1]);
+        filtros[1] = fHasta.Day.ToString().PadLeft(2, '0') + "/" + fHasta.Month.ToString().PadLeft(2, '0') + "/" + fHasta.Year.ToString();
+    }
+
+}
+@model PagedList.IPagedList<softcomputacion.Models.venta>
+@using PagedList.Mvc;
+
+<br />
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>Ventas</h2>
+        </div>
+    </div>
+    <hr style="border-top: 2px solid #b5262a;" />
+
+    <div class="row">
+        <div class="col-12 col-lg-12">
+            <div class="row">
+                <div class="col-12 offset-xl-1 col-xl-10">
+                    @* Form de busqueda *@
+                    <form method="post" action="@Url.Action("ListarVentas", "Venta")" autocomplete="off">
+                        <div class="row">
+                            <div class="col-12 col-md-4 col-lg-3">
+                                <div class="wrap-input100 m-b-20">
+                                    <input class="input100" type="text" name="fechaDesde" id="dpfechaDesde" placeholder="Fecha desde" value="@filtros[0]" onfocus="(this.type='date')">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-3">
+                                <div class="wrap-input100 m-b-20">
+                                    <input class="input100" type="text" name="fechaHasta" id="dpfechaHasta"  placeholder="Fecha hasta" value="@filtros[1]" onfocus="(this.type='date')">
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-4 col-lg-4">
+                                <div class="wrap-input100 ¡ m-b-20" data-validate="">
+                                    <select id="select-Usuario" class="form-control input100" style="border:0px; height: 55px;" name="idUsuario">
+                                        <option selected value="0">Usuario</option>
+
+                                        @foreach (softcomputacion.Models.usuario oUsu in lstUsuario)
+                                        {
+                                            if (oUsu.idUsuario.ToString() == filtros[2])
+                                            {
+                                                <option selected value="@oUsu.idUsuario">@oUsu.apellido, @oUsu.nombre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@oUsu.idUsuario">@oUsu.apellido, @oUsu.nombre</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+
+                            <div class="col-12 col-md-12 col-lg-2">
+                                <div class="container-login100-form-btn m-b-20">
+                                    <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+            <hr style="border-top: 1px solid #b5262a;" />
+            <br />
+        </div>
+        <div class="row container-fluid">
+            <!--Lista de Productos-->
+            <div class="m-b-15 col-12 offset-xl-1 col-xl-10">
+                @{
+                    string stFechaHs = "";
+                    string stTotal = "";
+                    foreach (var oVenta in Model)
+                    {
+                        stFechaHs = oVenta.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + oVenta.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + oVenta.fechaEmision.Year + " " + oVenta.fechaEmision.Hour.ToString().PadLeft(2, '0') + ":" + oVenta.fechaEmision.Minute.ToString().PadLeft(2, '0');
+                        stTotal = Convert.ToString(Math.Round(oVenta.costoTotal, 2)).Replace(",", ".").Replace(",00", "");
+                            <div class="row">
+                                <div class="col-12 p-b-16 p-t-16 item-lista-venta" style="text-align:left;" onclick="window.open('@Url.Action("VistaVenta","Venta", new { idVenta = oVenta.idVenta })')">
+                                    <div class="row">
+
+                                        <div class="col-12 col-sm-3 col-md-2 col-lg-2 col-xl-2 p-l-5 p-r-5">
+                                            <p class="login100-form-title fs-18 p-l-5 text-center text-sm-left">
+                                                <span>Nro: @oVenta.idVenta</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5 p-l-5 p-r-5">
+                                            <p class="login100-form-title fs-18 p-l-5 text-center text-sm-left">
+                                                <span>@oVenta.usuario.apellido, @oVenta.usuario.nombre</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 p-l-5 p-r-5">
+                                            <p class="login100-form-title fs-18 p-l-5 text-center">
+                                                <span>@stFechaHs</span>
+                                            </p>
+                                        </div>
+                                        <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 p-l-5 p-r-5">
+                                            <p class="login100-form-title fs-18 p-l-5 text-center text-lg-right">
+                                                <span><precio class="text-primary">$ARS</precio>@stTotal</span>
+                                            </p>
+                                        </div>
+
+                                    </div>
+                                </div>
+                                <div class="col-12">
+                                    <hr class="m-t-0 m-b-0" />
+                                </div>
+                            </div>
+                    }
+                }
+            </div>
+        </div>
+        <div class="row container-fluid text-center">
+                <div id="div-paginacion" class="col-12">
+                    @Html.PagedListPager(Model, nroPagina => Url.Action("ListarVentas", "Venta", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
+                </div>
+                <div class="col-12">
+                    @Model.FirstItemOnPage a @Model.LastItemOnPage ventas de un total de @Model.TotalItemCount ventas.
+                </div>
+            </div>
+    </div>
+</div>
+
+

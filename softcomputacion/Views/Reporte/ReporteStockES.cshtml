@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
     List<softcomputacion.Models.ReporteESstock> lstReporte = new List<softcomputacion.Models.ReporteESstock>();
     string[] arrFiltros = Convert.ToString(ViewBag.filtros).Split(';');
+    if (arrFiltros[2] != "") { arrFiltros[2] = null; }
 }
 @model List<softcomputacion.Models.ReporteESstock>
 <div class="container-fluid">

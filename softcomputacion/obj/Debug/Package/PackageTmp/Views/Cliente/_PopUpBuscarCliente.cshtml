@@ -1,0 +1,58 @@
+﻿@{
+    
+}
+
+
+<div class="modal fade" id="popupBuscarCliente" tabindex="-1" role="dialog" aria-labelledby="popupCategoria" aria-hidden="true">
+    <div class="modal-dialog" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body " id="div-frmBusquedaCliente">
+                <form action="/" method="post" autocomplete="off" onsubmit="return SubmitForm()">
+
+                    <div class="input-group m-b-26">
+                        <input type="text" class="form-control" placeholder="Cliente" aria-label="Nombre apellido cliente" id="NombreApellido">
+                        <div class="input-group-append">
+                            <button type="button" onclick="llenarSessionCliente()" class="btn btn-danger" style="width:100%">Buscar</button>
+                        </div>
+                    </div>
+                </form>
+                <div id="popUpListaCliente" style="min-height:200px"></div>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+<script>
+    function SubmitForm() {
+        
+        alert();
+        llenarSessionCliente();
+        return false;
+    }
+    function llenarSessionCliente() {
+        var url = "@Url.Action("llenarSessionCliente", "Cliente")";
+        var NombreApellido = $('#NombreApellido').val();
+        if (NombreApellido.length < 3) {
+            return;
+        }
+        $('#NombreApellido').val(null);
+        var data = { NombreApellido: NombreApellido};
+        $.post(url, data).done(function (data) {
+            if (data != "0") {
+                var data1 = {};
+                var url = "@Url.Action("_ListaCliente", "Cliente")";
+                $.post(url, data1).done(function (data1) {
+                    if (data1.length > 0) {
+                        $('#popUpListaCliente').html(data1);
+                    }
+                });
+            }
+        });
+    }
+</script>
