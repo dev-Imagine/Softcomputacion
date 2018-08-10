@@ -5,8 +5,8 @@
     {
         oVenta.idCliente = 0;
         oVenta.cliente = new softcomputacion.Models.cliente();
-        oVenta.cliente.nombre = "CONSUMIDOR";
-        oVenta.cliente.apellido = "FINAL";
+        oVenta.cliente.nombre = "FINAL";
+        oVenta.cliente.apellido = "CONSUMIDOR";
     }
 }
 
@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="col-12 col-md-2 col-lg-2 p-l-0 p-r-0 text-center">
-                        <p class="fs-20" style="color:#000">*$@oDetalle.costoGrupal</p>
+                        <p  class="fs-20" style="color:#000">*$ <i id="iCostoGrupal-@oDetalle.idProducto">@oDetalle.costoGrupal</i> </p>
                     </div>
                     <div class="col-12">
                         <div class="clearfix">
@@ -49,19 +49,19 @@
                     </div>
                 </div>
             </div>
-            <hr />
+            <hr id="hrDiv-@oDetalle.idProducto" />
         }
     }
     <div class="row ">
         <div class="col-12">
-            <p class="text-right fs-20" style="color:#000">Total: $@total</p>
+            <p id="" class="text-right fs-20" style="color:#000">Total:$ <i id="iTotal">@total</i></p>
         </div>
     </div>
     <hr style="border-top: 1px solid #b5262a;" />
     <div class="row">
         <div class="col-12 col-md-6 col-lg-12 text-center m-b-5 m-t-8" style="color:#666666">
-            <span>CLIENTE: <strong class="text-left fs-17 pCliente" id="@oVenta.idCliente">@oVenta.cliente.nombre @oVenta.cliente.apellido &nbsp;&nbsp;&nbsp;</strong></span>
-            <span onclick="BorrarCliente()" class="far fa-times-circle text-danger fs-24" style="cursor:pointer;position: fixed;"></span>
+            <span>CLIENTE: <strong class="text-left fs-17 pCliente" id="@oVenta.idCliente">@oVenta.cliente.apellido @oVenta.cliente.nombre &nbsp;&nbsp;&nbsp;</strong></span>
+            <span onclick="SelecionarCliente('0','A','A')" class="far fa-times-circle text-danger fs-24" style="cursor:pointer;position: fixed;"></span>
         </div>
         <div class="col-12 col-md-6 col-lg-12 text-center">
             <button onclick="_PopUpBuscarCliente()" class="btn btn-info w-50"><i class="fas fa-share"></i> Cliente</button>
@@ -89,9 +89,13 @@
                     var stockActual = $('#iSpan-' + idProducto).text();
                     var stockDescontar = $('#i-cant-' + idProducto).text();
                     var stockEstimado = parseInt(stockActual) + parseInt(stockDescontar);
+                    var precioDescontar = parseFloat($('#iCostoGrupal-' + idProducto).text());
+                    var precioTotal = parseFloat($('#iTotal').text());
+                    var decimales = $('#iCostoGrupal-' + idProducto).text().split(',');                    
                     $('#iSpan-' + idProducto).text(stockEstimado);
                     $('#div-carrito-' + idProducto).remove();
-
+                    $('#hrDiv-' + idProducto).remove();
+                    $('#iTotal').text(parseFloat(precioTotal - precioDescontar));    
                 } else
                 {
                     swal("Ocurrió un error", "Se produjo un error al intentar agregar un producto al carrito", "error");

@@ -60,13 +60,28 @@ namespace softcomputacion.Servicios
                         totalCantidadProductos = totalCantidadProductos + oDetalle.cantidad;
                         oProducto = bd.producto.Where(x => x.idProducto == oDetalle.idProducto).FirstOrDefault();
                         oProducto.stockActual = oProducto.stockActual - oDetalle.cantidad;
+                        if (oProducto.stockActual == 0)
+                        {
+                            oProducto.idEstado = 3;
+                        }
+                        else
+                        {
+                            if (oProducto.stockActual <= oProducto.stockMinimo)
+                            {
+                                oProducto.idEstado = 2;
+                            }
+                            else
+                            {
+                                oProducto.idEstado = 1;
+                            }
+                        }
+                        oProducto.estado = bd.estado.Where(x => x.idEstado == oProducto.idEstado).FirstOrDefault();
                         bd.Entry(oProducto).State = System.Data.Entity.EntityState.Modified;
                         oDetalle.producto = null;
                     }
                     oVenta.fechaEmision = System.DateTime.Now;
                     oVenta.cantidadProductosTotal = totalCantidadProductos;
                     oVenta.costoTotal = totalCosto;
-                    oVenta.cliente = null;
                     bd.Entry(oVenta).State = System.Data.Entity.EntityState.Added;
                     bd.SaveChanges();
                     return oVenta;
@@ -86,6 +101,7 @@ namespace softcomputacion.Servicios
                 {
                     venta oVenta = bd.venta.Where(x => x.idVenta == idVenta).FirstOrDefault();
                     string temp ="";
+                    temp = oVenta.cliente.apellido;
                     temp = oVenta.usuario.nombre;
                     foreach (detalleVenta oDetalle  in oVenta.detalleVenta)
                     {

@@ -3,7 +3,7 @@
 }
 @{ 
     string stFecha = Model.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Year;
-    if (Model.cliente == null || Model.idCliente == 0)
+    if ( Model.idCliente == 0 || Model.cliente == null )
     {
         Model.idCliente = 0;
         Model.cliente = new softcomputacion.Models.cliente();

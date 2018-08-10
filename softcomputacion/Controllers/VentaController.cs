@@ -34,6 +34,8 @@ namespace softcomputacion.Controllers
                 if (Session["venta"] == null)
                 {
                     Session["venta"] = new venta();
+                    //Session["lstProducto"] = new List<producto>();
+                    //lstProductos = new List<producto>();
                 }
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
                 ViewBag.lstEstados = sEstado.ObtenerEstados();
@@ -94,8 +96,9 @@ namespace softcomputacion.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 
-                srvVenta sVenta = new srvVenta();
+                srvVenta sVenta = new srvVenta();                
                 venta oVenta = sVenta.ObtenerVenta(idVenta);
+                
                 return View(oVenta);
             }
             catch (Exception)
@@ -218,14 +221,18 @@ namespace softcomputacion.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 venta oVenta = (venta)Session["venta"];
+                oVenta.cliente = null;
                 oVenta.idUsuario = oUsuario.idUsuario;
                 srvVenta sVenta = new srvVenta();                
                 if (oVenta.detalleVenta.Count == 0)
                 {
                     return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
                 }
-                oVenta.cliente = null;
-                oVenta = sVenta.guardarVenta(oVenta);
+                if (oVenta.idCliente == 0)
+                {
+                    oVenta.idCliente = null;
+                }
+                oVenta = sVenta.guardarVenta(oVenta);                
                 Session["venta"] = null;
                 return RedirectToAction("VistaVenta", new { idVenta = oVenta.idVenta });
             }
@@ -249,12 +256,12 @@ namespace softcomputacion.Controllers
             }
             catch (Exception)
             {
-                oCliente.nombre = "Consumidor";
-                oCliente.nombre = "Final";
+                oCliente.nombre = "FINAL";
+                oCliente.apellido = "CONSUMIDOR";
                 oCliente.idCliente = 0;
                 venta oVenta = (venta)Session["venta"];
                 oVenta.idCliente = 0;
-                oVenta.cliente = null;
+                oVenta.cliente = oCliente;
             }
             return Json(oCliente);
         }
