@@ -82,6 +82,7 @@ namespace softcomputacion.Servicios
                     oVenta.fechaEmision = System.DateTime.Now;
                     oVenta.cantidadProductosTotal = totalCantidadProductos;
                     oVenta.costoTotal = totalCosto;
+                    oVenta.cliente = null;
                     bd.Entry(oVenta).State = System.Data.Entity.EntityState.Added;
                     bd.SaveChanges();
                     return oVenta;
@@ -101,7 +102,11 @@ namespace softcomputacion.Servicios
                 {
                     venta oVenta = bd.venta.Where(x => x.idVenta == idVenta).FirstOrDefault();
                     string temp ="";
-                    temp = oVenta.cliente.apellido;
+                    if (oVenta.idCliente !=0 && oVenta.idCliente !=null)
+                    {
+                        temp = oVenta.cliente.apellido;
+                    }
+                    
                     temp = oVenta.usuario.nombre;
                     foreach (detalleVenta oDetalle  in oVenta.detalleVenta)
                     {

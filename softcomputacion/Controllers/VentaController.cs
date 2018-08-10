@@ -98,7 +98,13 @@ namespace softcomputacion.Controllers
                 
                 srvVenta sVenta = new srvVenta();                
                 venta oVenta = sVenta.ObtenerVenta(idVenta);
-                
+                if (oVenta.idCliente==0 || oVenta.idCliente == null)
+                {
+                    oVenta.idCliente = 0;
+                    oVenta.cliente = new cliente();
+                    oVenta.cliente.nombre = "CONSUMIDOR ";
+                    oVenta.cliente.apellido = "FINAL";
+                }
                 return View(oVenta);
             }
             catch (Exception)

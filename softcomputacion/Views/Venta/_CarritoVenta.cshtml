@@ -40,7 +40,7 @@
                     </div>
 
                     <div class="col-12 col-md-2 col-lg-2 p-l-0 p-r-0 text-center">
-                        <p  class="fs-20" style="color:#000">*$ <i id="iCostoGrupal-@oDetalle.idProducto">@oDetalle.costoGrupal</i> </p>
+                        <p class="fs-20" style="color:#000">*$ <i id="iCostoGrupal-@oDetalle.idProducto">@oDetalle.costoGrupal</i> </p>
                     </div>
                     <div class="col-12">
                         <div class="clearfix">
@@ -52,11 +52,6 @@
             <hr id="hrDiv-@oDetalle.idProducto" />
         }
     }
-    <div class="row ">
-        <div class="col-12">
-            <p id="" class="text-right fs-20" style="color:#000">Total:$ <i id="iTotal">@total</i></p>
-        </div>
-    </div>
     <hr style="border-top: 1px solid #b5262a;" />
     <div class="row">
         <div class="col-12 col-md-6 col-lg-12 text-center m-b-5 m-t-8" style="color:#666666">
@@ -68,10 +63,16 @@
         </div>
     </div>
     <hr style="border-top: 1px solid #b5262a;" />
+    <div class="row ">
+        <div class="col-12">
+            <p id="" class="text-right fs-20" style="color:#000">Total:$ <i id="iTotal">@total</i></p>
+        </div>
+    </div>
+    <hr style="border-top: 1px solid #b5262a;" />
     <div class="row text-center">
         <div class="col-12 col-sm-12">
             <form method="post" target="_blank" action="@Url.Action("GenerarVenta", "Venta")">
-                <button class="btn btn-dark w-100">Generar venta</button>
+                <button type="submit" class="btn btn-dark w-100">Generar venta</button>
             </form>
         </div>
     </div>
@@ -128,9 +129,7 @@
         }
 
         function BorrarCliente() {
-            $('#inpIdCliente').val(0);
-            $('.pCliente').removeAttr('id');
-            $('.pCliente').html("CONSUMIDOR FINAL &nbsp;&nbsp;&nbsp;");
+            SelecionarCliente(0, "", "");
 
         }
     </script>

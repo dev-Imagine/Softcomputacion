@@ -1,9 +1,9 @@
 ﻿@{
     @model  softcomputacion.Models.venta
 }
-@{ 
+@{
     string stFecha = Model.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Year;
-    if ( Model.idCliente == 0 || Model.cliente == null )
+    if (Model.idCliente == 0 || Model.cliente == null)
     {
         Model.idCliente = 0;
         Model.cliente = new softcomputacion.Models.cliente();
@@ -11,15 +11,25 @@
         Model.cliente.apellido = "FINAL";
     }
 }
-
+<br />
 <div class="container">
     <div class="row ">
-        <div class="col-12">
+        <div class="col-12 col-md-6">
             <p class="navbar-brand" style="font-size:28px"><img class="img-fluid" style="height: 100px;" src="~/Content/images/softcomputacion_icono.png" />SoftComputación</p>
+        </div>
+        <div class="col-12 col-md-6 text-center text-md-right">
+            <p class="navbar-brand" style="font-size:16px; padding-bottom:0px; padding-top:0px;">Cuil: 20-38018944-6</p>
+            <br />
+            <p class="navbar-brand" style="font-size:16px; padding-bottom:0px; padding-top:0px;">Tel: 1542040938</p>
+            <br />
+            <p class="navbar-brand" style="font-size:16px; padding-bottom:0px; padding-top:0px;">Dir: Mitre 941, Villa Nueva, Córdoba</p>
+        </div>
+        <div class="col-12">
+            
             <hr style="margin-top:0" />
         </div>
         <div class="col-12 text-center">
-            <h2><span>Nro venta: @Model.idVenta </span></h2>
+            <h2><span>Nro: @Model.idVenta </span></h2>
         </div>
         <div class="col-12">
             <div class="clearfix">
@@ -44,7 +54,7 @@
                         <p style="font-size:20px; color:#000"><i>@oDetalle.producto.categoria.nombre @oDetalle.producto.subcategoria.nombre @oDetalle.producto.nombre</i></p>
                     </div>
                     <div class="col-6 col-md-4 col-lg-2 text-center">
-                        <p >Cantidad: <i>@oDetalle.cantidad</i></p>
+                        <p>Cantidad: <i>@oDetalle.cantidad</i></p>
                     </div>
                     <div class="col-6 col-md-4 col-lg-2 text-center">
                         <p>P/Unit: $@Convert.ToString(Math.Round(oDetalle.costoIndividual, 2)).Replace(",", ".").Replace(",00", "")</p>
@@ -68,4 +78,26 @@
             <p class="text-right" style="font-size:30px; color:#000">Total: $@Convert.ToString(Math.Round(Model.costoTotal, 2)).Replace(",", ".").Replace(",00", "")</p>
         </div>
     </div>
+    <div class="row ">
+        <div class="col-12">
+            <hr />
+            <p class="text-center"><canvas class="img-fluid" id="barcode"></canvas></p>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-12">
+            <hr />
+            <p class="text-center" style="font-size:18px;">Documento no válido como factura.</p>
+        </div>
+    </div>
 </div>
+
+@section scripts{
+    <script src="~/Scripts/JsBarcode.all.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        var idProducto = '@Model.idVenta';
+        $("#barcode").JsBarcode(idProducto);
+    });
+    </script>
+}
