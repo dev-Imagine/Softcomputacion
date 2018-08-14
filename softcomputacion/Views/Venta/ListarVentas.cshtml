@@ -38,18 +38,25 @@
                     @* Form de busqueda *@
                     <form method="post" action="@Url.Action("ListarVentas", "Venta")" autocomplete="off">
                         <div class="row">
-                            <div class="col-12 col-md-4 col-lg-3">
+                            <div class="col-12 col-md-3 col-lg-2">
+                                <div class="wrap-input100 m-b-20">
+                                    <input class="input100" type="text" name="idVenta" id="codigo" placeholder="Código" value="@filtros[0]">
+                                </div>
+                            </div>
+
+
+                            <div class="col-12 col-md-3 col-lg-3">
                                 <div class="wrap-input100 m-b-20">
                                     <input class="input100" type="text" name="fechaDesde" id="dpfechaDesde" placeholder="Fecha desde" value="@filtros[0]" onfocus="(this.type='date')">
                                 </div>
                             </div>
-                            <div class="col-12 col-md-4 col-lg-3">
+                            <div class="col-12 col-md-3 col-lg-3">
                                 <div class="wrap-input100 m-b-20">
-                                    <input class="input100" type="text" name="fechaHasta" id="dpfechaHasta"  placeholder="Fecha hasta" value="@filtros[1]" onfocus="(this.type='date')">
+                                    <input class="input100" type="text" name="fechaHasta" id="dpfechaHasta" placeholder="Fecha hasta" value="@filtros[1]" onfocus="(this.type='date')">
                                 </div>
                             </div>
 
-                            <div class="col-12 col-md-4 col-lg-4">
+                            <div class="col-12 col-md-3 col-lg-3">
                                 <div class="wrap-input100 ¡ m-b-20" data-validate="">
                                     <select id="select-Usuario" class="form-control input100" style="border:0px; height: 55px;" name="idUsuario">
                                         <option selected value="0">Usuario</option>
@@ -70,7 +77,8 @@
                                 </div>
                             </div>
 
-                            <div class="col-12 col-md-12 col-lg-2">
+
+                            <div class="col-12 col-md-12 col-lg-1">
                                 <div class="container-login100-form-btn m-b-20">
                                     <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
                                         <i class="fas fa-search"></i>

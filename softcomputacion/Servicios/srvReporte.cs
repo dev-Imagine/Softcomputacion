@@ -162,7 +162,7 @@ namespace softcomputacion.Servicios
                 srvVenta sVenta = new srvVenta();          
                 using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
                 {
-                    lstVenta = sVenta.ObtenerVentasUsuario(fechaDesde, fechaHasta, 0);
+                    lstVenta = sVenta.ObtenerVentas(fechaDesde, fechaHasta, 0);
                     int mes = 0;
                     int año = 0;
                     foreach (venta oVenta in lstVenta)

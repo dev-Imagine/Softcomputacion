@@ -128,7 +128,7 @@ namespace softcomputacion.Controllers
                 if (lstVentas == null || lstVentas.Count == 0 || paginacion == false)
                 {
                     srvVenta sVenta = new srvVenta();
-                    lstVentas = sVenta.ObtenerVentasUsuario(Convert.ToDateTime("01/01/1000"), Convert.ToDateTime("01/01/3000"), oUsuario.idUsuario);
+                    lstVentas = sVenta.ObtenerVentas(Convert.ToDateTime("01/01/1000"), Convert.ToDateTime("01/01/3000"), oUsuario.idUsuario);
                     Session["lstVentas"] = lstVentas;
                 }
                 ViewBag.filtros = ";;";
@@ -141,7 +141,7 @@ namespace softcomputacion.Controllers
             }
         }
         [HttpPost]
-        public ActionResult ListarVentas( string fechaDesde, string fechaHasta, int idUsuario = 0)
+        public ActionResult ListarVentas(string fechaDesde, string fechaHasta, int idUsuario = 0, int idVenta=0)
         {
             ViewBag.filtros = fechaDesde + ";" + fechaHasta + ";" + idUsuario;
             if (fechaDesde == "") fechaDesde = "01/01/1000";
@@ -158,7 +158,7 @@ namespace softcomputacion.Controllers
                 List<venta> lstVentas;
                 srvUsuario sUsuario = new srvUsuario();
                 ViewBag.Ususarios = sUsuario.ObtenerUsuarios();
-                lstVentas = sVenta.ObtenerVentasUsuario(Convert.ToDateTime(fechaDesde), Convert.ToDateTime(fechaHasta),idUsuario);
+                lstVentas = sVenta.ObtenerVentas(Convert.ToDateTime(fechaDesde), Convert.ToDateTime(fechaHasta),idUsuario, idVenta);
                 Session["lstVentas"] = lstVentas;
                 PagedList<venta> ModelVentas = new PagedList<venta>(lstVentas.ToList(), 1, 10);
                 return View(ModelVentas);

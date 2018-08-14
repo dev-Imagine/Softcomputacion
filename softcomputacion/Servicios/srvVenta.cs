@@ -122,7 +122,7 @@ namespace softcomputacion.Servicios
                 throw ex;
             }
         }
-        public List<venta> ObtenerVentasUsuario(DateTime fechaDesde, DateTime fechaHasta, int idUsuario = 0)
+        public List<venta> ObtenerVentas(DateTime fechaDesde, DateTime fechaHasta, int idUsuario = 0, int idVenta=0)
         {
             try
             {
@@ -130,14 +130,22 @@ namespace softcomputacion.Servicios
                 {
                     fechaHasta = fechaHasta.AddHours(23.59).AddSeconds(59);
                     List<venta> lstVenta;
-                    if (idUsuario==0)
+                    if (idVenta !=0)
                     {
-                        lstVenta = bd.venta.Where(x => x.fechaEmision >= fechaDesde && x.fechaEmision <= fechaHasta).ToList();
+                        lstVenta = bd.venta.Where(x => x.idVenta == idVenta).ToList();
                     }
                     else
                     {
-                        lstVenta = bd.venta.Where(x => x.idUsuario == idUsuario && x.fechaEmision >= fechaDesde && x.fechaEmision <= fechaHasta).ToList();
+                        if (idUsuario == 0)
+                        {
+                            lstVenta = bd.venta.Where(x => x.fechaEmision >= fechaDesde && x.fechaEmision <= fechaHasta).ToList();
+                        }
+                        else
+                        {
+                            lstVenta = bd.venta.Where(x => x.idUsuario == idUsuario && x.fechaEmision >= fechaDesde && x.fechaEmision <= fechaHasta).ToList();
+                        }
                     }
+                    
                     string temp = "";
                     foreach (venta oVenta in lstVenta.ToList())
                     {
