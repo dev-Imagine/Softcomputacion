@@ -6,8 +6,8 @@
     </Key>
     <Property Name="idCategoria" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="producto" Relationship="Self.FK_producto_categoria" FromRole="categoria" ToRole="producto" />
     <NavigationProperty Name="subcategoria" Relationship="Self.FK_subcategoria_categoria" FromRole="categoria" ToRole="subcategoria" />
+    <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_producto_categoria" FromRole="categoria" ToRole="producto" />
   </EntityType>
   <EntityType Name="detalleVenta">
     <Key>
@@ -19,8 +19,8 @@
     <Property Name="costoIndividual" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
     <Property Name="cantidad" Type="Int32" Nullable="false" />
     <Property Name="costoGrupal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-    <NavigationProperty Name="producto" Relationship="Self.FK_detalleVenta_producto" FromRole="detalleVenta" ToRole="producto" />
     <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="detalleVenta" ToRole="venta" />
+    <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_detalleVenta_producto" FromRole="detalleVenta" ToRole="producto" />
   </EntityType>
   <EntityType Name="estado">
     <Key>
@@ -28,7 +28,7 @@
     </Key>
     <Property Name="idEstado" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="producto" Relationship="Self.FK_producto_estado" FromRole="estado" ToRole="producto" />
+    <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_producto_estado" FromRole="estado" ToRole="producto" />
   </EntityType>
   <EntityType Name="historialStock">
     <Key>
@@ -39,32 +39,7 @@
     <Property Name="idProducto" Type="Int32" Nullable="false" />
     <Property Name="cantidad" Type="Int32" Nullable="false" />
     <Property Name="tipo" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
-    <NavigationProperty Name="producto" Relationship="Self.FK_hostorialStock_producto" FromRole="historialStock" ToRole="producto" />
-  </EntityType>
-  <EntityType Name="producto">
-    <Key>
-      <PropertyRef Name="idProducto" />
-    </Key>
-    <Property Name="idProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="nombre" Type="String" MaxLength="150" FixedLength="false" Unicode="false" Nullable="false" />
-    <Property Name="observacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
-    <Property Name="stockMinimo" Type="Int32" Nullable="false" />
-    <Property Name="stockIdeal" Type="Int32" Nullable="false" />
-    <Property Name="stockActual" Type="Int32" Nullable="false" />
-    <Property Name="precioCosto" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-    <Property Name="precioGremio" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-    <Property Name="precioContado" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-    <Property Name="precioLista" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-    <Property Name="idCategoria" Type="Int32" Nullable="false" />
-    <Property Name="idSubCategoria" Type="Int32" Nullable="false" />
-    <Property Name="idEstado" Type="Int32" Nullable="false" />
-    <Property Name="precioFijo" Type="Boolean" Nullable="false" />
-    <NavigationProperty Name="categoria" Relationship="Self.FK_producto_categoria" FromRole="producto" ToRole="categoria" />
-    <NavigationProperty Name="detalleVenta" Relationship="Self.FK_detalleVenta_producto" FromRole="producto" ToRole="detalleVenta" />
-    <NavigationProperty Name="estado" Relationship="Self.FK_producto_estado" FromRole="producto" ToRole="estado" />
-    <NavigationProperty Name="historialStock" Relationship="Self.FK_hostorialStock_producto" FromRole="producto" ToRole="historialStock" />
-    <NavigationProperty Name="subcategoria" Relationship="Self.FK_producto_subcategoria" FromRole="producto" ToRole="subcategoria" />
-    <NavigationProperty Name="proveedorXproducto" Relationship="Self.FK_proveedorXproducto_producto" FromRole="producto" ToRole="proveedorXproducto" />
+    <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_hostorialStock_producto" FromRole="historialStock" ToRole="producto" />
   </EntityType>
   <EntityType Name="proveedor">
     <Key>
@@ -84,8 +59,8 @@
     <Property Name="idProveedorXproducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
     <Property Name="idProveedor" Type="Int32" Nullable="false" />
     <Property Name="idProducto" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="producto" Relationship="Self.FK_proveedorXproducto_producto" FromRole="proveedorXproducto" ToRole="producto" />
     <NavigationProperty Name="proveedor" Relationship="Self.FK_proveedorXproducto_proveedor" FromRole="proveedorXproducto" ToRole="proveedor" />
+    <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_proveedorXproducto_producto" FromRole="proveedorXproducto" ToRole="producto" />
   </EntityType>
   <EntityType Name="subcategoria">
     <Key>
@@ -95,7 +70,7 @@
     <Property Name="nombre" Type="String" MaxLength="50" FixedLength="false" Unicode="false" Nullable="false" />
     <Property Name="idCategoria" Type="Int32" Nullable="false" />
     <NavigationProperty Name="categoria" Relationship="Self.FK_subcategoria_categoria" FromRole="subcategoria" ToRole="categoria" />
-    <NavigationProperty Name="producto" Relationship="Self.FK_producto_subcategoria" FromRole="subcategoria" ToRole="producto" />
+    <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_producto_subcategoria" FromRole="subcategoria" ToRole="producto" />
   </EntityType>
   <EntityType Name="tipoUsuario">
     <Key>
@@ -120,18 +95,6 @@
     <NavigationProperty Name="tipoUsuario" Relationship="Self.FK_usuario_tipoUsuario" FromRole="usuario" ToRole="tipoUsuario" />
     <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_venta_usuario" FromRole="usuario" ToRole="venta" />
   </EntityType>
-  <Association Name="FK_producto_categoria">
-    <End Role="categoria" Type="Self.categoria" Multiplicity="1" />
-    <End Role="producto" Type="Self.producto" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="categoria">
-        <PropertyRef Name="idCategoria" />
-      </Principal>
-      <Dependent Role="producto">
-        <PropertyRef Name="idCategoria" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_subcategoria_categoria">
     <End Role="categoria" Type="Self.categoria" Multiplicity="1" />
     <End Role="subcategoria" Type="Self.subcategoria" Multiplicity="*" />
@@ -141,66 +104,6 @@
       </Principal>
       <Dependent Role="subcategoria">
         <PropertyRef Name="idCategoria" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_detalleVenta_producto">
-    <End Role="producto" Type="Self.producto" Multiplicity="1" />
-    <End Role="detalleVenta" Type="Self.detalleVenta" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="producto">
-        <PropertyRef Name="idProducto" />
-      </Principal>
-      <Dependent Role="detalleVenta">
-        <PropertyRef Name="idProducto" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_producto_estado">
-    <End Role="estado" Type="Self.estado" Multiplicity="1" />
-    <End Role="producto" Type="Self.producto" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="estado">
-        <PropertyRef Name="idEstado" />
-      </Principal>
-      <Dependent Role="producto">
-        <PropertyRef Name="idEstado" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_hostorialStock_producto">
-    <End Role="producto" Type="Self.producto" Multiplicity="1" />
-    <End Role="historialStock" Type="Self.historialStock" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="producto">
-        <PropertyRef Name="idProducto" />
-      </Principal>
-      <Dependent Role="historialStock">
-        <PropertyRef Name="idProducto" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_producto_subcategoria">
-    <End Role="subcategoria" Type="Self.subcategoria" Multiplicity="1" />
-    <End Role="producto" Type="Self.producto" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="subcategoria">
-        <PropertyRef Name="idSubCategoria" />
-      </Principal>
-      <Dependent Role="producto">
-        <PropertyRef Name="idSubCategoria" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_proveedorXproducto_producto">
-    <End Role="producto" Type="Self.producto" Multiplicity="1" />
-    <End Role="proveedorXproducto" Type="Self.proveedorXproducto" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="producto">
-        <PropertyRef Name="idProducto" />
-      </Principal>
-      <Dependent Role="proveedorXproducto">
-        <PropertyRef Name="idProducto" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -233,39 +136,14 @@
     <EntitySet Name="detalleVenta" EntityType="Self.detalleVenta" />
     <EntitySet Name="estado" EntityType="Self.estado" />
     <EntitySet Name="historialStock" EntityType="Self.historialStock" />
-    <EntitySet Name="producto" EntityType="Self.producto" />
     <EntitySet Name="proveedor" EntityType="Self.proveedor" />
     <EntitySet Name="proveedorXproducto" EntityType="Self.proveedorXproducto" />
     <EntitySet Name="subcategoria" EntityType="Self.subcategoria" />
     <EntitySet Name="tipoUsuario" EntityType="Self.tipoUsuario" />
     <EntitySet Name="usuario" EntityType="Self.usuario" />
-    <AssociationSet Name="FK_producto_categoria" Association="Self.FK_producto_categoria">
-      <End Role="categoria" EntitySet="categoria" />
-      <End Role="producto" EntitySet="producto" />
-    </AssociationSet>
     <AssociationSet Name="FK_subcategoria_categoria" Association="Self.FK_subcategoria_categoria">
       <End Role="categoria" EntitySet="categoria" />
       <End Role="subcategoria" EntitySet="subcategoria" />
-    </AssociationSet>
-    <AssociationSet Name="FK_detalleVenta_producto" Association="Self.FK_detalleVenta_producto">
-      <End Role="producto" EntitySet="producto" />
-      <End Role="detalleVenta" EntitySet="detalleVenta" />
-    </AssociationSet>
-    <AssociationSet Name="FK_producto_estado" Association="Self.FK_producto_estado">
-      <End Role="estado" EntitySet="estado" />
-      <End Role="producto" EntitySet="producto" />
-    </AssociationSet>
-    <AssociationSet Name="FK_hostorialStock_producto" Association="Self.FK_hostorialStock_producto">
-      <End Role="producto" EntitySet="producto" />
-      <End Role="historialStock" EntitySet="historialStock" />
-    </AssociationSet>
-    <AssociationSet Name="FK_producto_subcategoria" Association="Self.FK_producto_subcategoria">
-      <End Role="subcategoria" EntitySet="subcategoria" />
-      <End Role="producto" EntitySet="producto" />
-    </AssociationSet>
-    <AssociationSet Name="FK_proveedorXproducto_producto" Association="Self.FK_proveedorXproducto_producto">
-      <End Role="producto" EntitySet="producto" />
-      <End Role="proveedorXproducto" EntitySet="proveedorXproducto" />
     </AssociationSet>
     <AssociationSet Name="FK_proveedorXproducto_proveedor" Association="Self.FK_proveedorXproducto_proveedor">
       <End Role="proveedor" EntitySet="proveedor" />
@@ -288,6 +166,31 @@
     <AssociationSet Name="FK_venta_usuario" Association="BDModuloVentaModel.FK_venta_usuario">
       <End Role="usuario" EntitySet="usuario" />
       <End Role="venta" EntitySet="venta" />
+    </AssociationSet>
+    <EntitySet Name="producto" EntityType="BDModuloVentaModel.producto" />
+    <AssociationSet Name="FK_producto_categoria" Association="BDModuloVentaModel.FK_producto_categoria">
+      <End Role="categoria" EntitySet="categoria" />
+      <End Role="producto" EntitySet="producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_detalleVenta_producto" Association="BDModuloVentaModel.FK_detalleVenta_producto">
+      <End Role="producto" EntitySet="producto" />
+      <End Role="detalleVenta" EntitySet="detalleVenta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_producto_estado" Association="BDModuloVentaModel.FK_producto_estado">
+      <End Role="estado" EntitySet="estado" />
+      <End Role="producto" EntitySet="producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_hostorialStock_producto" Association="BDModuloVentaModel.FK_hostorialStock_producto">
+      <End Role="producto" EntitySet="producto" />
+      <End Role="historialStock" EntitySet="historialStock" />
+    </AssociationSet>
+    <AssociationSet Name="FK_producto_subcategoria" Association="BDModuloVentaModel.FK_producto_subcategoria">
+      <End Role="subcategoria" EntitySet="subcategoria" />
+      <End Role="producto" EntitySet="producto" />
+    </AssociationSet>
+    <AssociationSet Name="FK_proveedorXproducto_producto" Association="BDModuloVentaModel.FK_proveedorXproducto_producto">
+      <End Role="producto" EntitySet="producto" />
+      <End Role="proveedorXproducto" EntitySet="proveedorXproducto" />
     </AssociationSet>
   </EntityContainer>
   <EntityType Name="cliente">
@@ -346,6 +249,104 @@
       </Principal>
       <Dependent Role="venta">
         <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="producto">
+    <Key>
+      <PropertyRef Name="idProducto" />
+    </Key>
+    <Property Name="idProducto" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="150" FixedLength="false" Unicode="false" />
+    <Property Name="observacion" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="stockMinimo" Type="Int32" Nullable="false" />
+    <Property Name="stockIdeal" Type="Int32" Nullable="false" />
+    <Property Name="stockActual" Type="Int32" Nullable="false" />
+    <Property Name="precioCosto" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="precioGremio" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="precioContado" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="precioLista" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="idCategoria" Type="Int32" Nullable="false" />
+    <Property Name="idSubCategoria" Type="Int32" Nullable="false" />
+    <Property Name="idEstado" Type="Int32" Nullable="false" />
+    <Property Name="precioFijo" Type="Boolean" Nullable="false" />
+    <Property Name="garantia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="categoria" Relationship="BDModuloVentaModel.FK_producto_categoria" FromRole="producto" ToRole="categoria" />
+    <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_producto" FromRole="producto" ToRole="detalleVenta" />
+    <NavigationProperty Name="estado" Relationship="BDModuloVentaModel.FK_producto_estado" FromRole="producto" ToRole="estado" />
+    <NavigationProperty Name="historialStock" Relationship="BDModuloVentaModel.FK_hostorialStock_producto" FromRole="producto" ToRole="historialStock" />
+    <NavigationProperty Name="subcategoria" Relationship="BDModuloVentaModel.FK_producto_subcategoria" FromRole="producto" ToRole="subcategoria" />
+    <NavigationProperty Name="proveedorXproducto" Relationship="BDModuloVentaModel.FK_proveedorXproducto_producto" FromRole="producto" ToRole="proveedorXproducto" />
+  </EntityType>
+  <Association Name="FK_producto_categoria">
+    <End Type="BDModuloVentaModel.categoria" Role="categoria" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.producto" Role="producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="categoria">
+        <PropertyRef Name="idCategoria" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="idCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_detalleVenta_producto">
+    <End Type="BDModuloVentaModel.producto" Role="producto" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.detalleVenta" Role="detalleVenta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="producto">
+        <PropertyRef Name="idProducto" />
+      </Principal>
+      <Dependent Role="detalleVenta">
+        <PropertyRef Name="idProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_producto_estado">
+    <End Type="BDModuloVentaModel.estado" Role="estado" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.producto" Role="producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="estado">
+        <PropertyRef Name="idEstado" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="idEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_hostorialStock_producto">
+    <End Type="BDModuloVentaModel.producto" Role="producto" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.historialStock" Role="historialStock" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="producto">
+        <PropertyRef Name="idProducto" />
+      </Principal>
+      <Dependent Role="historialStock">
+        <PropertyRef Name="idProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_producto_subcategoria">
+    <End Type="BDModuloVentaModel.subcategoria" Role="subcategoria" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.producto" Role="producto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="subcategoria">
+        <PropertyRef Name="idSubCategoria" />
+      </Principal>
+      <Dependent Role="producto">
+        <PropertyRef Name="idSubCategoria" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_proveedorXproducto_producto">
+    <End Type="BDModuloVentaModel.producto" Role="producto" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.proveedorXproducto" Role="proveedorXproducto" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="producto">
+        <PropertyRef Name="idProducto" />
+      </Principal>
+      <Dependent Role="proveedorXproducto">
+        <PropertyRef Name="idProducto" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

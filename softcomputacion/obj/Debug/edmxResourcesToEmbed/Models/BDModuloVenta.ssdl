@@ -61,6 +61,7 @@
     <Property Name="idSubCategoria" Type="int" Nullable="false" />
     <Property Name="idEstado" Type="int" Nullable="false" />
     <Property Name="precioFijo" Type="bit" Nullable="false" />
+    <Property Name="garantia" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="proveedor">
     <Key>

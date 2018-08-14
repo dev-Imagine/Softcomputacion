@@ -18,7 +18,7 @@ namespace softcomputacion.Models
         public int idProveedor { get; set; }
         public int idProducto { get; set; }
     
-        public virtual producto producto { get; set; }
         public virtual proveedor proveedor { get; set; }
+        public virtual producto producto { get; set; }
     }
 }

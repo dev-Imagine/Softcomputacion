@@ -59,7 +59,17 @@
                     <div class="col-6 col-md-4 col-lg-2 text-center">
                         <p>P/Unit: $@Convert.ToString(Math.Round(oDetalle.costoIndividual, 2)).Replace(",", ".").Replace(",00", "")</p>
                     </div>
-
+                    <div class="col-12 col-lg-6">
+                        @if (oDetalle.producto.garantia == "" || oDetalle.producto.garantia == null)
+                        {
+                        <p style="font-size:18px;"><i>Garantía: N/A</i></p>
+                        }
+                        else
+                        {
+                            <p style="font-size:18px;"><i>Garantía: @oDetalle.producto.garantia</i></p>
+                        }
+                        
+                    </div>
                     <div class="col-12 col-md-4 col-lg-2 text-center text-sm-center text-md-right">
                         <p style="font-size:22px; color:#000">*$@Convert.ToString(Math.Round(oDetalle.costoGrupal, 2)).Replace(",", ".").Replace(",00", "")</p>
                     </div>

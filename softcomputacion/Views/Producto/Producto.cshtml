@@ -87,7 +87,19 @@
                     </div>
                 </div>
 
-
+                <div class="col-12 col-md-12">
+                    <label for="frmNombre">Garantía</label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Garantia">
+                        @if (oProducto.garantia == "" || oProducto.garantia == null)
+                        {
+                            <input class="input100" type="text" name="oProducto.garantia" placeholder="Garantía" value="N/A">
+                        }
+                        else
+                        {
+                            <input class="input100" type="text" name="oProducto.garantia" placeholder="Garantía" value="@oProducto.garantia">
+                        }
+                    </div>
+                </div>
 
                 <!--stock-->
 

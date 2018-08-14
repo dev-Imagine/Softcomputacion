@@ -44,6 +44,15 @@
                     </div>
                     <div class="col-12">
                         <div class="clearfix">
+                            @if (oDetalle.producto.garantia == "" || oDetalle.producto.garantia == null)
+                            {
+                                <p class="fs-14 float-left">Gtia: N/A</p>
+                            }
+                            else
+                            {
+                                <p class="fs-14 float-left">Gtia: @oDetalle.producto.garantia</p>
+                            }
+
                             <span class="fas fa-trash-alt float-right" style="cursor:pointer; font-size: 15px;" onclick="borrarDetalle(@oDetalle.idProducto)"></span>
                         </div>
                     </div>

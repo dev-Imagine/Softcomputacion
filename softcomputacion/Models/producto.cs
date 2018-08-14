@@ -36,6 +36,7 @@ namespace softcomputacion.Models
         public int idSubCategoria { get; set; }
         public int idEstado { get; set; }
         public bool precioFijo { get; set; }
+        public string garantia { get; set; }
     
         public virtual categoria categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

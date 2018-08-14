@@ -21,7 +21,7 @@ namespace softcomputacion.Models
         public int cantidad { get; set; }
         public decimal costoGrupal { get; set; }
     
-        public virtual producto producto { get; set; }
         public virtual venta venta { get; set; }
+        public virtual producto producto { get; set; }
     }
 }

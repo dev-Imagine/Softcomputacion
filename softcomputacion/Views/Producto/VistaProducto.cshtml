@@ -46,6 +46,22 @@
                         </span>
                     </p>
                 </div>
+                <div class="col-12">
+                    <p class="login100-form-title p-b-10 fs-17 text-center">
+                        <strong>Garantía:</strong>
+                        <span>
+                            @if (Model.garantia == "" || Model.garantia == null)
+                            {
+                            <i>N/A</i>
+                            }
+                            else
+                            {
+                                <i>@Model.garantia</i>
+                            }
+                            
+                        </span>
+                    </p>
+                </div>
                 <div class="col-12 m-b-14">
                     <hr />
                 </div>
