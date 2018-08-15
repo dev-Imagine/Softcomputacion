@@ -99,5 +99,66 @@ namespace softcomputacion.Servicios
                 throw ex;
             }
         }
+        
+
+        private cliente GuardarCliente(cliente oCliente)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    oCliente.nombre = oCliente.nombre.ToUpper();
+                    oCliente.apellido = oCliente.apellido.ToUpper();
+                    bd.Entry(oCliente).State = System.Data.Entity.EntityState.Added;
+                    bd.SaveChanges();
+                    return oCliente;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        private cliente ModificarCliente(cliente oCliente)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    oCliente.nombre = oCliente.nombre.ToUpper();
+                    oCliente.apellido = oCliente.apellido.ToUpper();
+                    bd.Entry(oCliente).State = System.Data.Entity.EntityState.Modified;
+                    bd.SaveChanges();
+                    return oCliente;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public cliente GuardarModificarCliente(cliente oCliente)
+        {
+            try
+            {
+                if (oCliente.idCliente == 0)
+                {
+                    GuardarCliente(oCliente);
+                }
+                else
+                {
+                    ModificarCliente(oCliente);
+                }
+                return oCliente;
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
+
+
     }
 }

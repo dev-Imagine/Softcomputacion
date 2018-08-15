@@ -406,6 +406,7 @@
     <Content Include="Views\Cliente\_ListaCliente.cshtml" />
     <Content Include="Views\Cliente\ListarClientes.cshtml" />
     <Content Include="Views\Cliente\ListaVentasCliente.cshtml" />
+    <Content Include="Views\Cliente\_frmCliente.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

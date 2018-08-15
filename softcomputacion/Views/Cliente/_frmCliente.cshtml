@@ -1,0 +1,36 @@
+﻿
+<form class="validate-form" method="post" action="@Url.Action("GuardarModificarCliente","Cliente")" autocomplete="off">
+    @Html.AntiForgeryToken()
+    <span id="spanFRM1" class="login100-form-title p-b-5">
+        Nuevo Cliente
+    </span>
+    <span id="spanFRM2" class="login100-form-title p-b-34">
+
+    </span>
+
+
+    <input name="oCliente.idCliente" value="0" id="frmId" class="dis-none">
+    <div class="wrap-input100 validate-input m-b-20" data-validate="DNI">
+        <input class="input100" type="text" name="oCliente.dni" maxlength="8" pattern=".{8,}"   required title="8 digitos minimo" id="frmDni" placeholder="DNI" value="">
+    </div>
+    <div class="wrap-input100 validate-input m-b-20" data-validate="Nombre">
+        <input class="input100" type="text" name="oCliente.nombre" id="frmNombre" placeholder="Nombre" value="">
+    </div>
+    <div class="wrap-input100 validate-input m-b-20" data-validate="Apellido">
+        <input class="input100" type="text" name="oCliente.apellido" id="frmApellido" placeholder="Apellido" value="">
+    </div>
+    <div class="wrap-input100 m-b-20">
+        <input class="input100" type="number" name="oCliente.telefono" id="frmTelefono" placeholder="Teléfono" value="">
+    </div>
+    <div class="wrap-input100 m-b-20">
+        <input class="input100" type="text" name="oCliente.direccion" id="frmDireccion" placeholder="Dirección" value="">
+    </div>    
+    <div class="container-login100-form-btn">
+
+        <div id="btnModificar" class="btn-group w-full" role="group">
+            <button type="reset" class="btn btn-dark" style="width:50%" onclick="CancelarModificar()">Cancelar</button>
+            <button type="submit" id="btnGuardar" class="btn btn-success" style="width:50%">Guardar</button> 
+        </div>
+
+    </div>
+</form>

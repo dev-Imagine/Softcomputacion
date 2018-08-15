@@ -38,6 +38,9 @@ namespace softcomputacion.Controllers
                 return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
             }
         }
+
+
+        //Post Cliente
         [HttpPost]
         public ActionResult ListarClientes(string nombreApellido = "", string dni="")
         {
@@ -110,6 +113,27 @@ namespace softcomputacion.Controllers
             catch (Exception)
             {
                 return "0";
+            }
+        }
+
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult GuardarModificarCliente(cliente oCliente)
+        {
+            try
+            {
+                usuario oSession = (usuario)Session["Usuario"];
+                if (oSession == null || oSession.idTipoUsuario != 2)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                srvCliente sCliente = new srvCliente();
+                sCliente.GuardarModificarCliente(oCliente);
+                return RedirectToAction("ListarClientes");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar guardar o modificar el usuario." });
             }
         }
 
