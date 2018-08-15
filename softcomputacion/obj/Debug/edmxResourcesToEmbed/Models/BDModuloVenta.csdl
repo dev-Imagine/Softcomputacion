@@ -153,12 +153,7 @@
       <End Role="tipoUsuario" EntitySet="tipoUsuario" />
       <End Role="usuario" EntitySet="usuario" />
     </AssociationSet>
-    <EntitySet Name="cliente" EntityType="BDModuloVentaModel.cliente" />
     <EntitySet Name="venta" EntityType="BDModuloVentaModel.venta" />
-    <AssociationSet Name="FK_venta_cliente" Association="BDModuloVentaModel.FK_venta_cliente">
-      <End Role="cliente" EntitySet="cliente" />
-      <End Role="venta" EntitySet="venta" />
-    </AssociationSet>
     <AssociationSet Name="FK_detalleVenta_venta" Association="BDModuloVentaModel.FK_detalleVenta_venta">
       <End Role="venta" EntitySet="venta" />
       <End Role="detalleVenta" EntitySet="detalleVenta" />
@@ -192,16 +187,12 @@
       <End Role="producto" EntitySet="producto" />
       <End Role="proveedorXproducto" EntitySet="proveedorXproducto" />
     </AssociationSet>
+    <EntitySet Name="cliente" EntityType="BDModuloVentaModel.cliente" />
+    <AssociationSet Name="FK_venta_cliente" Association="BDModuloVentaModel.FK_venta_cliente">
+      <End Role="cliente" EntitySet="cliente" />
+      <End Role="venta" EntitySet="venta" />
+    </AssociationSet>
   </EntityContainer>
-  <EntityType Name="cliente">
-    <Key>
-      <PropertyRef Name="idCliente" />
-    </Key>
-    <Property Name="idCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="apellido" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
-    <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="cliente" ToRole="venta" />
-  </EntityType>
   <EntityType Name="venta">
     <Key>
       <PropertyRef Name="idVenta" />
@@ -212,22 +203,10 @@
     <Property Name="costoTotal" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
     <Property Name="cantidadProductosTotal" Type="Int32" />
     <Property Name="idCliente" Type="Int32" />
-    <NavigationProperty Name="cliente" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="venta" ToRole="cliente" />
     <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="venta" ToRole="detalleVenta" />
     <NavigationProperty Name="usuario" Relationship="BDModuloVentaModel.FK_venta_usuario" FromRole="venta" ToRole="usuario" />
+    <NavigationProperty Name="cliente" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="venta" ToRole="cliente" />
   </EntityType>
-  <Association Name="FK_venta_cliente">
-    <End Type="BDModuloVentaModel.cliente" Role="cliente" Multiplicity="0..1" />
-    <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="cliente">
-        <PropertyRef Name="idCliente" />
-      </Principal>
-      <Dependent Role="venta">
-        <PropertyRef Name="idCliente" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
   <Association Name="FK_detalleVenta_venta">
     <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="1" />
     <End Type="BDModuloVentaModel.detalleVenta" Role="detalleVenta" Multiplicity="*" />
@@ -347,6 +326,30 @@
       </Principal>
       <Dependent Role="proveedorXproducto">
         <PropertyRef Name="idProducto" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="cliente">
+    <Key>
+      <PropertyRef Name="idCliente" />
+    </Key>
+    <Property Name="idCliente" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="dni" Type="String" MaxLength="10" FixedLength="false" Unicode="false" />
+    <Property Name="nombre" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="apellido" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
+    <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="cliente" ToRole="venta" />
+  </EntityType>
+  <Association Name="FK_venta_cliente">
+    <End Type="BDModuloVentaModel.cliente" Role="cliente" Multiplicity="0..1" />
+    <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cliente">
+        <PropertyRef Name="idCliente" />
+      </Principal>
+      <Dependent Role="venta">
+        <PropertyRef Name="idCliente" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -12,8 +12,11 @@
       <PropertyRef Name="idCliente" />
     </Key>
     <Property Name="idCliente" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+    <Property Name="dni" Type="varchar" MaxLength="10" />
     <Property Name="nombre" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="apellido" Type="varchar" MaxLength="50" Nullable="false" />
+    <Property Name="direccion" Type="varchar" MaxLength="100" />
+    <Property Name="telefono" Type="varchar" MaxLength="50" />
   </EntityType>
   <EntityType Name="detalleVenta">
     <Key>

@@ -34,8 +34,8 @@ namespace softcomputacion.Models
         public virtual DbSet<subcategoria> subcategoria { get; set; }
         public virtual DbSet<tipoUsuario> tipoUsuario { get; set; }
         public virtual DbSet<usuario> usuario { get; set; }
-        public virtual DbSet<cliente> cliente { get; set; }
         public virtual DbSet<venta> venta { get; set; }
         public virtual DbSet<producto> producto { get; set; }
+        public virtual DbSet<cliente> cliente { get; set; }
     }
 }

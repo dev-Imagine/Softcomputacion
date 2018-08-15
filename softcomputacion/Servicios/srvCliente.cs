@@ -35,7 +35,7 @@ namespace softcomputacion.Servicios
         //        throw ex;
         //    }
         //}
-        public List<cliente> BuscarClientes(string NombreApellido)
+        public List<cliente> BuscarClientes(string NombreApellido, string dni ="")
         {
             try
             {
@@ -43,10 +43,56 @@ namespace softcomputacion.Servicios
                 NombreApellido = NombreApellido.ToUpper();
                 using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
                 {
-                    lstCliente = bd.cliente.Where(x => x.nombre.Contains(NombreApellido) || x.apellido.Contains(NombreApellido)).ToList();
+                    if (dni.Trim().Length != 0)
+                    {
+                        lstCliente = bd.cliente.Where(x => x.dni == dni).ToList();
+                        lstCliente = lstCliente.Where(x => x.nombre.Contains(NombreApellido) || x.apellido.Contains(NombreApellido)).ToList();
+                    }
+                    else
+                    {
+                        lstCliente = bd.cliente.Where(x => x.nombre.Contains(NombreApellido) || x.apellido.Contains(NombreApellido)).ToList();
+                    }
+                    
                     return lstCliente.OrderBy(x => x.apellido).ThenBy(x => x.nombre).ToList();
                 }
 
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public List<venta> ObtenerVentas(int idCliente)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    List<venta> lstVenta = bd.venta.Where(x => x.idCliente == idCliente).OrderByDescending(x => x.fechaEmision).ToList();
+                    string st = "";
+                    foreach (venta oVenta in lstVenta)
+                    {
+                        foreach (detalleVenta oDetalle in oVenta.detalleVenta.ToList())
+                        {
+                            st = oDetalle.producto.nombre;
+                        }
+                    }
+                    return lstVenta;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+        public cliente ObtenerCliente(int idCliente)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    return bd.cliente.Where(x=> x.idCliente == idCliente).FirstOrDefault();
+                }
             }
             catch (Exception ex)
             {

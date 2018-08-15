@@ -27,9 +27,9 @@ namespace softcomputacion.Models
         public Nullable<int> cantidadProductosTotal { get; set; }
         public Nullable<int> idCliente { get; set; }
     
-        public virtual cliente cliente { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<detalleVenta> detalleVenta { get; set; }
         public virtual usuario usuario { get; set; }
+        public virtual cliente cliente { get; set; }
     }
 }

@@ -247,7 +247,6 @@ namespace softcomputacion.Controllers
                 return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
             }
         }
-
         public JsonResult SeleccionarClienteVenta(cliente oCliente)
         {
             try

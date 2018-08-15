@@ -91,15 +91,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="cliente">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.cliente">
-        <MappingFragment StoreEntitySet="cliente">
-          <ScalarProperty Name="apellido" ColumnName="apellido" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="idCliente" ColumnName="idCliente" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="venta">
       <EntityTypeMapping TypeName="BDModuloVentaModel.venta">
         <MappingFragment StoreEntitySet="venta">
@@ -130,6 +121,18 @@
           <ScalarProperty Name="observacion" ColumnName="observacion" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cliente">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.cliente">
+        <MappingFragment StoreEntitySet="cliente">
+          <ScalarProperty Name="telefono" ColumnName="telefono" />
+          <ScalarProperty Name="direccion" ColumnName="direccion" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="idCliente" ColumnName="idCliente" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
