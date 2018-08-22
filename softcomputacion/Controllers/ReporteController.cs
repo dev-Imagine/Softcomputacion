@@ -44,6 +44,7 @@ namespace softcomputacion.Controllers
                 }
                 ViewBag.filtros = ";";
                 srvReporte sReporte = new srvReporte();
+                ViewBag.DatosChart = "";
                 return View();
             }
             catch (Exception)
@@ -135,7 +136,24 @@ namespace softcomputacion.Controllers
                 }
                 srvReporte sReporte = new srvReporte();
                 List<ReporteESstock> model = sReporte.obtenerReporteVentas(Convert.ToDateTime(fechaDesde), Convert.ToDateTime(fechaHasta));
-                return View(model.OrderBy(x => x.año).ThenBy(x => x.mes).ToList());
+                model = model.OrderBy(x => x.año).ThenBy(x => x.mes).ToList();
+                string stDatosChart = "";
+                //        [['Year', 'Sales', 'Expenses'],
+                //        ['2004',  1000,      400],
+                //        ['2005',  1170,      460],
+                //        ['2006',  660,       1120],
+                //        ['2007',  1030,      540]]
+                stDatosChart = "[";//"[['Meses', 'Total', 'Neto'],";
+                foreach (var oData in model)
+                {
+                    stDatosChart = stDatosChart + "[";
+                    stDatosChart = stDatosChart + "\"" + oData.mes.ToString().PadLeft(2, '0') + "/" + oData.año + "\"," + Convert.ToInt32(oData.ventaTotal) + "," + Convert.ToInt32(oData.ingresoNeto);
+                    stDatosChart = stDatosChart + "],";
+                }
+                stDatosChart = stDatosChart.Remove(stDatosChart.Length - 1, 1);
+                stDatosChart = stDatosChart + "]";
+                ViewBag.DatosChart = stDatosChart;
+                return View(model);
             }
             catch (Exception)
             {

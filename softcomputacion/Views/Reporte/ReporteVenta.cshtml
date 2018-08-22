@@ -3,6 +3,7 @@
     Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
     List<softcomputacion.Models.ReporteESstock> lstReporte = new List<softcomputacion.Models.ReporteESstock>();
     string[] arrFiltros = Convert.ToString(ViewBag.filtros).Split(';');
+    string stDatosChart = ViewBag.DatosChart;
 }
 @model List<softcomputacion.Models.ReporteESstock>
 <div class="container-fluid">
@@ -49,29 +50,73 @@
             {
                 foreach (var oReporteES in Model)
                 {
-            <div class="row">
-                <div class="col-12 col-sm-6 col-md-2 text-center">
-                    <i>@oReporteES.mes.ToString().PadLeft(2, '0') / @oReporteES.año</i>
-                </div>
-                <div class="col-12 col-sm-6 col-md-2 text-center">
-                    <i>Ventas:<strong> @oReporteES.cantVentaTotal</strong></i>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 text-center">
-                    <i>Ingresos totales:<strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
-                </div>
-                <div class="col-12 col-sm-6 col-md-4 text-center">
-                    <i>Ingreso neto:<strong> $@Convert.ToString(Math.Round(oReporteES.ingresoNeto, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
-                </div>
-                <div class="col-12">
-                    <hr class="m-t-8 m-b-8" />
-                </div>
-            </div>
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-2 text-center">
+                            <i>@oReporteES.mes.ToString().PadLeft(2, '0') / @oReporteES.año</i>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2 text-center">
+                            <i>Ventas:<strong> @oReporteES.cantVentaTotal</strong></i>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 text-center">
+                            <i>Ingresos totales:<strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-4 text-center">
+                            <i>Ingreso neto:<strong> $@Convert.ToString(Math.Round(oReporteES.ingresoNeto, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
+                        </div>
+                        <div class="col-12">
+                            <hr class="m-t-8 m-b-8" />
+                        </div>
+                    </div>
 
                 }
             }
 
         </div>
 
-
+        <div class="col-12">
+            <hr class="m-t-8 m-b-8" />
+        </div>
+        <div class="col-12">
+            <div id="curve_chart" style="width: 900px; height: 500px"></div>
+        </div>
     </div>
 </div>
+
+@section scripts{
+    @*<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
+    <script type="text/javascript">
+        var stData = '@stDatosChart';
+        var stData = stData.replace(/&quot;/g, '"');
+        alert(stData);
+        google.charts.load('current', { 'packages': ['corechart'] });
+        google.charts.setOnLoadCallback(drawChart);
+        
+        function drawChart() {
+            var dataChart = new google.visualization.DataTable();
+            dataChart.addColumn('string', 'Mes/Año');
+            dataChart.addColumn('number', 'Total');
+            dataChart.addColumn('number', 'Neto');
+            dataChart.addRows(JSON.parse(stData));
+            //var data = google.visualization.arrayToDataTable(JSON.parse(stData));
+
+            //var options = {
+            //    title: 'Company Performance',
+            //    curveType: 'function',
+            //    legend: { position: 'bottom' }
+            //};
+
+            //var chart = new google.visualization.LineChart(document.getElementById('curve_chart'));
+
+            //chart.draw(arrPedidosMeses, options);
+            var options = {
+                title: 'Total pedidos por ciudad.',
+                hAxis: { title: 'Año', titleTextStyle: { color: '#333' } },
+                vAxis: { minValue: 0 }
+            };
+
+            var chart = new google.visualization.AreaChart(document.getElementById('chart_div'));
+            chart.draw(dataChart, options);
+
+        }*@
+    </script>
+}
