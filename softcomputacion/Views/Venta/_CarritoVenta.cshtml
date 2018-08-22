@@ -63,17 +63,28 @@
     }
     <hr style="border-top: 1px solid #b5262a;" />
     <div class="row">
-        <div class="col-12 col-md-6 col-lg-12 text-center m-b-5 m-t-8" style="color:#666666">
+        @*<div class="col-12 col-md-6 col-lg-12 text-center m-b-5 m-t-8" style="color:#666666">
             <p>
                 <span>CLIENTE: <strong class="text-left fs-17 pCliente" id="@oVenta.idCliente">@oVenta.cliente.apellido @oVenta.cliente.nombre &nbsp;&nbsp;&nbsp;</strong></span>
                 <span onclick="BorrarCliente()" class="far fa-times-circle text-danger fs-24" style="cursor:pointer;"></span>
+                <button onclick="_PopUpBuscarCliente()" class="btn btn-outline-info"><i class="fas fa-share"></i> Cliente</button>
             </p>
+        </div>*@
+        <div class="col-12 col-sm-10 col-lg-12 col-xl-10 text-center">
+            <p class="p-t-6">CLIENTE: <strong class="text-left fs-17 pCliente" id="@oVenta.idCliente">@oVenta.cliente.apellido @oVenta.cliente.nombre &nbsp;&nbsp;&nbsp;</strong></p>
         </div>
-        <div class="col-12 col-md-6 col-lg-12 text-center">
-            <button onclick="_PopUpBuscarCliente()" class="btn btn-info w-50"><i class="fas fa-share"></i> Cliente</button>
+        <div class="col-4 offset-4 col-sm-2 offset-sm-0 col-lg-4 offset-lg-4 col-xl-2 offset-xl-0">
+            <div class="btn-group w-full" role="group">
+                <button type="button" class="btn btn-outline-primary" style="width:100%" onclick="_PopUpBuscarCliente()"><i class="fas fa-share"></i></button>
+                <button type="button" class="btn btn-outline-danger" style="width:100%" onclick="BorrarCliente()"><i class="fas fa-times-circle"></i></button>
+            </div>
         </div>
+        
+        
+
+
     </div>
-    <hr style="border-top: 1px solid #b5262a;" />
+    @*<hr style="border-top: 1px solid #b5262a;" />
     <div class="row">
         <div class="col-12 col-sm-6 col-md-6 col-lg-12 col-xl-6 text-center m-b-0 m-t-0" >
             <div class="wrap-input100 m-b-20" data-validate="">
@@ -87,7 +98,7 @@
                 </select>
             </div>
         </div>
-    </div>
+    </div>*@
     <hr style="border-top: 1px solid #b5262a;" />
     <div class="row ">
         <div class="col-12">
