@@ -123,6 +123,7 @@
     <Property Name="costoTotal" Type="money" Nullable="false" />
     <Property Name="cantidadProductosTotal" Type="int" />
     <Property Name="idCliente" Type="int" />
+    <Property Name="idEstado" Type="int" Nullable="false" />
   </EntityType>
   <Association Name="FK_detalleVenta_producto">
     <End Role="producto" Type="Self.producto" Multiplicity="1" />
@@ -256,6 +257,18 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <Association Name="FK_venta_estado">
+    <End Role="estado" Type="Self.estado" Multiplicity="1" />
+    <End Role="venta" Type="Self.venta" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="estado">
+        <PropertyRef Name="idEstado" />
+      </Principal>
+      <Dependent Role="venta">
+        <PropertyRef Name="idEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
   <Association Name="FK_venta_usuario">
     <End Role="usuario" Type="Self.usuario" Multiplicity="1" />
     <End Role="venta" Type="Self.venta" Multiplicity="*" />
@@ -323,6 +336,10 @@
     </AssociationSet>
     <AssociationSet Name="FK_venta_cliente" Association="Self.FK_venta_cliente">
       <End Role="cliente" EntitySet="cliente" />
+      <End Role="venta" EntitySet="venta" />
+    </AssociationSet>
+    <AssociationSet Name="FK_venta_estado" Association="Self.FK_venta_estado">
+      <End Role="estado" EntitySet="estado" />
       <End Role="venta" EntitySet="venta" />
     </AssociationSet>
     <AssociationSet Name="FK_venta_usuario" Association="Self.FK_venta_usuario">

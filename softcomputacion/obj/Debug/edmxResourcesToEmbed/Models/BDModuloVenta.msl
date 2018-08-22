@@ -79,18 +79,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="venta">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.venta">
-        <MappingFragment StoreEntitySet="venta">
-          <ScalarProperty Name="idCliente" ColumnName="idCliente" />
-          <ScalarProperty Name="cantidadProductosTotal" ColumnName="cantidadProductosTotal" />
-          <ScalarProperty Name="costoTotal" ColumnName="costoTotal" />
-          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
-          <ScalarProperty Name="fechaEmision" ColumnName="fechaEmision" />
-          <ScalarProperty Name="idVenta" ColumnName="idVenta" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="producto">
       <EntityTypeMapping TypeName="BDModuloVentaModel.producto">
         <MappingFragment StoreEntitySet="producto">
@@ -134,6 +122,19 @@
           <ScalarProperty Name="idProducto" ColumnName="idProducto" />
           <ScalarProperty Name="idVenta" ColumnName="idVenta" />
           <ScalarProperty Name="idDetalleVenta" ColumnName="idDetalleVenta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="venta">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.venta">
+        <MappingFragment StoreEntitySet="venta">
+          <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+          <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+          <ScalarProperty Name="cantidadProductosTotal" ColumnName="cantidadProductosTotal" />
+          <ScalarProperty Name="costoTotal" ColumnName="costoTotal" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
+          <ScalarProperty Name="fechaEmision" ColumnName="fechaEmision" />
+          <ScalarProperty Name="idVenta" ColumnName="idVenta" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

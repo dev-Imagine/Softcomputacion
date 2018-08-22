@@ -229,6 +229,7 @@ namespace softcomputacion.Controllers
                 venta oVenta = (venta)Session["venta"];
                 oVenta.cliente = null;
                 oVenta.idUsuario = oUsuario.idUsuario;
+                oVenta.idEstado = 9;
                 srvVenta sVenta = new srvVenta();                
                 if (oVenta.detalleVenta.Count == 0)
                 {

@@ -105,37 +105,48 @@
                     {
                         stFechaHs = oVenta.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + oVenta.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + oVenta.fechaEmision.Year + " " + oVenta.fechaEmision.Hour.ToString().PadLeft(2, '0') + ":" + oVenta.fechaEmision.Minute.ToString().PadLeft(2, '0');
                         stTotal = Convert.ToString(Math.Round(oVenta.costoTotal, 2)).Replace(",", ".").Replace(",00", "");
-                            <div class="row">
-                                <div class="col-12 p-b-16 p-t-16 item-lista-venta" style="text-align:left;" onclick="window.open('@Url.Action("VistaVenta","Venta", new { idVenta = oVenta.idVenta })')">
-                                    <div class="row">
+                <div class="row">
+                    <div class="col-12 p-b-5 p-t-10 item-lista-venta" style="text-align:left;" onclick="window.open('@Url.Action("VistaVenta","Venta", new { idVenta = oVenta.idVenta })')">
+                        <div class="row">
 
-                                        <div class="col-12 col-sm-3 col-md-2 col-lg-2 col-xl-2 p-l-5 p-r-5">
-                                            <p class="login100-form-title fs-18 p-l-5 text-center text-sm-left">
-                                                <span>Nro: @oVenta.idVenta</span>
-                                            </p>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5 p-l-5 p-r-5">
-                                            <p class="login100-form-title fs-18 p-l-5 text-center text-sm-left">
-                                                <span>@oVenta.usuario.apellido, @oVenta.usuario.nombre</span>
-                                            </p>
-                                        </div>
-                                        <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 p-l-5 p-r-5">
-                                            <p class="login100-form-title fs-18 p-l-5 text-center">
-                                                <span>@stFechaHs</span>
-                                            </p>
-                                        </div>
-                                        <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 p-l-5 p-r-5">
-                                            <p class="login100-form-title fs-18 p-l-5 text-center text-lg-right">
-                                                <span><precio class="text-primary">$ARS</precio>@stTotal</span>
-                                            </p>
-                                        </div>
-
-                                    </div>
-                                </div>
-                                <div class="col-12">
-                                    <hr class="m-t-0 m-b-0" />
-                                </div>
+                            <div class="col-12 col-sm-3 col-md-2 col-lg-2 col-xl-2 p-l-5 p-r-5">
+                                <p class="login100-form-title fs-18 p-l-5 text-center text-sm-left">
+                                    <span>Nro: @oVenta.idVenta</span>
+                                </p>
                             </div>
+                            <div class="col-12 col-sm-6 col-md-5 col-lg-5 col-xl-5 p-l-5 p-r-5">
+                                <p class="login100-form-title fs-18 p-l-5 text-center text-sm-left">
+                                    @if (oVenta.idCliente != 0 && oVenta.idCliente != null)
+                                    {
+                                        <span>@oVenta.cliente.apellido, @oVenta.cliente.nombre</span>
+                                    }
+                                    else
+                                    {
+                                        <span>Consumidor Final</span>
+                                    }
+
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-3 col-md-3 col-lg-3 col-xl-3 p-l-5 p-r-5">
+                                <p class="login100-form-title fs-18 p-l-5 text-center">
+                                    <span>@stFechaHs</span>
+                                </p>
+                            </div>
+                            <div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-2 p-l-5 p-r-5">
+                                <p class="login100-form-title fs-18 p-l-5 text-center text-lg-right">
+                                    <span><precio class="text-primary">$ARS</precio>@stTotal</span>
+                                </p>
+                            </div>
+                            <div class="col-12">
+                                <p class="text-center text-sm-left @softcomputacion.Servicios.clsMetodosGenericos.ObtenerColorEstadoVenta(oVenta.idEstado) text-uppercase"><strong>@oVenta.estado.nombre</strong></p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="col-12">
+                        <hr class="m-t-0 m-b-0" />
+                    </div>
+                </div>
                     }
                 }
             </div>

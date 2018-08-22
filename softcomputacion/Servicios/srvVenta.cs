@@ -107,7 +107,7 @@ namespace softcomputacion.Servicios
                     {
                         temp = oVenta.cliente.apellido;
                     }
-                    
+                    temp = oVenta.estado.nombre;
                     temp = oVenta.usuario.nombre;
                     foreach (detalleVenta oDetalle  in oVenta.detalleVenta)
                     {
@@ -150,14 +150,15 @@ namespace softcomputacion.Servicios
                     string temp = "";
                     foreach (venta oVenta in lstVenta.ToList())
                     {
+                        if (oVenta.idCliente != 0 && oVenta.idCliente != null)
+                        {
+                            temp = oVenta.cliente.apellido;
+                        }
                         temp = oVenta.usuario.nombre;
+                        temp = oVenta.estado.nombre;
                         oVenta.detalleVenta.Count();
-                        //foreach (detalleVenta oDetalle in oVenta.detalleVenta)
-                        //{
-                        //    oDetalle.deta
-                        //}
                     }
-                    return lstVenta;
+                    return lstVenta.OrderByDescending(x=> x.fechaEmision).ToList();
                 }
             }
             catch (Exception)

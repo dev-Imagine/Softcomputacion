@@ -38,5 +38,20 @@ namespace softcomputacion.Servicios
             }
             return "";
         }
+        public static string ObtenerColorEstadoVenta(int idEstado)
+        {
+            switch (idEstado)
+            {
+                case 9:
+                    return "text-danger";
+                case 10:
+                    return "text-warning";
+                case 11:
+                    return "text-success";
+                default:
+                    return "#000";
+
+            }
+        }
     }
 }
