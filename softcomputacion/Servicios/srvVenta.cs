@@ -59,6 +59,7 @@ namespace softcomputacion.Servicios
                         totalCosto = totalCosto + oDetalle.costoGrupal;
                         totalCantidadProductos = totalCantidadProductos + oDetalle.cantidad;
                         oProducto = bd.producto.Where(x => x.idProducto == oDetalle.idProducto).FirstOrDefault();
+                        oDetalle.precioCostoGrupal = oProducto.precioCosto * oDetalle.cantidad;
                         oProducto.stockActual = oProducto.stockActual - oDetalle.cantidad;
                         if (oProducto.stockActual == 0)
                         {
@@ -150,6 +151,11 @@ namespace softcomputacion.Servicios
                     foreach (venta oVenta in lstVenta.ToList())
                     {
                         temp = oVenta.usuario.nombre;
+                        oVenta.detalleVenta.Count();
+                        //foreach (detalleVenta oDetalle in oVenta.detalleVenta)
+                        //{
+                        //    oDetalle.deta
+                        //}
                     }
                     return lstVenta;
                 }

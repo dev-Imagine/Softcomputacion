@@ -6,7 +6,6 @@
     <edmx:Diagrams>
       <Diagram DiagramId="6626964f52d74f86bf6ecc3dcb4de088" Name="Diagram1" ZoomLevel="55">
         <EntityTypeShape EntityType="BDModuloVentaModel.categoria" Width="1.5" PointX="0.75" PointY="6" IsExpanded="true" />
-        <EntityTypeShape EntityType="BDModuloVentaModel.detalleVenta" Width="1.5" PointX="7.5" PointY="8.375" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModuloVentaModel.estado" Width="1.5" PointX="3" PointY="8.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModuloVentaModel.historialStock" Width="1.5" PointX="7.5" PointY="11.875" IsExpanded="true" />
         <EntityTypeShape EntityType="BDModuloVentaModel.proveedor" Width="1.5" PointX="5.25" PointY="3.625" IsExpanded="true" />
@@ -18,17 +17,18 @@
         <AssociationConnector Association="BDModuloVentaModel.FK_proveedorXproducto_proveedor" ManuallyRouted="false" />
         <AssociationConnector Association="BDModuloVentaModel.FK_usuario_tipoUsuario" ManuallyRouted="false" />
         <EntityTypeShape EntityType="BDModuloVentaModel.venta" Width="1.5" PointX="5.25" PointY="13.125" />
-        <AssociationConnector Association="BDModuloVentaModel.FK_detalleVenta_venta" />
         <AssociationConnector Association="BDModuloVentaModel.FK_venta_usuario" />
         <EntityTypeShape EntityType="BDModuloVentaModel.producto" Width="1.5" PointX="5.25" PointY="7.25" />
         <AssociationConnector Association="BDModuloVentaModel.FK_producto_categoria" />
-        <AssociationConnector Association="BDModuloVentaModel.FK_detalleVenta_producto" />
         <AssociationConnector Association="BDModuloVentaModel.FK_producto_estado" />
         <AssociationConnector Association="BDModuloVentaModel.FK_hostorialStock_producto" />
         <AssociationConnector Association="BDModuloVentaModel.FK_producto_subcategoria" />
         <AssociationConnector Association="BDModuloVentaModel.FK_proveedorXproducto_producto" />
         <EntityTypeShape EntityType="BDModuloVentaModel.cliente" Width="1.5" PointX="0.75" PointY="1" />
         <AssociationConnector Association="BDModuloVentaModel.FK_venta_cliente" />
+        <EntityTypeShape EntityType="BDModuloVentaModel.detalleVenta" Width="1.5" PointX="10.5" PointY="10.25" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_detalleVenta_producto" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_detalleVenta_venta" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

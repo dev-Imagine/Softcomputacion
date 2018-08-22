@@ -9,18 +9,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="detalleVenta">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.detalleVenta">
-        <MappingFragment StoreEntitySet="detalleVenta">
-          <ScalarProperty Name="idDetalleVenta" ColumnName="idDetalleVenta" />
-          <ScalarProperty Name="idVenta" ColumnName="idVenta" />
-          <ScalarProperty Name="idProducto" ColumnName="idProducto" />
-          <ScalarProperty Name="costoIndividual" ColumnName="costoIndividual" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="costoGrupal" ColumnName="costoGrupal" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="estado">
       <EntityTypeMapping TypeName="BDModuloVentaModel.estado">
         <MappingFragment StoreEntitySet="estado">
@@ -133,6 +121,19 @@
           <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="dni" ColumnName="dni" />
           <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="detalleVenta">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.detalleVenta">
+        <MappingFragment StoreEntitySet="detalleVenta">
+          <ScalarProperty Name="precioCostoGrupal" ColumnName="precioCostoGrupal" />
+          <ScalarProperty Name="costoGrupal" ColumnName="costoGrupal" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="costoIndividual" ColumnName="costoIndividual" />
+          <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+          <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+          <ScalarProperty Name="idDetalleVenta" ColumnName="idDetalleVenta" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

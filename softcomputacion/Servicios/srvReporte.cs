@@ -178,6 +178,12 @@ namespace softcomputacion.Servicios
                         {
                             mes = oVenta.fechaEmision.Month;
                         }
+                        //calculo la ganancia neta de la venta
+                        decimal neto = 0;
+                        foreach (detalleVenta oDetalle in oVenta.detalleVenta)
+                        {
+                            neto += oDetalle.precioCostoGrupal;
+                        }
                         if (lstReporteStock.Where(x => x.mes == mes && x.año == año).Count() == 0)
                         {
                             ReporteESstock oReporte = new ReporteESstock();
@@ -187,12 +193,14 @@ namespace softcomputacion.Servicios
                             oReporte.año = oVenta.fechaEmision.Year;
                             oReporte.ventaTotal = oVenta.costoTotal;
                             oReporte.cantVentaTotal = 1;
+                            oReporte.ingresoNeto = oVenta.costoTotal - neto;
                             lstReporteStock.Add(oReporte);
                             oReporte = new ReporteESstock();
                         }
                         else
                         {
                             lstReporteStock.Where(x => x.mes == mes && x.año == año).FirstOrDefault().ventaTotal = lstReporteStock.Where(x => x.mes == mes).FirstOrDefault().ventaTotal + oVenta.costoTotal;
+                            lstReporteStock.Where(x => x.mes == mes && x.año == año).FirstOrDefault().ingresoNeto = lstReporteStock.Where(x => x.mes == mes).FirstOrDefault().ingresoNeto + (oVenta.costoTotal - neto);
                             lstReporteStock.Where(x => x.mes == mes && x.año == año).FirstOrDefault().cantVentaTotal++;
                         }                        
                     }

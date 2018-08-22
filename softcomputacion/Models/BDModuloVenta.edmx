@@ -33,6 +33,7 @@
           <Property Name="costoIndividual" Type="money" Nullable="false" />
           <Property Name="cantidad" Type="int" Nullable="false" />
           <Property Name="costoGrupal" Type="money" Nullable="false" />
+          <Property Name="precioCostoGrupal" Type="money" Nullable="false" />
         </EntityType>
         <EntityType Name="estado">
           <Key>
@@ -347,19 +348,6 @@
           <NavigationProperty Name="subcategoria" Relationship="Self.FK_subcategoria_categoria" FromRole="categoria" ToRole="subcategoria" />
           <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_producto_categoria" FromRole="categoria" ToRole="producto" />
         </EntityType>
-        <EntityType Name="detalleVenta">
-          <Key>
-            <PropertyRef Name="idDetalleVenta" />
-          </Key>
-          <Property Name="idDetalleVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-          <Property Name="idVenta" Type="Int32" Nullable="false" />
-          <Property Name="idProducto" Type="Int32" Nullable="false" />
-          <Property Name="costoIndividual" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <Property Name="cantidad" Type="Int32" Nullable="false" />
-          <Property Name="costoGrupal" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
-          <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="detalleVenta" ToRole="venta" />
-          <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_detalleVenta_producto" FromRole="detalleVenta" ToRole="producto" />
-        </EntityType>
         <EntityType Name="estado">
           <Key>
             <PropertyRef Name="idEstado" />
@@ -471,7 +459,6 @@
         </Association>
         <EntityContainer Name="BDSoftComputacionEntities" annotation:LazyLoadingEnabled="true">
           <EntitySet Name="categoria" EntityType="Self.categoria" />
-          <EntitySet Name="detalleVenta" EntityType="Self.detalleVenta" />
           <EntitySet Name="estado" EntityType="Self.estado" />
           <EntitySet Name="historialStock" EntityType="Self.historialStock" />
           <EntitySet Name="proveedor" EntityType="Self.proveedor" />
@@ -492,10 +479,6 @@
             <End Role="usuario" EntitySet="usuario" />
           </AssociationSet>
           <EntitySet Name="venta" EntityType="BDModuloVentaModel.venta" />
-          <AssociationSet Name="FK_detalleVenta_venta" Association="BDModuloVentaModel.FK_detalleVenta_venta">
-            <End Role="venta" EntitySet="venta" />
-            <End Role="detalleVenta" EntitySet="detalleVenta" />
-          </AssociationSet>
           <AssociationSet Name="FK_venta_usuario" Association="BDModuloVentaModel.FK_venta_usuario">
             <End Role="usuario" EntitySet="usuario" />
             <End Role="venta" EntitySet="venta" />
@@ -504,10 +487,6 @@
           <AssociationSet Name="FK_producto_categoria" Association="BDModuloVentaModel.FK_producto_categoria">
             <End Role="categoria" EntitySet="categoria" />
             <End Role="producto" EntitySet="producto" />
-          </AssociationSet>
-          <AssociationSet Name="FK_detalleVenta_producto" Association="BDModuloVentaModel.FK_detalleVenta_producto">
-            <End Role="producto" EntitySet="producto" />
-            <End Role="detalleVenta" EntitySet="detalleVenta" />
           </AssociationSet>
           <AssociationSet Name="FK_producto_estado" Association="BDModuloVentaModel.FK_producto_estado">
             <End Role="estado" EntitySet="estado" />
@@ -530,6 +509,15 @@
             <End Role="cliente" EntitySet="cliente" />
             <End Role="venta" EntitySet="venta" />
           </AssociationSet>
+          <EntitySet Name="detalleVenta" EntityType="BDModuloVentaModel.detalleVenta" />
+          <AssociationSet Name="FK_detalleVenta_producto" Association="BDModuloVentaModel.FK_detalleVenta_producto">
+            <End Role="producto" EntitySet="producto" />
+            <End Role="detalleVenta" EntitySet="detalleVenta" />
+          </AssociationSet>
+          <AssociationSet Name="FK_detalleVenta_venta" Association="BDModuloVentaModel.FK_detalleVenta_venta">
+            <End Role="venta" EntitySet="venta" />
+            <End Role="detalleVenta" EntitySet="detalleVenta" />
+          </AssociationSet>
         </EntityContainer>
         <EntityType Name="venta">
           <Key>
@@ -541,22 +529,10 @@
           <Property Name="costoTotal" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
           <Property Name="cantidadProductosTotal" Type="Int32" />
           <Property Name="idCliente" Type="Int32" />
-          <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="venta" ToRole="detalleVenta" />
           <NavigationProperty Name="usuario" Relationship="BDModuloVentaModel.FK_venta_usuario" FromRole="venta" ToRole="usuario" />
           <NavigationProperty Name="cliente" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="venta" ToRole="cliente" />
+          <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="venta" ToRole="detalleVenta" />
         </EntityType>
-        <Association Name="FK_detalleVenta_venta">
-          <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="1" />
-          <End Type="BDModuloVentaModel.detalleVenta" Role="detalleVenta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="venta">
-              <PropertyRef Name="idVenta" />
-            </Principal>
-            <Dependent Role="detalleVenta">
-              <PropertyRef Name="idVenta" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
         <Association Name="FK_venta_usuario">
           <End Type="BDModuloVentaModel.usuario" Role="usuario" Multiplicity="1" />
           <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="*" />
@@ -589,11 +565,11 @@
           <Property Name="precioFijo" Type="Boolean" Nullable="false" />
           <Property Name="garantia" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
           <NavigationProperty Name="categoria" Relationship="BDModuloVentaModel.FK_producto_categoria" FromRole="producto" ToRole="categoria" />
-          <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_producto" FromRole="producto" ToRole="detalleVenta" />
           <NavigationProperty Name="estado" Relationship="BDModuloVentaModel.FK_producto_estado" FromRole="producto" ToRole="estado" />
           <NavigationProperty Name="historialStock" Relationship="BDModuloVentaModel.FK_hostorialStock_producto" FromRole="producto" ToRole="historialStock" />
           <NavigationProperty Name="subcategoria" Relationship="BDModuloVentaModel.FK_producto_subcategoria" FromRole="producto" ToRole="subcategoria" />
           <NavigationProperty Name="proveedorXproducto" Relationship="BDModuloVentaModel.FK_proveedorXproducto_producto" FromRole="producto" ToRole="proveedorXproducto" />
+          <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_producto" FromRole="producto" ToRole="detalleVenta" />
         </EntityType>
         <Association Name="FK_producto_categoria">
           <End Type="BDModuloVentaModel.categoria" Role="categoria" Multiplicity="1" />
@@ -604,18 +580,6 @@
             </Principal>
             <Dependent Role="producto">
               <PropertyRef Name="idCategoria" />
-            </Dependent>
-          </ReferentialConstraint>
-        </Association>
-        <Association Name="FK_detalleVenta_producto">
-          <End Type="BDModuloVentaModel.producto" Role="producto" Multiplicity="1" />
-          <End Type="BDModuloVentaModel.detalleVenta" Role="detalleVenta" Multiplicity="*" />
-          <ReferentialConstraint>
-            <Principal Role="producto">
-              <PropertyRef Name="idProducto" />
-            </Principal>
-            <Dependent Role="detalleVenta">
-              <PropertyRef Name="idProducto" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -691,6 +655,44 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="detalleVenta">
+          <Key>
+            <PropertyRef Name="idDetalleVenta" />
+          </Key>
+          <Property Name="idDetalleVenta" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="idVenta" Type="Int32" Nullable="false" />
+          <Property Name="idProducto" Type="Int32" Nullable="false" />
+          <Property Name="costoIndividual" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="cantidad" Type="Int32" Nullable="false" />
+          <Property Name="costoGrupal" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <Property Name="precioCostoGrupal" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+          <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_detalleVenta_producto" FromRole="detalleVenta" ToRole="producto" />
+          <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="detalleVenta" ToRole="venta" />
+        </EntityType>
+        <Association Name="FK_detalleVenta_producto">
+          <End Type="BDModuloVentaModel.producto" Role="producto" Multiplicity="1" />
+          <End Type="BDModuloVentaModel.detalleVenta" Role="detalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="producto">
+              <PropertyRef Name="idProducto" />
+            </Principal>
+            <Dependent Role="detalleVenta">
+              <PropertyRef Name="idProducto" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_detalleVenta_venta">
+          <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="1" />
+          <End Type="BDModuloVentaModel.detalleVenta" Role="detalleVenta" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="venta">
+              <PropertyRef Name="idVenta" />
+            </Principal>
+            <Dependent Role="detalleVenta">
+              <PropertyRef Name="idVenta" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
       </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -702,18 +704,6 @@
               <MappingFragment StoreEntitySet="categoria">
                 <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
-              </MappingFragment>
-            </EntityTypeMapping>
-          </EntitySetMapping>
-          <EntitySetMapping Name="detalleVenta">
-            <EntityTypeMapping TypeName="BDModuloVentaModel.detalleVenta">
-              <MappingFragment StoreEntitySet="detalleVenta">
-                <ScalarProperty Name="idDetalleVenta" ColumnName="idDetalleVenta" />
-                <ScalarProperty Name="idVenta" ColumnName="idVenta" />
-                <ScalarProperty Name="idProducto" ColumnName="idProducto" />
-                <ScalarProperty Name="costoIndividual" ColumnName="costoIndividual" />
-                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-                <ScalarProperty Name="costoGrupal" ColumnName="costoGrupal" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>
@@ -829,6 +819,19 @@
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="dni" ColumnName="dni" />
                 <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="detalleVenta">
+            <EntityTypeMapping TypeName="BDModuloVentaModel.detalleVenta">
+              <MappingFragment StoreEntitySet="detalleVenta">
+                <ScalarProperty Name="precioCostoGrupal" ColumnName="precioCostoGrupal" />
+                <ScalarProperty Name="costoGrupal" ColumnName="costoGrupal" />
+                <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+                <ScalarProperty Name="costoIndividual" ColumnName="costoIndividual" />
+                <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+                <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+                <ScalarProperty Name="idDetalleVenta" ColumnName="idDetalleVenta" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

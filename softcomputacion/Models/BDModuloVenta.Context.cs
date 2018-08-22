@@ -26,7 +26,6 @@ namespace softcomputacion.Models
         }
     
         public virtual DbSet<categoria> categoria { get; set; }
-        public virtual DbSet<detalleVenta> detalleVenta { get; set; }
         public virtual DbSet<estado> estado { get; set; }
         public virtual DbSet<historialStock> historialStock { get; set; }
         public virtual DbSet<proveedor> proveedor { get; set; }
@@ -37,5 +36,6 @@ namespace softcomputacion.Models
         public virtual DbSet<venta> venta { get; set; }
         public virtual DbSet<producto> producto { get; set; }
         public virtual DbSet<cliente> cliente { get; set; }
+        public virtual DbSet<detalleVenta> detalleVenta { get; set; }
     }
 }

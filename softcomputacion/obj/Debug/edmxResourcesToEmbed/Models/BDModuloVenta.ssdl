@@ -28,6 +28,7 @@
     <Property Name="costoIndividual" Type="money" Nullable="false" />
     <Property Name="cantidad" Type="int" Nullable="false" />
     <Property Name="costoGrupal" Type="money" Nullable="false" />
+    <Property Name="precioCostoGrupal" Type="money" Nullable="false" />
   </EntityType>
   <EntityType Name="estado">
     <Key>

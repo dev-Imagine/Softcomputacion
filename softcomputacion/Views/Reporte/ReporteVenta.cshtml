@@ -49,20 +49,23 @@
             {
                 foreach (var oReporteES in Model)
                 {
-                    <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4 text-center">
-                            <i> @oReporteES.mes.ToString().PadLeft(2, '0') / @oReporteES.año </i>
-                        </div>
-                        <div class="col-12 col-sm-6 col-md-4 text-center">
-                            <i>Ventas totales: <strong> @oReporteES.cantVentaTotal</strong></i>
-                        </div>
-                        <div class="col-12 col-md-4 text-center">
-                            <i>Ingresos totales: <strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
-                        </div>
-                        <div class="col-12">
-                            <hr class="m-t-8 m-b-8" />
-                        </div>
-                    </div>
+            <div class="row">
+                <div class="col-12 col-sm-6 col-md-2 text-center">
+                    <i>@oReporteES.mes.ToString().PadLeft(2, '0') / @oReporteES.año</i>
+                </div>
+                <div class="col-12 col-sm-6 col-md-2 text-center">
+                    <i>Ventas:<strong> @oReporteES.cantVentaTotal</strong></i>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 text-center">
+                    <i>Ingresos totales:<strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
+                </div>
+                <div class="col-12 col-sm-6 col-md-4 text-center">
+                    <i>Ingreso neto:<strong> $@Convert.ToString(Math.Round(oReporteES.ingresoNeto, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
+                </div>
+                <div class="col-12">
+                    <hr class="m-t-8 m-b-8" />
+                </div>
+            </div>
 
                 }
             }
