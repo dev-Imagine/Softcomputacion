@@ -194,6 +194,9 @@
     <Compile Include="Models\cliente.cs">
       <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\detallePago.cs">
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\detalleVenta.cs">
       <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
@@ -201,6 +204,9 @@
       <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\historialStock.cs">
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
+    </Compile>
+    <Compile Include="Models\metodoPago.cs">
       <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
     <Compile Include="Models\producto.cs">
@@ -230,6 +236,7 @@
     <Compile Include="Servicios\srvCategoria.cs" />
     <Compile Include="Servicios\srvCliente.cs" />
     <Compile Include="Servicios\srvEstado.cs" />
+    <Compile Include="Servicios\srvMetodoPago.cs" />
     <Compile Include="Servicios\srvProducto.cs" />
     <Compile Include="Servicios\srvProveedor.cs" />
     <Compile Include="Servicios\srvReporte.cs" />

@@ -17,9 +17,9 @@ namespace softcomputacion.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public producto()
         {
+            this.detalleVenta = new HashSet<detalleVenta>();
             this.historialStock = new HashSet<historialStock>();
             this.proveedorXproducto = new HashSet<proveedorXproducto>();
-            this.detalleVenta = new HashSet<detalleVenta>();
         }
     
         public int idProducto { get; set; }
@@ -39,13 +39,13 @@ namespace softcomputacion.Models
         public string garantia { get; set; }
     
         public virtual categoria categoria { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<detalleVenta> detalleVenta { get; set; }
         public virtual estado estado { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<historialStock> historialStock { get; set; }
         public virtual subcategoria subcategoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<proveedorXproducto> proveedorXproducto { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<detalleVenta> detalleVenta { get; set; }
     }
 }

@@ -4,78 +4,72 @@
     <EntitySetMapping Name="categoria">
       <EntityTypeMapping TypeName="BDModuloVentaModel.categoria">
         <MappingFragment StoreEntitySet="categoria">
-          <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="cliente">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.cliente">
+        <MappingFragment StoreEntitySet="cliente">
+          <ScalarProperty Name="saldo" ColumnName="saldo" />
+          <ScalarProperty Name="telefono" ColumnName="telefono" />
+          <ScalarProperty Name="direccion" ColumnName="direccion" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="detallePago">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.detallePago">
+        <MappingFragment StoreEntitySet="detallePago">
+          <ScalarProperty Name="idMetodoPago" ColumnName="idMetodoPago" />
+          <ScalarProperty Name="entrega" ColumnName="entrega" />
+          <ScalarProperty Name="fechaPago" ColumnName="fechaPago" />
+          <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+          <ScalarProperty Name="idDetallePago" ColumnName="idDetallePago" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="detalleVenta">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.detalleVenta">
+        <MappingFragment StoreEntitySet="detalleVenta">
+          <ScalarProperty Name="precioCostoGrupal" ColumnName="precioCostoGrupal" />
+          <ScalarProperty Name="costoGrupal" ColumnName="costoGrupal" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
+          <ScalarProperty Name="costoIndividual" ColumnName="costoIndividual" />
+          <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+          <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+          <ScalarProperty Name="idDetalleVenta" ColumnName="idDetalleVenta" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="estado">
       <EntityTypeMapping TypeName="BDModuloVentaModel.estado">
         <MappingFragment StoreEntitySet="estado">
-          <ScalarProperty Name="idEstado" ColumnName="idEstado" />
           <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idEstado" ColumnName="idEstado" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="historialStock">
       <EntityTypeMapping TypeName="BDModuloVentaModel.historialStock">
         <MappingFragment StoreEntitySet="historialStock">
-          <ScalarProperty Name="idHistorial" ColumnName="idHistorial" />
-          <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
-          <ScalarProperty Name="idProducto" ColumnName="idProducto" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
           <ScalarProperty Name="tipo" ColumnName="tipo" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="proveedor">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.proveedor">
-        <MappingFragment StoreEntitySet="proveedor">
-          <ScalarProperty Name="idProveedor" ColumnName="idProveedor" />
-          <ScalarProperty Name="nombreEmpresa" ColumnName="nombreEmpresa" />
-          <ScalarProperty Name="telefono" ColumnName="telefono" />
-          <ScalarProperty Name="otroContacto" ColumnName="otroContacto" />
-          <ScalarProperty Name="fechaBaja" ColumnName="fechaBaja" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="proveedorXproducto">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.proveedorXproducto">
-        <MappingFragment StoreEntitySet="proveedorXproducto">
-          <ScalarProperty Name="idProveedorXproducto" ColumnName="idProveedorXproducto" />
-          <ScalarProperty Name="idProveedor" ColumnName="idProveedor" />
+          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
           <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+          <ScalarProperty Name="fechaHora" ColumnName="fechaHora" />
+          <ScalarProperty Name="idHistorial" ColumnName="idHistorial" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="subcategoria">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.subcategoria">
-        <MappingFragment StoreEntitySet="subcategoria">
-          <ScalarProperty Name="idSubCategoria" ColumnName="idSubCategoria" />
+    <EntitySetMapping Name="metodoPago">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.metodoPago">
+        <MappingFragment StoreEntitySet="metodoPago">
           <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="tipoUsuario">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.tipoUsuario">
-        <MappingFragment StoreEntitySet="tipoUsuario">
-          <ScalarProperty Name="idTipoUsuario" ColumnName="idTipoUsuario" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="usuario">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.usuario">
-        <MappingFragment StoreEntitySet="usuario">
-          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="apellido" ColumnName="apellido" />
-          <ScalarProperty Name="telefono" ColumnName="telefono" />
-          <ScalarProperty Name="dni" ColumnName="dni" />
-          <ScalarProperty Name="idTipoUsuario" ColumnName="idTipoUsuario" />
-          <ScalarProperty Name="contraseña" ColumnName="contraseña" />
-          <ScalarProperty Name="fechaBaja" ColumnName="fechaBaja" />
+          <ScalarProperty Name="idMetodoPago" ColumnName="idMetodoPago" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -100,34 +94,61 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="cliente">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.cliente">
-        <MappingFragment StoreEntitySet="cliente">
+    <EntitySetMapping Name="proveedor">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.proveedor">
+        <MappingFragment StoreEntitySet="proveedor">
+          <ScalarProperty Name="fechaBaja" ColumnName="fechaBaja" />
+          <ScalarProperty Name="otroContacto" ColumnName="otroContacto" />
           <ScalarProperty Name="telefono" ColumnName="telefono" />
-          <ScalarProperty Name="direccion" ColumnName="direccion" />
-          <ScalarProperty Name="apellido" ColumnName="apellido" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="dni" ColumnName="dni" />
-          <ScalarProperty Name="idCliente" ColumnName="idCliente" />
+          <ScalarProperty Name="nombreEmpresa" ColumnName="nombreEmpresa" />
+          <ScalarProperty Name="idProveedor" ColumnName="idProveedor" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="detalleVenta">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.detalleVenta">
-        <MappingFragment StoreEntitySet="detalleVenta">
-          <ScalarProperty Name="precioCostoGrupal" ColumnName="precioCostoGrupal" />
-          <ScalarProperty Name="costoGrupal" ColumnName="costoGrupal" />
-          <ScalarProperty Name="cantidad" ColumnName="cantidad" />
-          <ScalarProperty Name="costoIndividual" ColumnName="costoIndividual" />
+    <EntitySetMapping Name="proveedorXproducto">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.proveedorXproducto">
+        <MappingFragment StoreEntitySet="proveedorXproducto">
           <ScalarProperty Name="idProducto" ColumnName="idProducto" />
-          <ScalarProperty Name="idVenta" ColumnName="idVenta" />
-          <ScalarProperty Name="idDetalleVenta" ColumnName="idDetalleVenta" />
+          <ScalarProperty Name="idProveedor" ColumnName="idProveedor" />
+          <ScalarProperty Name="idProveedorXproducto" ColumnName="idProveedorXproducto" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="subcategoria">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.subcategoria">
+        <MappingFragment StoreEntitySet="subcategoria">
+          <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idSubCategoria" ColumnName="idSubCategoria" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="tipoUsuario">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.tipoUsuario">
+        <MappingFragment StoreEntitySet="tipoUsuario">
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idTipoUsuario" ColumnName="idTipoUsuario" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="usuario">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.usuario">
+        <MappingFragment StoreEntitySet="usuario">
+          <ScalarProperty Name="fechaBaja" ColumnName="fechaBaja" />
+          <ScalarProperty Name="contraseña" ColumnName="contraseña" />
+          <ScalarProperty Name="idTipoUsuario" ColumnName="idTipoUsuario" />
+          <ScalarProperty Name="dni" ColumnName="dni" />
+          <ScalarProperty Name="telefono" ColumnName="telefono" />
+          <ScalarProperty Name="apellido" ColumnName="apellido" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
     <EntitySetMapping Name="venta">
       <EntityTypeMapping TypeName="BDModuloVentaModel.venta">
         <MappingFragment StoreEntitySet="venta">
+          <ScalarProperty Name="entregado" ColumnName="entregado" />
           <ScalarProperty Name="idEstado" ColumnName="idEstado" />
           <ScalarProperty Name="idCliente" ColumnName="idCliente" />
           <ScalarProperty Name="cantidadProductosTotal" ColumnName="cantidadProductosTotal" />

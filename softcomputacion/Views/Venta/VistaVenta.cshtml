@@ -1,5 +1,7 @@
 ﻿@{
     @model  softcomputacion.Models.venta
+    List<softcomputacion.Models.metodoPago> lstMetodosPago = (List<softcomputacion.Models.metodoPago>)ViewBag.metodosPago;
+    List<softcomputacion.Models.detallePago> lstDetallesPago = (List<softcomputacion.Models.detallePago>)ViewBag.detallesPago;
 }
 @{
     string stFecha = Model.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Year;
@@ -92,6 +94,17 @@
         <div class="col-12">
             <p class="text-right" style="font-size:30px; color:#000">Total: $@Convert.ToString(Math.Round(Model.costoTotal, 2)).Replace(",", ".").Replace(",00", "")</p>
         </div>
+        <div class="col-12">
+            <p class="text-right" style="font-size:30px; color:#000">entregado: $@Convert.ToString(Math.Round(Convert.ToDouble(Model.entregado), 2)).Replace(",", ".").Replace(",00", "")</p>
+        </div>
+        @if (Model.cliente.saldo > 0 && Model.cliente.saldo != null && Model.idEstado != 11)
+        {
+            <div class="col-12">
+                <p class="text-right" style="font-size:30px; color:#000">Total: $@Convert.ToString(Math.Round(Convert.ToDouble(Model.cliente.saldo), 2)).Replace(",", ".").Replace(",00", "")</p>
+            </div>
+            <label><input type="checkbox" id="chSaldo" value=""> usar saldo de cuenta</label><br>
+        }
+        
     </div>
     <div class="row ">
         <div class="col-12">
@@ -105,7 +118,57 @@
             <p class="text-center" style="font-size:18px;">Documento no válido como factura.</p>
         </div>
     </div>
+    @if (Model.idEstado != 11)
+    {
+        <div class="row">
+            @* select de tipo de pago *@
+            @*<form method="post" action="@Url.Action("ListarVentas", "Venta")" autocomplete="off">*@
+            <div class="col-12 col-md-3 col-lg-6">
+                <div class="wrap-input100 ¡ m-b-20" data-validate="">
+                    <select id="select-MetodoPago" class="form-control input100" style="border:0px; height: 55px;" name="idMetodoPago">
+
+                        @if (Model.idCliente != 0)
+                        {
+                            foreach (softcomputacion.Models.metodoPago oMetP in lstMetodosPago)
+                            {
+                                <option selected value="@oMetP.idMetodoPago">@oMetP.nombre</option>
+                            }
+                        }
+                        else
+                        {
+                            <option selected value="1">CONTADO</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 col-md-3 col-lg-4">
+                <div class="wrap-input100 m-b-20">
+                    <input class="input100" type="number" name="entrega" min="0" id="entrega" title="Usar . (PUNTO) en vez de , (COMA) para los DECIMALES" placeholder="Entrega " value="0">
+                </div>
+            </div>
+            <div class="col-12 col-md-12 col-lg-2">
+                <div class="container-login100-form-btn m-b-20">
+                    <button class="login100-form-btn fs-22" style="height:56px;" onclick="guardarPago( '@Model.entregado','@Model.costoTotal','@Model.idVenta','@Model.idCliente','@Model.cliente.saldo')" type="button">
+                        <i class="fas fa-search"></i>
+                    </button>
+                </div>
+            </div>
+            @*</form>*@
+        </div>
+    }
+    <div class="row">
+        <p align="center" style="font-size:18px;text-align:center">Pagos hechos.</p>
+        @foreach (softcomputacion.Models.detallePago oDet in lstDetallesPago)
+        {
+            <div class="col-12"><p align="center" style="font-size:18px;"> @oDet.fechaPago - @oDet.entrega</p></div>
+
+        }
+    </div>
 </div>
+
+
+
+
 
 @section scripts{
     <script src="~/Scripts/JsBarcode.all.min.js"></script>
@@ -113,6 +176,71 @@
     $(document).ready(function () {
         var idProducto = '@Model.idVenta';
         $("#barcode").JsBarcode(idProducto);
-    });
+        });
+
+        function guardarPago(entregado, costoTotal, idVenta, idCliente, saldoCliente) {
+            var entrega = parseFloat($('#entrega').val()).toFixed(2);
+            var idMetodoPago = $('#select-MetodoPago').val();
+            var sobrante = 0.00;
+            var faltante = 0.00;
+            var saldo = 0.00;
+            entregado = (parseFloat(entregado.replace(',', '.'))).toFixed(2);
+            costoTotal = (parseFloat(costoTotal.replace(',', '.'))).toFixed(2);
+            var usoSaldo = false;
+            
+            if ($('#chSaldo').is(':checked')) {
+                saldo = (parseFloat(saldoCliente.replace(',', '.'))).toFixed(2);
+                usoSaldo = true;
+                entrega = (parseFloat(entrega) + parseFloat(saldo)).toFixed(2);
+            }
+
+            
+
+            if (entrega > 0 && entrega.includes("e") == false && entrega.includes("E") == false) {
+               
+                faltante = (parseFloat(parseFloat(costoTotal) - parseFloat(entregado))).toFixed(2);
+               
+                if (idCliente != 0) {
+
+                    var nombreCliente = "@Model.cliente.nombre " + "@Model.cliente.apellido"
+
+                 
+
+                    if (parseFloat(entrega) > parseFloat(faltante)) {
+
+                        sobrante = ((parseFloat(entrega) - parseFloat(faltante))).toFixed(2);
+                        if (confirm("¿Desea guardar: $" + sobrante + " de saldo para " + nombreCliente +"?")) {
+
+                            
+                        } else {
+                            sobrante = 0.00;
+                        }
+                        
+                    }
+                }
+                else {
+                    if ((parseFloat(entrega)).toFixed(2) != (parseFloat(costoTotal)).toFixed(2)) {
+                        alert("Al ser CONSUMIDOR FINAL, el monto a pagar debe ser completo.");
+                        return;
+                    } else
+                    {
+                        alert("Pago Completo");
+                    }
+                    
+                }
+                var url = "@Url.Action("GuardarPago", "Venta")";
+                var data = { entrega: entrega, idMetodoPago: idMetodoPago, sobrante: sobrante, idVenta: idVenta, idCliente: idCliente, usoSaldo: usoSaldo };
+                $.post(url, data).done(function (data) {
+                    alert("Pago Completo");
+                    location.reload();
+                });
+            }
+            else {
+                alert("No puedes ingresar valores menores a 0 ni caracteres que no sean numeros. Usar . (PUNTO) en vez de , (COMA) para los DECIMALES");
+            }
+
+            
+        }
+
     </script>
 }

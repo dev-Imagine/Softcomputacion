@@ -96,8 +96,11 @@ namespace softcomputacion.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 
-                srvVenta sVenta = new srvVenta();                
+                srvVenta sVenta = new srvVenta();
+                srvMetodoPago sMetodoP = new srvMetodoPago();
                 venta oVenta = sVenta.ObtenerVenta(idVenta);
+                ViewBag.metodosPago = sMetodoP.ObtenerMetodosPago();
+                ViewBag.detallesPago = sVenta.ObtenerDetallesPagoDeVenta(idVenta);
                 if (oVenta.idCliente==0 || oVenta.idCliente == null)
                 {
                     oVenta.idCliente = 0;
@@ -229,6 +232,7 @@ namespace softcomputacion.Controllers
                 venta oVenta = (venta)Session["venta"];
                 oVenta.cliente = null;
                 oVenta.idUsuario = oUsuario.idUsuario;
+                oVenta.entregado = 0;
                 oVenta.idEstado = 9;
                 srvVenta sVenta = new srvVenta();                
                 if (oVenta.detalleVenta.Count == 0)
@@ -270,6 +274,47 @@ namespace softcomputacion.Controllers
                 oVenta.cliente = oCliente;
             }
             return Json(oCliente);
+        }
+        [HttpPost]
+        public ActionResult GuardarPago(string entrega, int idMetodoPago, string sobrante, int idVenta, int idCliente, bool usoSaldo)
+        {
+            try
+            {
+                srvVenta sVenta = new srvVenta();
+                srvCliente sCliente = new srvCliente();
+                cliente oCliente = new cliente();
+                venta oVenta = new venta();
+                detallePago oDetalleP = new detallePago();
+                entrega = entrega.Replace('.', ',');
+                sobrante = sobrante.Replace('.', ',');
+                oDetalleP.entrega = Convert.ToDecimal(entrega);
+                oDetalleP.fechaPago = System.DateTime.Now;
+                oDetalleP.idMetodoPago = idMetodoPago;
+                oDetalleP.idVenta = idVenta;
+                sVenta.GuardarDetallePago(oDetalleP);
+
+                if (idCliente != 0)
+                {
+                    oCliente = sCliente.ObtenerCliente(idCliente);
+                    
+                    oCliente.saldo = oCliente.saldo + Convert.ToDecimal(sobrante);
+                    if (usoSaldo)
+                    {
+                        oCliente.saldo = 0;
+                    }
+
+                    sCliente.GuardarModificarCliente(oCliente);
+                    
+                }
+                oVenta = sVenta.ObtenerVenta(idVenta);
+                oVenta.entregado = oVenta.entregado + (Convert.ToDecimal(entrega) - Convert.ToDecimal(sobrante));
+                sVenta.ModificarVenta(oVenta);
+                return RedirectToAction("VistaVenta", "Venta", new { idVenta = idVenta });
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
         }
     }
 }

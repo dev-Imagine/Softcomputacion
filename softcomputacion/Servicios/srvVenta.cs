@@ -95,6 +95,57 @@ namespace softcomputacion.Servicios
             }
         }
 
+        public venta ModificarVenta(venta oVenta)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    oVenta.estado = null;
+                    if (oVenta.entregado == 0)
+                    {
+                        oVenta.idEstado = 9;
+                    }
+                    else
+                    {
+                        if (oVenta.entregado > 0 && oVenta.entregado < oVenta.costoTotal)
+                        {
+                            oVenta.idEstado = 10;
+                        }
+                        else
+                        {
+                            oVenta.idEstado = 11;
+                        }
+                    }
+                    bd.Entry(oVenta).State = System.Data.Entity.EntityState.Modified;
+                    bd.SaveChanges();
+                    return oVenta;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+        public detallePago GuardarDetallePago(detallePago oPago)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {                    
+                    bd.Entry(oPago).State = System.Data.Entity.EntityState.Added;
+                    bd.SaveChanges();
+                    return oPago;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
+
+
         public venta ObtenerVenta(int idVenta)
         {
             try
@@ -164,6 +215,28 @@ namespace softcomputacion.Servicios
             catch (Exception)
             {
                 return new List<venta>();
+            }
+        }
+
+        public List<detallePago> ObtenerDetallesPagoDeVenta(int idVenta)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    string temp;
+                    List<detallePago> lstDetallePago = new List<detallePago>();
+                    lstDetallePago = bd.detallePago.Where(x => x.idVenta == idVenta).ToList();
+                    foreach (detallePago oDet in lstDetallePago)
+                    {
+                        temp = oDet.metodoPago.nombre;
+                    }
+                    return lstDetallePago.OrderByDescending(x => x.fechaPago).ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<detallePago>();
             }
         }
     }
