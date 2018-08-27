@@ -109,7 +109,7 @@
     <div class="row text-center">
         <div class="col-12 col-sm-12">
             <form method="post" target="_blank" action="@Url.Action("GenerarVenta", "Venta")">
-                <button type="submit" class="btn btn-dark w-100">Generar venta</button>
+                <button type="submit" onclick="actualizarPagina()" class="btn btn-dark w-100">Generar venta</button>
             </form>
         </div>
     </div>
@@ -129,11 +129,16 @@
                     var stockEstimado = parseInt(stockActual) + parseInt(stockDescontar);
                     var precioDescontar = parseFloat($('#iCostoGrupal-' + idProducto).text());
                     var precioTotal = parseFloat($('#iTotal').text());
-                    var decimales = $('#iCostoGrupal-' + idProducto).text().split(',');                    
+                    var decimales = $('#iCostoGrupal-' + idProducto).text().split(',');
                     $('#iSpan-' + idProducto).text(stockEstimado);
                     $('#div-carrito-' + idProducto).remove();
                     $('#hrDiv-' + idProducto).remove();
-                    $('#iTotal').text(parseFloat(precioTotal - precioDescontar));    
+                    $('#iTotal').text(parseFloat(precioTotal - precioDescontar));
+                    if (stockEstimado == 0) {
+                        $('#iSpan-' + idProducto).css({ color: "red" });
+                    } else {
+                        $('#iSpan-' + idProducto).css({ color: "" });
+                    }
                 } else
                 {
                     swal("Ocurrió un error", "Se produjo un error al intentar agregar un producto al carrito", "error");
@@ -142,7 +147,7 @@
         }
 
         function _PopUpBuscarCliente() {
-        
+
             var url = "@Url.Action("_PopUpBuscarCliente", "Cliente")";
             var data = {};
             $.post(url, data).done(function (data) {
@@ -162,11 +167,19 @@
                 $('#' + data.idCliente).html(data.apellido + " " + data.nombre + " &nbsp;&nbsp;&nbsp;");
                 $('#popupBuscarCliente').modal('toggle');
             });
-            
+
         }
 
         function BorrarCliente() {
             SelecionarCliente(0, "", "");
 
+        }
+
+        function actualizarPagina() {
+            var url = "@Url.Action("NuevaVenta", "Venta")";            
+            var data = {};
+                $.get(url, data).done(function (data) {
+                    location.reload();
+                });
         }
     </script>

@@ -134,7 +134,15 @@
                             PrecioGremioARS = PrecioGremioARS * ValorUSD;
                             PrecioCostoARS = PrecioCostoARS * ValorUSD;
                         }
-                        stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(oProducto.idEstado);
+                        //stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(oProducto.idEstado);
+                        if (oProducto.stockActual == 0)
+                        {
+                            stColorStock = "red";
+                        }
+                        else
+                        {
+                            stColorStock = "";
+                        }
 
                         <div id="div-@oProducto.idProducto" class="row item-tabla m-b-15">
                             <div class="col-12 col-sm-12 col-md-12 col-lg-6">
@@ -146,7 +154,7 @@
                                 <p class="text-center fs-18">
                                     <span>Stock:</span>
                                     <span id="spanActual-@oProducto.idProducto">
-                                        <i id="iSpan-@oProducto.idProducto" style="color: @stColorStock">@oProducto.stockActual</i>
+                                        <i id="iSpan-@oProducto.idProducto" style="color: @stColorStock" >@oProducto.stockActual</i>
                                     </span>
                                 </p>
                             </div>
@@ -245,6 +253,10 @@
             var stockDescontar = $('#cantidad-' + idProducto).val();
             var stockEstimado = parseInt(stockActual) - parseInt(stockDescontar);
             $('#iSpan-' + idProducto).text(stockEstimado);
+            if (stockEstimado == 0) {
+                $('#iSpan-' + idProducto).css({ color: "red" });
+            }
+            
         }
 
         function descontarStockAlRefrescar(idProducto) {
@@ -252,6 +264,10 @@
             var stockDescontar = $('#i-cant-' + idProducto).text();
             var stockEstimado = parseInt(stockActual) - parseInt(stockDescontar);
             $('#iSpan-' + idProducto).text(stockEstimado);
+            if (stockEstimado == 0) {
+                $('#iSpan-' + idProducto).css({ color: "red" });
+            }  
+            
         }
         
     </script>

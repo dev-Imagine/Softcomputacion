@@ -272,11 +272,12 @@ namespace softcomputacion.Controllers
                 venta oVenta = (venta)Session["venta"];
                 oVenta.idCliente = 0;
                 oVenta.cliente = oCliente;
+
             }
             return Json(oCliente);
         }
         [HttpPost]
-        public ActionResult GuardarPago(string entrega, int idMetodoPago, string sobrante, int idVenta, int idCliente, bool usoSaldo)
+        public ActionResult GuardarPago(string entrega, int idMetodoPago, string sobrante, int idVenta, int idCliente, bool usoSaldo, bool guardarSaldo)
         {
             try
             {
@@ -296,8 +297,12 @@ namespace softcomputacion.Controllers
                 if (idCliente != 0)
                 {
                     oCliente = sCliente.ObtenerCliente(idCliente);
+
+                    if (guardarSaldo)
+                    {
+                        oCliente.saldo = oCliente.saldo + Convert.ToDecimal(sobrante);
+                    }
                     
-                    oCliente.saldo = oCliente.saldo + Convert.ToDecimal(sobrante);
                     if (usoSaldo)
                     {
                         oCliente.saldo = 0;

@@ -187,6 +187,7 @@
             entregado = (parseFloat(entregado.replace(',', '.'))).toFixed(2);
             costoTotal = (parseFloat(costoTotal.replace(',', '.'))).toFixed(2);
             var usoSaldo = false;
+            var guardarSaldo = false;
             
             if ($('#chSaldo').is(':checked')) {
                 saldo = (parseFloat(saldoCliente.replace(',', '.'))).toFixed(2);
@@ -209,11 +210,12 @@
                     if (parseFloat(entrega) > parseFloat(faltante)) {
 
                         sobrante = ((parseFloat(entrega) - parseFloat(faltante))).toFixed(2);
-                        if (confirm("¿Desea guardar: $" + sobrante + " de saldo para " + nombreCliente +"?")) {
-
+                        if (confirm("¿Desea guardar: $" + sobrante + " de saldo para " + nombreCliente + "?")) {
+                            guardarSaldo = true;
                             
                         } else {
-                            sobrante = 0.00;
+                            //sobrante = 0.00;
+                            guardarSaldo = false;
                         }
                         
                     }
@@ -224,12 +226,11 @@
                         return;
                     } else
                     {
-                        alert("Pago Completo");
                     }
                     
                 }
                 var url = "@Url.Action("GuardarPago", "Venta")";
-                var data = { entrega: entrega, idMetodoPago: idMetodoPago, sobrante: sobrante, idVenta: idVenta, idCliente: idCliente, usoSaldo: usoSaldo };
+                var data = { entrega: entrega, idMetodoPago: idMetodoPago, sobrante: sobrante, idVenta: idVenta, idCliente: idCliente, usoSaldo: usoSaldo, guardarSaldo : guardarSaldo };
                 $.post(url, data).done(function (data) {
                     alert("Pago Completo");
                     location.reload();
