@@ -277,48 +277,82 @@ namespace softcomputacion.Controllers
             return Json(oCliente);
         }
         [HttpPost]
-        public ActionResult GuardarPago(string entrega, int idMetodoPago, string sobrante, int idVenta, int idCliente, bool usoSaldo, bool guardarSaldo)
+        public JsonResult GuardarPago(string entrega, int idMetodoPago, int idVenta, int idCliente, bool usoSaldo, bool guardarSaldo)
         {
             try
             {
                 srvVenta sVenta = new srvVenta();
                 srvCliente sCliente = new srvCliente();
                 cliente oCliente = new cliente();
-                venta oVenta = new venta();
-                detallePago oDetalleP = new detallePago();
+                venta oVenta = sVenta.ObtenerVenta(idVenta);
+
+                decimal EntregaMasSaldo = 0;
+                
+
+
+                
+                decimal faltante = oVenta.costoTotal - Convert.ToDecimal(oVenta.entregado);
                 entrega = entrega.Replace('.', ',');
-                sobrante = sobrante.Replace('.', ',');
-                oDetalleP.entrega = Convert.ToDecimal(entrega);
-                oDetalleP.fechaPago = System.DateTime.Now;
-                oDetalleP.idMetodoPago = idMetodoPago;
-                oDetalleP.idVenta = idVenta;
-                sVenta.GuardarDetallePago(oDetalleP);
+
+
 
                 if (idCliente != 0)
                 {
                     oCliente = sCliente.ObtenerCliente(idCliente);
 
-                    if (guardarSaldo)
-                    {
-                        oCliente.saldo = oCliente.saldo + Convert.ToDecimal(sobrante);
-                    }
-                    
                     if (usoSaldo)
                     {
-                        oCliente.saldo = 0;
+                        //entrega todo el saldo cuando el saldo es menor al faltante de la venta
+                        EntregaMasSaldo = Convert.ToDecimal(oCliente.saldo);
+                        faltante = faltante - Convert.ToDecimal(oCliente.saldo);
+                        if (faltante < 0)
+                        {
+                            //pago todo con el saldo
+                            EntregaMasSaldo = oVenta.costoTotal - Convert.ToDecimal(oVenta.entregado);
+                            faltante = 0;
+                        }
+                        oCliente.saldo = oCliente.saldo - (oVenta.costoTotal - Convert.ToDecimal(oVenta.entregado));
+                        if (oCliente.saldo < 0)
+                        {
+                            oCliente.saldo = 0;
+                        }
                     }
-
-                    sCliente.GuardarModificarCliente(oCliente);
+                }
+                if (faltante > 0)
+                {
+                    //pagó o no algo con el saldo pero aún queda por pagar
+                    //500 faltante
+                    // 400 entrega
+                    EntregaMasSaldo = EntregaMasSaldo + (Convert.ToDecimal(entrega));
                     
                 }
-                oVenta = sVenta.ObtenerVenta(idVenta);
-                oVenta.entregado = oVenta.entregado + (Convert.ToDecimal(entrega) - Convert.ToDecimal(sobrante));
+                if (oCliente.idCliente !=0)
+                {
+                    // lo guardo aca porque falta ver si queda resto en la entrega
+                    // guardar siempre el saldo? o dejarlo así?
+                    if (guardarSaldo)
+                    {
+                        oCliente.saldo = oCliente.saldo + (Convert.ToDecimal(entrega) - faltante);
+                    }
+                    sCliente.GuardarModificarCliente(oCliente);
+                }
+
+
+                detallePago oDetalleP = new detallePago();
+                oDetalleP.fechaPago = DateTime.Now;
+                oDetalleP.idMetodoPago = idMetodoPago;
+                oDetalleP.idVenta = idVenta;
+                oDetalleP.entrega = EntregaMasSaldo;
+                sVenta.GuardarDetallePago(oDetalleP);
+
+                
+                oVenta.entregado = oVenta.entregado + EntregaMasSaldo;
                 sVenta.ModificarVenta(oVenta);
-                return RedirectToAction("VistaVenta", "Venta", new { idVenta = idVenta });
+                return Json(true);
             }
             catch (Exception)
             {
-                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+                return Json(false);
             }
         }
     }

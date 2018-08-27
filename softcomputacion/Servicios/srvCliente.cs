@@ -143,6 +143,7 @@ namespace softcomputacion.Servicios
             {
                 if (oCliente.idCliente == 0)
                 {
+                    oCliente.saldo = 0;
                     GuardarCliente(oCliente);
                 }
                 else

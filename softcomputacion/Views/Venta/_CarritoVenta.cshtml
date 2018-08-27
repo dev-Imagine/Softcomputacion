@@ -108,8 +108,8 @@
     <hr style="border-top: 1px solid #b5262a;" />
     <div class="row text-center">
         <div class="col-12 col-sm-12">
-            <form method="post" target="_blank" action="@Url.Action("GenerarVenta", "Venta")">
-                <button type="submit" onclick="actualizarPagina()" class="btn btn-dark w-100">Generar venta</button>
+            <form method="post" action="@Url.Action("GenerarVenta", "Venta")">
+                <button type="submit" class="btn btn-dark w-100">Generar venta</button>
             </form>
         </div>
     </div>
@@ -175,11 +175,4 @@
 
         }
 
-        function actualizarPagina() {
-            var url = "@Url.Action("NuevaVenta", "Venta")";            
-            var data = {};
-                $.get(url, data).done(function (data) {
-                    location.reload();
-                });
-        }
     </script>
