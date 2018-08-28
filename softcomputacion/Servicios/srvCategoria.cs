@@ -17,7 +17,7 @@ namespace softcomputacion.Servicios
                     return bd.categoria.OrderBy(x => x.nombre).ToList();
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new List<categoria>();
             }
@@ -33,7 +33,7 @@ namespace softcomputacion.Servicios
                     return oCategoria;
                 }
             }
-            catch (Exception ex)
+            catch (Exception)
             {
                 return new categoria();
             }

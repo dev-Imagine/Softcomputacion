@@ -3,7 +3,6 @@
   <EntityContainer Name="BDSoftComputacionEntities" annotation:LazyLoadingEnabled="true">
     <EntitySet Name="categoria" EntityType="BDModuloVentaModel.categoria" />
     <EntitySet Name="cliente" EntityType="BDModuloVentaModel.cliente" />
-    <EntitySet Name="detallePago" EntityType="BDModuloVentaModel.detallePago" />
     <EntitySet Name="detalleVenta" EntityType="BDModuloVentaModel.detalleVenta" />
     <EntitySet Name="estado" EntityType="BDModuloVentaModel.estado" />
     <EntitySet Name="historialStock" EntityType="BDModuloVentaModel.historialStock" />
@@ -26,14 +25,6 @@
     <AssociationSet Name="FK_venta_cliente" Association="BDModuloVentaModel.FK_venta_cliente">
       <End Role="cliente" EntitySet="cliente" />
       <End Role="venta" EntitySet="venta" />
-    </AssociationSet>
-    <AssociationSet Name="FK_detallePago_motodoPago" Association="BDModuloVentaModel.FK_detallePago_motodoPago">
-      <End Role="metodoPago" EntitySet="metodoPago" />
-      <End Role="detallePago" EntitySet="detallePago" />
-    </AssociationSet>
-    <AssociationSet Name="FK_detallePago_venta" Association="BDModuloVentaModel.FK_detallePago_venta">
-      <End Role="venta" EntitySet="venta" />
-      <End Role="detallePago" EntitySet="detallePago" />
     </AssociationSet>
     <AssociationSet Name="FK_detalleVenta_producto" Association="BDModuloVentaModel.FK_detalleVenta_producto">
       <End Role="producto" EntitySet="producto" />
@@ -75,6 +66,15 @@
       <End Role="usuario" EntitySet="usuario" />
       <End Role="venta" EntitySet="venta" />
     </AssociationSet>
+    <EntitySet Name="detallePago" EntityType="BDModuloVentaModel.detallePago" />
+    <AssociationSet Name="FK_detallePago_motodoPago" Association="BDModuloVentaModel.FK_detallePago_motodoPago">
+      <End Role="metodoPago" EntitySet="metodoPago" />
+      <End Role="detallePago" EntitySet="detallePago" />
+    </AssociationSet>
+    <AssociationSet Name="FK_detallePago_venta" Association="BDModuloVentaModel.FK_detallePago_venta">
+      <End Role="venta" EntitySet="venta" />
+      <End Role="detallePago" EntitySet="detallePago" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="categoria">
     <Key>
@@ -95,20 +95,8 @@
     <Property Name="apellido" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="direccion" Type="String" MaxLength="100" FixedLength="false" Unicode="false" />
     <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
-    <Property Name="saldo" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="saldo" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
     <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="cliente" ToRole="venta" />
-  </EntityType>
-  <EntityType Name="detallePago">
-    <Key>
-      <PropertyRef Name="idDetallePago" />
-    </Key>
-    <Property Name="idDetallePago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
-    <Property Name="idVenta" Type="Int32" Nullable="false" />
-    <Property Name="fechaPago" Type="DateTime" Nullable="false" Precision="3" />
-    <Property Name="entrega" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-    <Property Name="idMetodoPago" Type="Int32" Nullable="false" />
-    <NavigationProperty Name="metodoPago" Relationship="BDModuloVentaModel.FK_detallePago_motodoPago" FromRole="detallePago" ToRole="metodoPago" />
-    <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_detallePago_venta" FromRole="detallePago" ToRole="venta" />
   </EntityType>
   <EntityType Name="detalleVenta">
     <Key>
@@ -245,10 +233,10 @@
     <Property Name="idEstado" Type="Int32" Nullable="false" />
     <Property Name="entregado" Type="Decimal" Precision="19" Scale="4" />
     <NavigationProperty Name="cliente" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="venta" ToRole="cliente" />
-    <NavigationProperty Name="detallePago" Relationship="BDModuloVentaModel.FK_detallePago_venta" FromRole="venta" ToRole="detallePago" />
     <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="venta" ToRole="detalleVenta" />
     <NavigationProperty Name="estado" Relationship="BDModuloVentaModel.FK_venta_estado" FromRole="venta" ToRole="estado" />
     <NavigationProperty Name="usuario" Relationship="BDModuloVentaModel.FK_venta_usuario" FromRole="venta" ToRole="usuario" />
+    <NavigationProperty Name="detallePago" Relationship="BDModuloVentaModel.FK_detallePago_venta" FromRole="venta" ToRole="detallePago" />
   </EntityType>
   <Association Name="FK_producto_categoria">
     <End Type="BDModuloVentaModel.categoria" Role="categoria" Multiplicity="1" />
@@ -283,30 +271,6 @@
       </Principal>
       <Dependent Role="venta">
         <PropertyRef Name="idCliente" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_detallePago_motodoPago">
-    <End Type="BDModuloVentaModel.metodoPago" Role="metodoPago" Multiplicity="1" />
-    <End Type="BDModuloVentaModel.detallePago" Role="detallePago" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="metodoPago">
-        <PropertyRef Name="idMetodoPago" />
-      </Principal>
-      <Dependent Role="detallePago">
-        <PropertyRef Name="idMetodoPago" />
-      </Dependent>
-    </ReferentialConstraint>
-  </Association>
-  <Association Name="FK_detallePago_venta">
-    <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="1" />
-    <End Type="BDModuloVentaModel.detallePago" Role="detallePago" Multiplicity="*" />
-    <ReferentialConstraint>
-      <Principal Role="venta">
-        <PropertyRef Name="idVenta" />
-      </Principal>
-      <Dependent Role="detallePago">
-        <PropertyRef Name="idVenta" />
       </Dependent>
     </ReferentialConstraint>
   </Association>
@@ -427,6 +391,43 @@
       </Principal>
       <Dependent Role="venta">
         <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <EntityType Name="detallePago">
+    <Key>
+      <PropertyRef Name="idDetallePago" />
+    </Key>
+    <Property Name="idDetallePago" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="idVenta" Type="Int32" Nullable="false" />
+    <Property Name="fechaPago" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="entrega" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+    <Property Name="idMetodoPago" Type="Int32" Nullable="false" />
+    <Property Name="tipoPago" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="metodoPago" Relationship="BDModuloVentaModel.FK_detallePago_motodoPago" FromRole="detallePago" ToRole="metodoPago" />
+    <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_detallePago_venta" FromRole="detallePago" ToRole="venta" />
+  </EntityType>
+  <Association Name="FK_detallePago_motodoPago">
+    <End Type="BDModuloVentaModel.metodoPago" Role="metodoPago" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.detallePago" Role="detallePago" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="metodoPago">
+        <PropertyRef Name="idMetodoPago" />
+      </Principal>
+      <Dependent Role="detallePago">
+        <PropertyRef Name="idMetodoPago" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_detallePago_venta">
+    <End Type="BDModuloVentaModel.venta" Role="venta" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.detallePago" Role="detallePago" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="venta">
+        <PropertyRef Name="idVenta" />
+      </Principal>
+      <Dependent Role="detallePago">
+        <PropertyRef Name="idVenta" />
       </Dependent>
     </ReferentialConstraint>
   </Association>

@@ -286,15 +286,14 @@ namespace softcomputacion.Controllers
                 cliente oCliente = new cliente();
                 venta oVenta = sVenta.ObtenerVenta(idVenta);
 
-                decimal EntregaMasSaldo = 0;
-                
+                decimal EntregaMasSaldo = 0;        // total de $ entregado (saldo + dinero entregado)
+                decimal entregoSaldo = 0;           // saldo entregado
+                decimal entregoDinero = 0;          // dinero entregado
+                decimal saldoAgregadoDinero = 0;    // saldo que sobra del dinero entregado
 
 
-                
                 decimal faltante = oVenta.costoTotal - Convert.ToDecimal(oVenta.entregado);
                 entrega = entrega.Replace('.', ',');
-
-
 
                 if (idCliente != 0)
                 {
@@ -316,6 +315,7 @@ namespace softcomputacion.Controllers
                         {
                             oCliente.saldo = 0;
                         }
+                        entregoSaldo = EntregaMasSaldo;
                     }
                 }
                 if (faltante > 0)
@@ -323,7 +323,15 @@ namespace softcomputacion.Controllers
                     //pagó o no algo con el saldo pero aún queda por pagar
                     //500 faltante
                     // 400 entrega
-                    EntregaMasSaldo = EntregaMasSaldo + (Convert.ToDecimal(entrega));
+                    if (Convert.ToDecimal(entrega) > faltante)
+                    {
+                        EntregaMasSaldo = EntregaMasSaldo + faltante;
+                    }
+                    else
+                    {
+                        EntregaMasSaldo = EntregaMasSaldo + (Convert.ToDecimal(entrega));
+                    }
+                    
                     
                 }
                 if (oCliente.idCliente !=0)
@@ -332,20 +340,58 @@ namespace softcomputacion.Controllers
                     // guardar siempre el saldo? o dejarlo así?
                     if (guardarSaldo)
                     {
+                        saldoAgregadoDinero = (Convert.ToDecimal(entrega) - faltante);
                         oCliente.saldo = oCliente.saldo + (Convert.ToDecimal(entrega) - faltante);
+                        if (oCliente.saldo < 0)
+                        {
+                            saldoAgregadoDinero = 0;
+                            oCliente.saldo = 0;
+                        }
                     }
                     sCliente.GuardarModificarCliente(oCliente);
                 }
+                entregoDinero = EntregaMasSaldo - entregoSaldo;
 
-
-                detallePago oDetalleP = new detallePago();
-                oDetalleP.fechaPago = DateTime.Now;
-                oDetalleP.idMetodoPago = idMetodoPago;
-                oDetalleP.idVenta = idVenta;
-                oDetalleP.entrega = EntregaMasSaldo;
-                sVenta.GuardarDetallePago(oDetalleP);
+                //EntregaMasSaldo        
+                //entregoSaldo   
+                //entregoDinero 
+                //saldoAgregadoDinero
 
                 
+                detallePago oDetalleP = new detallePago();
+
+                // guardo el detalle del saldo consumido (-)
+                if (entregoSaldo > 0)
+                {
+                    oDetalleP.fechaPago = DateTime.Now;
+                    oDetalleP.idMetodoPago = idMetodoPago;
+                    oDetalleP.idVenta = idVenta;
+                    oDetalleP.entrega = entregoSaldo * -1;
+                    oDetalleP.tipoPago = "SALDO";
+                    sVenta.GuardarDetallePago(oDetalleP);
+                }
+                // guardo el detalle del dinero entregado (-)
+                if (entregoDinero > 0)
+                {
+                    oDetalleP.fechaPago = DateTime.Now;
+                    oDetalleP.idMetodoPago = idMetodoPago;
+                    oDetalleP.idVenta = idVenta;
+                    oDetalleP.entrega = entregoDinero * -1;
+                    oDetalleP.tipoPago = "DINERO";
+                    sVenta.GuardarDetallePago(oDetalleP);
+                }
+                // guardo el detalle del saldo agregado (-)
+                if (saldoAgregadoDinero > 0)
+                {
+                    oDetalleP.fechaPago = DateTime.Now;
+                    oDetalleP.idMetodoPago = idMetodoPago;
+                    oDetalleP.idVenta = idVenta;
+                    oDetalleP.entrega = saldoAgregadoDinero;
+                    oDetalleP.tipoPago = "SALDO";
+                    sVenta.GuardarDetallePago(oDetalleP);
+                }
+
+
                 oVenta.entregado = oVenta.entregado + EntregaMasSaldo;
                 sVenta.ModificarVenta(oVenta);
                 return Json(true);

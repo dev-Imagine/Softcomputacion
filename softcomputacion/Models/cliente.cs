@@ -26,7 +26,7 @@ namespace softcomputacion.Models
         public string apellido { get; set; }
         public string direccion { get; set; }
         public string telefono { get; set; }
-        public Nullable<decimal> saldo { get; set; }
+        public decimal saldo { get; set; }
     
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<venta> venta { get; set; }

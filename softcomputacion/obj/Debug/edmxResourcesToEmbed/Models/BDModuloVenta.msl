@@ -22,17 +22,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="detallePago">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.detallePago">
-        <MappingFragment StoreEntitySet="detallePago">
-          <ScalarProperty Name="idMetodoPago" ColumnName="idMetodoPago" />
-          <ScalarProperty Name="entrega" ColumnName="entrega" />
-          <ScalarProperty Name="fechaPago" ColumnName="fechaPago" />
-          <ScalarProperty Name="idVenta" ColumnName="idVenta" />
-          <ScalarProperty Name="idDetallePago" ColumnName="idDetallePago" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="detalleVenta">
       <EntityTypeMapping TypeName="BDModuloVentaModel.detalleVenta">
         <MappingFragment StoreEntitySet="detalleVenta">
@@ -156,6 +145,18 @@
           <ScalarProperty Name="idUsuario" ColumnName="idUsuario" />
           <ScalarProperty Name="fechaEmision" ColumnName="fechaEmision" />
           <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="detallePago">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.detallePago">
+        <MappingFragment StoreEntitySet="detallePago">
+          <ScalarProperty Name="tipoPago" ColumnName="tipoPago" />
+          <ScalarProperty Name="idMetodoPago" ColumnName="idMetodoPago" />
+          <ScalarProperty Name="entrega" ColumnName="entrega" />
+          <ScalarProperty Name="fechaPago" ColumnName="fechaPago" />
+          <ScalarProperty Name="idVenta" ColumnName="idVenta" />
+          <ScalarProperty Name="idDetallePago" ColumnName="idDetallePago" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>

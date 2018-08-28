@@ -117,7 +117,7 @@
     @if (Model.idEstado != 11)
     {
     <div class="row">
-        @if (Model.cliente.saldo > 0 && Model.cliente.saldo != null)
+        @if (Model.cliente.saldo > 0)
         {
             <div class="col-12">
                 <div class="funkyradio">
@@ -156,7 +156,7 @@
         <div class="col-12 col-md-6 offset-md-3 offset-lg-0 col-lg-4">
             <div class="container-login100-form-btn m-b-20">
                 <button class="login100-form-btn fs-20" style="height:56px;text-transform: none;" onclick="guardarPago( '@Model.entregado','@Model.costoTotal','@Model.idVenta','@Model.idCliente','@Model.cliente.saldo')" type="button">
-                    <i class="fas fa-money-check-alt fs-30"></i>&nbsp; Realizar pago
+                    <i class="fas fa-dollar-sign"></i>&nbsp; Realizar pago
                 </button>
             </div>
         </div>
@@ -174,17 +174,34 @@
                     <tr style="background-color:#cecece">
                         <th scope="col">Fecha</th>
                         <th scope="col">Monto($)</th>
+                        <th scope="col"></th>
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (softcomputacion.Models.detallePago oDet in lstDetallesPago)
+                    @foreach (softcomputacion.Models.detallePago oDet in lstDetallesPago.OrderBy(x=> x.idDetallePago))
                     {
-                        <tr>
-                            <td>@oDet.fechaPago</td>
-                            <th scope="row">@oDet.entrega</th>
+                        stFecha = oDet.fechaPago.Day.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Month.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Year + " " + oDet.fechaPago.ToShortTimeString();
+                    <tr>
+                        <td>@stFecha</td>
+                        @if (oDet.tipoPago == "SALDO")
+                        {
+                            if (oDet.entrega > 0)
+                            {
+                        <th scope="row" class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                            }
+                            else
+                            {
+                        <th scope="row" class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                            }
+                            <td>SALDO </td>
+                        }
+                        else
+                        {
+                            <th scope="row" class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                            <td>@oDet.metodoPago.nombre </td>
+                        }
 
-
-                        </tr>
+                    </tr>
                     }
                 </tbody>
             </table>
@@ -221,10 +238,6 @@
                 usoSaldo = true;
             }
 
-
-            alert("   entrega" + entrega + "   idMetodoPago" + idMetodoPago + "   sobrante" + sobrante + "   faltante" + faltante + "   saldo" + saldo + "   entregado" + entregado + "   costoTotal" + costoTotal + "   usoSaldo" + usoSaldo + "   guardarSaldo" + guardarSaldo + "   idCliente" + idCliente);
-
-
             if ((entrega > 0 || saldo > 0) && entrega.includes("e") == false && entrega.includes("E") == false) {
 
                 faltante = (parseFloat(costoTotal - entregado)).toFixed(2);
@@ -239,28 +252,29 @@
                         entregaMasSaldo = entregaMasSaldo + saldo;
                     }
                     if (parseFloat(entregaMasSaldo) > parseFloat(faltante)) {
-
-                        alert(1);
                         sobrante = (entrega - faltante).toFixed(2);
-                        swal({
-                            title: "",
-                            text: "¿Desea guardar: $" + sobrante + " de saldo para " + nombreCliente + "?",
-                            type: "warning",
-                            dangerMode: true,
-                            showCancelButton: true,
-                            confirmButtonClass: "btn-outline-primary",
-                            confirmButtonText: "Aceptar",
-                            cancelButtonClass: "btn-outline-dark",
-                            cancelButtonText: "Cancelar",
-                            closeOnConfirm: false,
-                            closeOnCancel: false
-                        },
-                            function (isConfirm) {
-                                alert(isConfirm);
-                            if (isConfirm) {
-                                guardarSaldo = true;
-                            }
-                        });
+                        //swal({
+                        //    title: "",
+                        //    text: "¿Desea guardar: $" + sobrante + " de saldo para " + nombreCliente + "?",
+                        //    type: "warning",
+                        //    dangerMode: true,
+                        //    showCancelButton: true,
+                        //    confirmButtonClass: "btn-outline-primary",
+                        //    confirmButtonText: "Aceptar",
+                        //    cancelButtonClass: "btn-outline-dark",
+                        //    cancelButtonText: "Cancelar",
+                        //    closeOnConfirm: false,
+                        //    closeOnCancel: false
+                        //},
+                        //    function (isConfirm) {
+                        //      if (isConfirm) {
+                        //        guardarSaldo = true;
+                        //    }
+                        //});
+                        
+                        if (confirm("¿Desea guardar: el resto del dinero como saldo para " + nombreCliente + "?")) {
+                            guardarSaldo = true;
+                        }
                     }
                 }
                 else {
@@ -273,11 +287,9 @@
                 var data = { entrega: entrega, idMetodoPago: idMetodoPago, idVenta: idVenta, idCliente: idCliente, usoSaldo: usoSaldo, guardarSaldo : guardarSaldo };
                 $.post(url, data).done(function (data) {
                     if (data) {
-                        swal("Exito!", "El pago ha guardado.", "success");
                         location.reload();
                     } else {
                         swal("Error", "Ocurrió un error al registrar el pago.", "error");
-                        location.reload();
                     }
                     
                 });

@@ -17,7 +17,7 @@
     <Property Name="apellido" Type="varchar" MaxLength="50" Nullable="false" />
     <Property Name="direccion" Type="varchar" MaxLength="100" />
     <Property Name="telefono" Type="varchar" MaxLength="50" />
-    <Property Name="saldo" Type="money" />
+    <Property Name="saldo" Type="money" Nullable="false" />
   </EntityType>
   <EntityType Name="detallePago">
     <Key>
@@ -28,6 +28,7 @@
     <Property Name="fechaPago" Type="datetime" Nullable="false" />
     <Property Name="entrega" Type="money" Nullable="false" />
     <Property Name="idMetodoPago" Type="int" Nullable="false" />
+    <Property Name="tipoPago" Type="varchar" MaxLength="50" Nullable="false" />
   </EntityType>
   <EntityType Name="detalleVenta">
     <Key>

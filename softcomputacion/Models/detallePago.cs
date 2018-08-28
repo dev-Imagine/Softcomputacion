@@ -19,6 +19,7 @@ namespace softcomputacion.Models
         public System.DateTime fechaPago { get; set; }
         public decimal entrega { get; set; }
         public int idMetodoPago { get; set; }
+        public string tipoPago { get; set; }
     
         public virtual metodoPago metodoPago { get; set; }
         public virtual venta venta { get; set; }

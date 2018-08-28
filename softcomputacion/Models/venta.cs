@@ -17,8 +17,8 @@ namespace softcomputacion.Models
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
         public venta()
         {
-            this.detallePago = new HashSet<detallePago>();
             this.detalleVenta = new HashSet<detalleVenta>();
+            this.detallePago = new HashSet<detallePago>();
         }
     
         public int idVenta { get; set; }
@@ -32,10 +32,10 @@ namespace softcomputacion.Models
     
         public virtual cliente cliente { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
-        public virtual ICollection<detallePago> detallePago { get; set; }
-        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<detalleVenta> detalleVenta { get; set; }
         public virtual estado estado { get; set; }
         public virtual usuario usuario { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<detallePago> detallePago { get; set; }
     }
 }
