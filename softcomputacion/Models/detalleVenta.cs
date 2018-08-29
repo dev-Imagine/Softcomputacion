@@ -22,7 +22,7 @@ namespace softcomputacion.Models
         public decimal costoGrupal { get; set; }
         public decimal precioCostoGrupal { get; set; }
     
-        public virtual producto producto { get; set; }
         public virtual venta venta { get; set; }
+        public virtual producto producto { get; set; }
     }
 }

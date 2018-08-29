@@ -37,6 +37,7 @@ namespace softcomputacion.Models
         public int idEstado { get; set; }
         public bool precioFijo { get; set; }
         public string garantia { get; set; }
+        public Nullable<System.DateTime> fechaBaja { get; set; }
     
         public virtual categoria categoria { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

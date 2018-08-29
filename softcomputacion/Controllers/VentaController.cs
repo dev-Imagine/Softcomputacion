@@ -38,7 +38,7 @@ namespace softcomputacion.Controllers
                     //lstProductos = new List<producto>();
                 }
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
-                ViewBag.lstEstados = sEstado.ObtenerEstados();
+                ViewBag.lstEstados = sEstado.ObtenerEstados("VENTA");
                 ViewBag.filtros = ";;;";
                 ProductoController ProductoController = new ProductoController();
                 ViewBag.ValorUSD = ProductoController.GetValorUsd();
@@ -72,7 +72,7 @@ namespace softcomputacion.Controllers
                 List<producto> lstProductos = sProducto.ObtenerProductos(nombreProducto, idCategoria, idSubCategoria, idEstado, idProducto);
                 Session["lstProducto"] = lstProductos;
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
-                ViewBag.lstEstados = sEstado.ObtenerEstados();
+                ViewBag.lstEstados = sEstado.ObtenerEstados("PRODUCTO");
                 ViewBag.filtros = Convert.ToString(nombreProducto + ";" + idCategoria + ";" + idSubCategoria + ";" + idEstado);
                 ProductoController ProductoController = new ProductoController();
                 ViewBag.ValorUSD = ProductoController.GetValorUsd();
@@ -223,6 +223,7 @@ namespace softcomputacion.Controllers
         {
             try
             {
+                Session["lstProducto"] = null;
                 usuario oUsuario = (usuario)Session["Usuario"];
                 if (oUsuario == null)
                 {
@@ -230,6 +231,7 @@ namespace softcomputacion.Controllers
                     return RedirectToAction("Index", "Home");
                 }
                 venta oVenta = (venta)Session["venta"];
+
                 oVenta.cliente = null;
                 oVenta.idUsuario = oUsuario.idUsuario;
                 oVenta.entregado = 0;
@@ -401,5 +403,6 @@ namespace softcomputacion.Controllers
                 return Json(false);
             }
         }
+        
     }
 }

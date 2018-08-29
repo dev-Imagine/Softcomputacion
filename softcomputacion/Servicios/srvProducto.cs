@@ -100,7 +100,7 @@ namespace softcomputacion.Servicios
                 {
                     if (idProducto != 0)
                     {
-                        lstProductos = bd.producto.Where(x => x.idProducto == idProducto).ToList();
+                        lstProductos = bd.producto.Where(x => x.idProducto == idProducto && x.fechaBaja == null).ToList();
                         foreach (producto opro in lstProductos)
                         {
                             int id;
@@ -113,8 +113,8 @@ namespace softcomputacion.Servicios
                         }
                         return lstProductos;
                     }
-                    if (nombre == "") lstProductos = bd.producto.ToList();
-                    else lstProductos = bd.producto.Where(x => x.nombre.Contains(nombre)).ToList();
+                    if (nombre == "") lstProductos = bd.producto.Where(x =>  x.fechaBaja == null).ToList();
+                    else lstProductos = bd.producto.Where(x => x.nombre.Contains(nombre) && x.fechaBaja == null).ToList();
                     if (idCategoria != 0) lstProductos = lstProductos.Where(x => x.idCategoria == idCategoria).ToList();
                     if (idSubCategoria != 0) lstProductos = lstProductos.Where(x => x.idSubCategoria == idSubCategoria).ToList();
                     if (idEstado != 0) lstProductos = lstProductos.Where(x => x.idEstado == idEstado).ToList();

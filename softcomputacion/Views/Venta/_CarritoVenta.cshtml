@@ -171,7 +171,13 @@
         }
 
         function BorrarCliente() {
-            SelecionarCliente(0, "", "");
+            var url = "@Url.Action("SeleccionarClienteVenta", "Venta")";
+            var data = { 'oCliente.idCliente': 0, 'oCliente.apellido': "", 'oCliente.nombre': "" };
+            $.post(url, data).done(function (data) {
+                $('.pCliente').removeAttr('id');
+                $('.pCliente').attr('id', data.idCliente);
+                $('#' + data.idCliente).html(data.apellido + " " + data.nombre + " &nbsp;&nbsp;&nbsp;");
+            });
 
         }
 

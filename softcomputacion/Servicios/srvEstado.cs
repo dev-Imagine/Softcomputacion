@@ -8,13 +8,13 @@ namespace softcomputacion.Servicios
 {
     public class srvEstado
     {
-        public List<estado> ObtenerEstados()
+        public List<estado> ObtenerEstados(string stTipo)
         {
             try
             {
                 using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
                 {
-                    return bd.estado.ToList();
+                    return bd.estado.Where(x=> x.tipo == stTipo).ToList();
                 }
             }
             catch (Exception)

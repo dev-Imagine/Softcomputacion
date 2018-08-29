@@ -85,7 +85,7 @@ namespace softcomputacion.Controllers
                     lstProductos = new List<producto>();
                 }
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
-                ViewBag.lstEstados = sEstado.ObtenerEstados();
+                ViewBag.lstEstados = sEstado.ObtenerEstados("PRODUCTO");
                 ViewBag.filtros = ";;;";
                 ViewBag.ValorUSD = GetValorUsd();
                 PagedList<producto> model = new PagedList<producto>(lstProductos.ToList(), nroPagina, tamañoPagina);
@@ -114,7 +114,7 @@ namespace softcomputacion.Controllers
                 List<producto> lstProductos = sProducto.ObtenerProductos(nombreProducto, idCategoria, idSubCategoria, idEstado);
                 Session["lstProducto"] = lstProductos;
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
-                ViewBag.lstEstados = sEstado.ObtenerEstados();
+                ViewBag.lstEstados = sEstado.ObtenerEstados("PRODUCTO");
                 ViewBag.filtros = Convert.ToString(nombreProducto + ";" + idCategoria + ";" + idSubCategoria + ";" + idEstado);
                 ViewBag.ValorUSD = GetValorUsd();
                 PagedList<producto> model = new PagedList<producto>(lstProductos.ToList(), 1, 10);
@@ -424,7 +424,33 @@ namespace softcomputacion.Controllers
                 }
             }
         }
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult EliminarProducto(int idProducto)
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                srvProducto sProducto = new srvProducto();
+                producto oProducto = sProducto.ObtenerProducto(idProducto);
+                if (oProducto == null || oProducto.idProducto == 0)
+                {
+                    throw new Exception();
+                }
+                oProducto.fechaBaja = DateTime.Now;
+                sProducto.GuardarModificarProducto(oProducto);
+                return RedirectToAction("ListarProducto", "Producto");
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Error", new { stError = "No ha sido posible eliminar el producto." });
+            }
 
-        
+        }
+
     }
 }

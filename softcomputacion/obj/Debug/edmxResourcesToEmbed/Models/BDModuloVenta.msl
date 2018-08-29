@@ -35,14 +35,6 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
-    <EntitySetMapping Name="estado">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.estado">
-        <MappingFragment StoreEntitySet="estado">
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="idEstado" ColumnName="idEstado" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
     <EntitySetMapping Name="historialStock">
       <EntityTypeMapping TypeName="BDModuloVentaModel.historialStock">
         <MappingFragment StoreEntitySet="historialStock">
@@ -59,27 +51,6 @@
         <MappingFragment StoreEntitySet="metodoPago">
           <ScalarProperty Name="nombre" ColumnName="nombre" />
           <ScalarProperty Name="idMetodoPago" ColumnName="idMetodoPago" />
-        </MappingFragment>
-      </EntityTypeMapping>
-    </EntitySetMapping>
-    <EntitySetMapping Name="producto">
-      <EntityTypeMapping TypeName="BDModuloVentaModel.producto">
-        <MappingFragment StoreEntitySet="producto">
-          <ScalarProperty Name="garantia" ColumnName="garantia" />
-          <ScalarProperty Name="precioFijo" ColumnName="precioFijo" />
-          <ScalarProperty Name="idEstado" ColumnName="idEstado" />
-          <ScalarProperty Name="idSubCategoria" ColumnName="idSubCategoria" />
-          <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
-          <ScalarProperty Name="precioLista" ColumnName="precioLista" />
-          <ScalarProperty Name="precioContado" ColumnName="precioContado" />
-          <ScalarProperty Name="precioGremio" ColumnName="precioGremio" />
-          <ScalarProperty Name="precioCosto" ColumnName="precioCosto" />
-          <ScalarProperty Name="stockActual" ColumnName="stockActual" />
-          <ScalarProperty Name="stockIdeal" ColumnName="stockIdeal" />
-          <ScalarProperty Name="stockMinimo" ColumnName="stockMinimo" />
-          <ScalarProperty Name="observacion" ColumnName="observacion" />
-          <ScalarProperty Name="nombre" ColumnName="nombre" />
-          <ScalarProperty Name="idProducto" ColumnName="idProducto" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
@@ -157,6 +128,37 @@
           <ScalarProperty Name="fechaPago" ColumnName="fechaPago" />
           <ScalarProperty Name="idVenta" ColumnName="idVenta" />
           <ScalarProperty Name="idDetallePago" ColumnName="idDetallePago" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="estado">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.estado">
+        <MappingFragment StoreEntitySet="estado">
+          <ScalarProperty Name="tipo" ColumnName="tipo" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
+    <EntitySetMapping Name="producto">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.producto">
+        <MappingFragment StoreEntitySet="producto">
+          <ScalarProperty Name="fechaBaja" ColumnName="fechaBaja" />
+          <ScalarProperty Name="garantia" ColumnName="garantia" />
+          <ScalarProperty Name="precioFijo" ColumnName="precioFijo" />
+          <ScalarProperty Name="idEstado" ColumnName="idEstado" />
+          <ScalarProperty Name="idSubCategoria" ColumnName="idSubCategoria" />
+          <ScalarProperty Name="idCategoria" ColumnName="idCategoria" />
+          <ScalarProperty Name="precioLista" ColumnName="precioLista" />
+          <ScalarProperty Name="precioContado" ColumnName="precioContado" />
+          <ScalarProperty Name="precioGremio" ColumnName="precioGremio" />
+          <ScalarProperty Name="precioCosto" ColumnName="precioCosto" />
+          <ScalarProperty Name="stockActual" ColumnName="stockActual" />
+          <ScalarProperty Name="stockIdeal" ColumnName="stockIdeal" />
+          <ScalarProperty Name="stockMinimo" ColumnName="stockMinimo" />
+          <ScalarProperty Name="observacion" ColumnName="observacion" />
+          <ScalarProperty Name="nombre" ColumnName="nombre" />
+          <ScalarProperty Name="idProducto" ColumnName="idProducto" />
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
