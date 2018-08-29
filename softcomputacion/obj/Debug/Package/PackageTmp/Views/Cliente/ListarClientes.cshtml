@@ -1,0 +1,155 @@
+﻿
+@{
+    ViewBag.Title = "ListaCliente";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    string[] filtros = ViewBag.filtros.Split(';');
+}
+
+@model PagedList.IPagedList<softcomputacion.Models.cliente>
+@using PagedList.Mvc;
+
+<br />
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>Clientes</h2>
+        </div>
+    </div>
+    <hr style="border-top: 2px solid #b5262a;" />
+
+    <div class="row">
+        <div class="col-12 col-lg-12">
+            <div class="row">
+                <div class="col-12 offset-xl-1 col-xl-10">
+                    @* Form de busqueda *@
+                    <form method="post" action="@Url.Action("ListarClientes", "Cliente")" autocomplete="off">
+                        <div class="row">
+                            <div class="col-12 col-md-3 offset-lg-1 col-lg-3">
+                                <div class="wrap-input100 m-b-20">
+                                    <input class="input100" type="text" name="dni" placeholder="DNI" value="@filtros[1]">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-5 col-lg-5">
+                                <div class="wrap-input100 m-b-20">
+                                    <input class="input100" type="text" name="nombreApellido" placeholder="Cliente" value="@filtros[0]">
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-4 col-lg-2">
+                                <div class="container-login100-form-btn m-b-20">
+                                    <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                    </form>
+                </div>
+            </div>
+
+
+
+            <hr style="border-top: 1px solid #b5262a;" />
+            <br />
+        </div>
+        <div class="row container-fluid">
+            <!--Lista de Clientes-->
+            <div class="m-b-15 col-12 col-lg-9">
+                @{
+                    
+                    foreach (var oCliente in Model)
+                    {
+                        <div class="row">
+                            <div class="col-12 p-b-16 p-t-16" style="text-align:left;">
+                                <div class="row">
+                                    <div class="col-12 col-md-10">
+                                        <div class="row">
+                                            <div class="col-12 col-sm-5 col-md-3 p-l-5 p-r-5">
+                                                <p class="login100-form-title fs-18 p-l-5 text-center text-sm-left p-t-10">
+                                                    <span>DNI: @oCliente.dni</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-12 col-sm-7 col-md-9 p-l-5 p-r-5">
+                                                <p class="login100-form-title fs-18 p-l-5 text-center text-sm-left p-t-10">
+                                                    <span>@oCliente.apellido, @oCliente.nombre</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-md-6 p-l-5 p-r-5">
+                                                <p class="login100-form-title fs-14 p-l-5 text-center p-t-10">
+                                                    <span>TEL: @oCliente.telefono - Dir: @oCliente.direccion</span>
+                                                </p>
+                                            </div>
+                                            <div class="col-12 col-sm-12 col-md-6 p-l-5 p-r-5">
+                                                <p class="login100-form-title fs-14 p-l-5 text-center p-t-10">
+                                                    <span>Saldo: <i class="text-success">$@Convert.ToString(Math.Round(Convert.ToDouble(oCliente.saldo), 2)).Replace(",", ".").Replace(",00", "")</i></span>
+                                                </p>
+                                            </div>
+                                        </div>
+                                        
+                                    </div>
+                                    <div class="col-12 col-md-2">
+                                        <form method="post" action="@Url.Action("ListaVentasCliente","Cliente", new { idCliente = oCliente.idCliente })" style="display:flex">
+                                            <div class="btn-group w-full" role="group">
+                                                <button type="button" class="btn btn-outline-dark" onclick="modificarCliente('@oCliente.idCliente','@oCliente.nombre','@oCliente.apellido','@oCliente.dni','@oCliente.direccion','@oCliente.telefono')" style="width:50%"><i class="fas fa-pen"></i></button>
+                                                <button type="submit" class="btn btn-outline-primary" style="width:50%"><i class="fas fa-shopping-cart"></i></button>
+                                            </div>
+                                        </form>
+                                    </div>
+                                    
+                                    @*<div class="col-12 col-sm-12 col-md-2 col-lg-2 col-xl-1 p-l-5 p-r-5">
+                                        
+                                    </div>*@
+
+                                </div>
+                            </div>
+                            <div class="col-12">
+                                <hr class="m-t-0 m-b-0" />
+                            </div>
+                        </div>
+                    }
+                }
+            </div>
+            <!--FRM Cliente-->
+            <div class="col-12 col-lg-3">
+                <!--acá va el frm cliente-->
+                @Html.Partial("_frmCliente")
+            </div>
+        </div>
+        <div class="row container-fluid text-center">
+            <div id="div-paginacion" class="col-12">
+                @Html.PagedListPager(Model, nroPagina => Url.Action("ListarClientes", "Cliente", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
+            </div>
+            <div class="col-12">
+                @Model.FirstItemOnPage a @Model.LastItemOnPage clientes de un total de @Model.TotalItemCount clientes.
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    function modificarCliente(idCliente, nombre, apellido, dni, direccion, telefono) {
+        $('#frmId').val(parseInt(idCliente));
+        $('#frmNombre').val(nombre);
+        $('#frmApellido').val(apellido);
+        $('#frmDni').val(dni);
+        $('#frmDireccion').val(direccion);
+        $('#frmTelefono').val(telefono);
+        $('#btnGuardar').text('Modificar');
+        $('#spanFRM1').text('Modificar Cliente');
+        $('#spanFRM2').text(nombre + ' ' + apellido);
+        
+
+    }
+
+    function CancelarModificar() {
+        $('#frmId').val(0);
+        $('#frmNombre').val('');
+        $('#frmApellido').val('');
+        $('#frmDni').val('');
+        $('#frmDireccion').val('');
+        $('#frmTelefono').val('');
+        $('#btnGuardar').text('Guardar');
+        $('#spanFRM1').text('Nuevo Cliente');
+        $('#spanFRM2').text('');
+    }
+</script>

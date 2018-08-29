@@ -16,11 +16,12 @@
     }
 }
 <br />
-<br />
-<div class="">
-    <button class="btn btn-dark " onclick="location.href='@Url.Action("NuevaVenta","Venta")'"><i class="fas fa-plus"></i> Nueva Venta</button>
-</div>
+
 <div class="container">
+    <div class="row oculto-impresion">
+        <button class="btn btn-dark " onclick="location.href='@Url.Action("NuevaVenta","Venta")'"><i class="fas fa-shopping-cart"></i>&nbsp;&nbsp; Nueva venta</button>
+    </div>
+    <br />
     <div class="row ">
         <div class="col-12 col-md-6">
             <p class="navbar-brand" style="font-size:28px"><img class="img-fluid" style="height: 100px;" src="~/Content/images/softcomputacion_icono.png" />SoftComputación</p>
@@ -28,11 +29,11 @@
         <div class="col-12 col-md-6 text-center text-md-right">
             <p class="navbar-brand fs-16 p-b-0 p-t-0">Cuil: 20-38018944-6</p>
             <br />
-            <p class="navbar-brand fs-16 p-b-0 p-t-0" >Tel: 1542040938</p>
+            <p class="navbar-brand fs-16 p-b-0 p-t-0">Tel: 1542040938</p>
             <br />
-            <p class="navbar-brand fs-16 p-b-0 p-t-0" >Dir: Mitre 941, Villa Nueva, Córdoba</p>
+            <p class="navbar-brand fs-16 p-b-0 p-t-0">Dir: Mitre 941, Villa Nueva, Córdoba</p>
             <br />
-            <p class="navbar-brand fs-16 p-b-0 p-t-0" >E-Mail: contacto@softcomputacion.com</p>
+            <p class="navbar-brand fs-16 p-b-0 p-t-0">E-Mail: contacto@softcomputacion.com</p>
         </div>
         <div class="col-12">
             <hr class="m-t-0" />
@@ -80,7 +81,7 @@
                         {
                             <p class="fs-18"><i>Garantía: @oDetalle.producto.garantia</i></p>
                         }
-                        
+
                     </div>
                     <div class="col-12 col-md-4 col-lg-2 text-center text-sm-center text-md-right">
                         <p class="fs-20" style="color:#000">*$@Convert.ToString(Math.Round(oDetalle.costoGrupal, 2)).Replace(",", ".").Replace(",00", "")</p>
@@ -120,51 +121,51 @@
     </div>
     @if (Model.idEstado != 11)
     {
-    <div class="row">
-        @if (Model.cliente.saldo > 0)
-        {
-            <div class="col-12">
-                <div class="funkyradio">
-                    <div class="funkyradio-success">
-                        <input id="chSaldo" type="checkbox" name="checkbox" />
-                        <label for="chSaldo" style="border-color:#28a745">Utilizar saldo ($@Convert.ToString(Math.Round(Convert.ToDouble(Model.cliente.saldo), 2)).Replace(",", ".").Replace(",00", ""))</label>
+        <div class="row oculto-impresion">
+            @if (Model.cliente.saldo > 0)
+            {
+                <div class="col-12">
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input id="chSaldo" type="checkbox" name="checkbox" />
+                            <label for="chSaldo" style="border-color:#28a745">Utilizar saldo ($@Convert.ToString(Math.Round(Convert.ToDouble(Model.cliente.saldo), 2)).Replace(",", ".").Replace(",00", ""))</label>
+                        </div>
                     </div>
+                    <br />
                 </div>
-                <br />
-            </div>
-        }
-        @* select de tipo de pago *@
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="wrap-input100 m-b-20" data-validate="">
-                <select id="select-MetodoPago" class="form-control input100" style="border:0px; height: 55px;" name="idMetodoPago">
+            }
+            @* select de tipo de pago *@
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="wrap-input100 m-b-20" data-validate="">
+                    <select id="select-MetodoPago" class="form-control input100" style="border:0px; height: 55px;" name="idMetodoPago">
 
-                    @if (Model.idCliente != 0)
-                    {
-                        foreach (softcomputacion.Models.metodoPago oMetP in lstMetodosPago)
+                        @if (Model.idCliente != 0)
                         {
-                            <option selected value="@oMetP.idMetodoPago">@oMetP.nombre</option>
+                            foreach (softcomputacion.Models.metodoPago oMetP in lstMetodosPago)
+                            {
+                                <option selected value="@oMetP.idMetodoPago">@oMetP.nombre</option>
+                            }
                         }
-                    }
-                    else
-                    {
-                        <option selected value="1">CONTADO</option>
-                    }
-                </select>
+                        else
+                        {
+                            <option selected value="1">CONTADO</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="wrap-input100 m-b-20">
+                    <input class="input100" type="number" name="entrega" min="0" id="entrega" title="Usar . (PUNTO) en vez de , (COMA) para los DECIMALES" placeholder="Entrega " value="0">
+                </div>
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 offset-lg-0 col-lg-4">
+                <div class="container-login100-form-btn m-b-20">
+                    <button class="login100-form-btn fs-20" style="height:56px;text-transform: none;" onclick="guardarPago( '@Model.entregado','@Model.costoTotal','@Model.idVenta','@Model.idCliente','@Model.cliente.saldo')" type="button">
+                        <i class="fas fa-dollar-sign"></i>&nbsp; Realizar pago
+                    </button>
+                </div>
             </div>
         </div>
-        <div class="col-12 col-md-6 col-lg-4">
-            <div class="wrap-input100 m-b-20">
-                <input class="input100" type="number" name="entrega" min="0" id="entrega" title="Usar . (PUNTO) en vez de , (COMA) para los DECIMALES" placeholder="Entrega " value="0">
-            </div>
-        </div>
-        <div class="col-12 col-md-6 offset-md-3 offset-lg-0 col-lg-4">
-            <div class="container-login100-form-btn m-b-20">
-                <button class="login100-form-btn fs-20" style="height:56px;text-transform: none;" onclick="guardarPago( '@Model.entregado','@Model.costoTotal','@Model.idVenta','@Model.idCliente','@Model.cliente.saldo')" type="button">
-                    <i class="fas fa-dollar-sign"></i>&nbsp; Realizar pago
-                </button>
-            </div>
-        </div>
-    </div>
     }
     <div class="row">
         <div class="col-12">
@@ -182,30 +183,30 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @foreach (softcomputacion.Models.detallePago oDet in lstDetallesPago.OrderBy(x=> x.idDetallePago))
+                    @foreach (softcomputacion.Models.detallePago oDet in lstDetallesPago.OrderBy(x => x.idDetallePago))
                     {
                         stFecha = oDet.fechaPago.Day.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Month.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Year + " " + oDet.fechaPago.ToShortTimeString();
-                    <tr>
-                        <td>@stFecha</td>
-                        @if (oDet.tipoPago == "SALDO")
-                        {
-                            if (oDet.entrega > 0)
+                        <tr>
+                            <td>@stFecha</td>
+                            @if (oDet.tipoPago == "SALDO")
                             {
-                        <th scope="row" class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                if (oDet.entrega > 0)
+                                {
+                                    <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                }
+                                else
+                                {
+                                    <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                }
+                                <td>SALDO </td>
                             }
                             else
                             {
-                        <th scope="row" class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <td>@oDet.metodoPago.nombre </td>
                             }
-                            <td>SALDO </td>
-                        }
-                        else
-                        {
-                            <th scope="row" class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
-                            <td>@oDet.metodoPago.nombre </td>
-                        }
 
-                    </tr>
+                        </tr>
                     }
                 </tbody>
             </table>

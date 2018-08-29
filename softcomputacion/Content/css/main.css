@@ -870,3 +870,10 @@ input[type=number]::-webkit-outer-spin-button {
     background-color: #d0d0d0;
     cursor:pointer;
 }
+
+/* ocultar al imprimir */
+@media print {
+    .oculto-impresion, .oculto-impresion * {
+        display: none !important;
+    }
+}

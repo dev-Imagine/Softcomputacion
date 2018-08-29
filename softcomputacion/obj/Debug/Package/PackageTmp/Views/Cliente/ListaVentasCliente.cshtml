@@ -1,0 +1,89 @@
+﻿
+@{
+    ViewBag.Title = "ListaVentasCliente";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    softcomputacion.Models.cliente oCliente = (softcomputacion.Models.cliente)ViewBag.oCliente;
+    string stFecha = "";
+    decimal dDeuda = 0;
+}
+@model List<softcomputacion.Models.venta>
+
+<br />
+<br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 text-center">
+            <h2>Ventas de @oCliente.nombre @oCliente.apellido</h2>
+        </div>
+    </div>
+    <hr style="border-top: 2px solid #b5262a;" />
+    <div class="row">
+        <div class="col-12 col-sm-6 text-center text-success fs-22">
+            Total entregado: $@Convert.ToString(Math.Round(Convert.ToDecimal(Model.Sum(x => x.entregado)), 2)).Replace(",", ".").Replace(",00", "")
+        </div>
+        <div class="col-12 col-sm-6 text-center">
+            <div class="col-12 col-sm-6 text-center text-danger fs-22">
+                @{
+                    dDeuda = Model.Sum(x => x.costoTotal) - Convert.ToDecimal(Model.Sum(x => x.entregado));
+                }
+                Total de deuda: $@Convert.ToString(Math.Round(dDeuda, 2)).Replace(",", ".").Replace(",00", "")
+            </div>
+        </div>
+    </div>
+    <hr />
+    <div class="row">
+        <div class="col-12 col-xl-10 offset-xl-1">
+            <div id="accordion">
+                @foreach (softcomputacion.Models.venta oVenta in Model)
+                {
+                    stFecha = oVenta.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + oVenta.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + oVenta.fechaEmision.Year;
+                    <div class="card text-center">
+                        <div class="card-header item-lista-venta" id="heading-@oVenta.idVenta" data-toggle="collapse" data-target="#collapse-@oVenta.idVenta" aria-expanded="true" aria-controls="collapseOne">
+                            <div class="row text-center">
+                                <div class="col-12 col-sm-6 col-md-3">
+                                    <span style="vertical-align: -webkit-baseline-middle;">Fecha: @stFecha</span>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-3">
+                                    <span class="@softcomputacion.Servicios.clsMetodosGenericos.ObtenerColorEstadoVenta(oVenta.idEstado) text-uppercase" style="vertical-align: -webkit-baseline-middle;">@oVenta.estado.nombre</span>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-3">
+                                    <span style="vertical-align: -webkit-baseline-middle;">Cant productos: @oVenta.cantidadProductosTotal</span>
+                                </div>
+                                <div class="col-12 col-sm-6 col-md-2">
+                                    <span style="vertical-align: -webkit-baseline-middle;">Total: $@Convert.ToString(Math.Round(oVenta.costoTotal, 2)).Replace(",", ".").Replace(",00", "")</span>
+                                </div>
+                                <div class="col-12 offset-sm-3 col-sm-6 offset-md-0 col-md-1">
+                                    <button class="btn btn-outline-danger" onclick="window.open('@Url.Action("VistaVenta","Venta", new { idVenta = oVenta.idVenta })')"><i class="fas fa-file"></i></button>
+                                </div>
+                            </div>
+                        </div>
+                        <div id="collapse-@oVenta.idVenta" class="collapse" aria-labelledby="heading-@oVenta.idVenta" data-parent="#accordion">
+                            <div class="card-body">
+                                @foreach (softcomputacion.Models.detalleVenta oDetalle in oVenta.detalleVenta)
+                                {
+                                    <div class="row">
+                                        <div class="col-12 col-sm-6 col-md-3 text-sm-left">
+                                            <span>@oDetalle.producto.nombre</span>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-3">
+                                            <span>Cantidad: @oDetalle.cantidad</span>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-3">
+                                            <span>P/u: $@Convert.ToString(Math.Round(oDetalle.costoIndividual, 2)).Replace(",", ".").Replace(",00", "")</span>
+                                        </div>
+                                        <div class="col-12 col-sm-6 col-md-3">
+                                            <span>Subtotal: @Convert.ToString(Math.Round(oDetalle.costoGrupal, 2)).Replace(",", ".").Replace(",00", "")</span>
+                                        </div>
+                                    </div>
+
+                                    <hr />
+                                }
+                            </div>
+                        </div>
+                    </div>
+                }
+            </div>
+        </div>
+    </div>
+</div>
+

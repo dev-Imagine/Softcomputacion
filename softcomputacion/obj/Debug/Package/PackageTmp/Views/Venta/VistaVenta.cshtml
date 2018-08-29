@@ -1,24 +1,57 @@
 ﻿@{
     @model  softcomputacion.Models.venta
+    List<softcomputacion.Models.metodoPago> lstMetodosPago = (List<softcomputacion.Models.metodoPago>)ViewBag.metodosPago;
+    List<softcomputacion.Models.detallePago> lstDetallesPago = (List<softcomputacion.Models.detallePago>)ViewBag.detallesPago;
+    ViewBag.Title = "Venta";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
 }
-@{ 
+@{
     string stFecha = Model.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + Model.fechaEmision.Year;
+    if (Model.idCliente == 0 || Model.cliente == null)
+    {
+        Model.idCliente = 0;
+        Model.cliente = new softcomputacion.Models.cliente();
+        Model.cliente.nombre = "CONSUMIDOR";
+        Model.cliente.apellido = "FINAL";
+    }
 }
+<br />
 
 <div class="container">
+    <div class="row oculto-impresion">
+        <button class="btn btn-dark " onclick="location.href='@Url.Action("NuevaVenta","Venta")'"><i class="fas fa-shopping-cart"></i>&nbsp;&nbsp; Nueva venta</button>
+    </div>
+    <br />
     <div class="row ">
-        <div class="col-12">
+        <div class="col-12 col-md-6">
             <p class="navbar-brand" style="font-size:28px"><img class="img-fluid" style="height: 100px;" src="~/Content/images/softcomputacion_icono.png" />SoftComputación</p>
-            <hr style="margin-top:0" />
+        </div>
+        <div class="col-12 col-md-6 text-center text-md-right">
+            <p class="navbar-brand fs-16 p-b-0 p-t-0">Cuil: 20-38018944-6</p>
+            <br />
+            <p class="navbar-brand fs-16 p-b-0 p-t-0">Tel: 1542040938</p>
+            <br />
+            <p class="navbar-brand fs-16 p-b-0 p-t-0">Dir: Mitre 941, Villa Nueva, Córdoba</p>
+            <br />
+            <p class="navbar-brand fs-16 p-b-0 p-t-0">E-Mail: contacto@softcomputacion.com</p>
+        </div>
+        <div class="col-12">
+            <hr class="m-t-0" />
         </div>
         <div class="col-12 text-center">
-            <h2><span>Nro venta: @Model.idVenta </span></h2>
+            <h2><span>Nro: @Model.idVenta </span></h2>
+        </div>
+        <div class="col-12">
+            <p class="text-center text-sm-right @softcomputacion.Servicios.clsMetodosGenericos.ObtenerColorEstadoVenta(Model.idEstado) text-uppercase" style="font-size:20px;"><strong>@Model.estado.nombre</strong></p>
         </div>
         <div class="col-12">
             <div class="clearfix">
                 <h6><span class="float-left">Usuario: <i> @Model.usuario.apellido, @Model.usuario.nombre</i></span></h6>
-                <h6><span class="float-right">Fecha: <i> @stFecha </i></span></h6>
+                <h6><span class="float-right">Cliente: <i> @Model.cliente.nombre @Model.cliente.apellido </i></span></h6>
             </div>
+        </div>
+        <div class="col-12 text-center">
+            <h6><span>Fecha: <i> @stFecha</i></span></h6>
         </div>
     </div>
 
@@ -31,17 +64,27 @@
             <div id="divRow">
                 <div class="row">
                     <div class="col-12 col-lg-6">
-                        <p style="font-size:20px; color:#000"><i>@oDetalle.producto.categoria.nombre @oDetalle.producto.subcategoria.nombre @oDetalle.producto.nombre</i></p>
+                        <p class="fs-20" style="color:#000"><i>@oDetalle.producto.categoria.nombre @oDetalle.producto.subcategoria.nombre @oDetalle.producto.nombre</i></p>
                     </div>
                     <div class="col-6 col-md-4 col-lg-2 text-center">
-                        <p >Cantidad: <i>@oDetalle.cantidad</i></p>
+                        <p>Cantidad: <i>@oDetalle.cantidad</i></p>
                     </div>
                     <div class="col-6 col-md-4 col-lg-2 text-center">
                         <p>P/Unit: $@Convert.ToString(Math.Round(oDetalle.costoIndividual, 2)).Replace(",", ".").Replace(",00", "")</p>
                     </div>
+                    <div class="col-12 col-lg-6">
+                        @if (oDetalle.producto.garantia == "" || oDetalle.producto.garantia == null)
+                        {
+                            <p class="fs-18"><i>Garantía: N/A</i></p>
+                        }
+                        else
+                        {
+                            <p class="fs-18"><i>Garantía: @oDetalle.producto.garantia</i></p>
+                        }
 
+                    </div>
                     <div class="col-12 col-md-4 col-lg-2 text-center text-sm-center text-md-right">
-                        <p style="font-size:22px; color:#000">*$@Convert.ToString(Math.Round(oDetalle.costoGrupal, 2)).Replace(",", ".").Replace(",00", "")</p>
+                        <p class="fs-20" style="color:#000">*$@Convert.ToString(Math.Round(oDetalle.costoGrupal, 2)).Replace(",", ".").Replace(",00", "")</p>
                     </div>
                     <div class="col-12">
                         <hr />
@@ -55,7 +98,212 @@
 
     <div class="row ">
         <div class="col-12">
-            <p class="text-right" style="font-size:30px; color:#000">Total: $@Convert.ToString(Math.Round(Model.costoTotal, 2)).Replace(",", ".").Replace(",00", "")</p>
+            <p class="text-right fs-30" style="color:#000">Total: $@Convert.ToString(Math.Round(Model.costoTotal, 2)).Replace(",", ".").Replace(",00", "")</p>
+        </div>
+        <div class="col-12">
+            <p class="text-right fs-18" style="color:#000">Abonado: $@Convert.ToString(Math.Round(Convert.ToDouble(Model.entregado), 2)).Replace(",", ".").Replace(",00", "")</p>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-12">
+            <hr />
+            <p class="text-center"><canvas class="img-fluid" id="barcode"></canvas></p>
+        </div>
+    </div>
+    <div class="row ">
+        <div class="col-12">
+            <hr />
+            <p class="text-center" style="font-size:18px;">Documento no válido como factura.</p>
+            <br />
+            <hr />
+            <br />
+        </div>
+    </div>
+    @if (Model.idEstado != 11)
+    {
+        <div class="row oculto-impresion">
+            @if (Model.cliente.saldo > 0)
+            {
+                <div class="col-12">
+                    <div class="funkyradio">
+                        <div class="funkyradio-success">
+                            <input id="chSaldo" type="checkbox" name="checkbox" />
+                            <label for="chSaldo" style="border-color:#28a745">Utilizar saldo ($@Convert.ToString(Math.Round(Convert.ToDouble(Model.cliente.saldo), 2)).Replace(",", ".").Replace(",00", ""))</label>
+                        </div>
+                    </div>
+                    <br />
+                </div>
+            }
+            @* select de tipo de pago *@
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="wrap-input100 m-b-20" data-validate="">
+                    <select id="select-MetodoPago" class="form-control input100" style="border:0px; height: 55px;" name="idMetodoPago">
+
+                        @if (Model.idCliente != 0)
+                        {
+                            foreach (softcomputacion.Models.metodoPago oMetP in lstMetodosPago)
+                            {
+                                <option selected value="@oMetP.idMetodoPago">@oMetP.nombre</option>
+                            }
+                        }
+                        else
+                        {
+                            <option selected value="1">CONTADO</option>
+                        }
+                    </select>
+                </div>
+            </div>
+            <div class="col-12 col-md-6 col-lg-4">
+                <div class="wrap-input100 m-b-20">
+                    <input class="input100" type="number" name="entrega" min="0" id="entrega" title="Usar . (PUNTO) en vez de , (COMA) para los DECIMALES" placeholder="Entrega " value="0">
+                </div>
+            </div>
+            <div class="col-12 col-md-6 offset-md-3 offset-lg-0 col-lg-4">
+                <div class="container-login100-form-btn m-b-20">
+                    <button class="login100-form-btn fs-20" style="height:56px;text-transform: none;" onclick="guardarPago( '@Model.entregado','@Model.costoTotal','@Model.idVenta','@Model.idCliente','@Model.cliente.saldo')" type="button">
+                        <i class="fas fa-dollar-sign"></i>&nbsp; Realizar pago
+                    </button>
+                </div>
+            </div>
+        </div>
+    }
+    <div class="row">
+        <div class="col-12">
+            <br />
+            <p class="fs-18 text-center">Registro de pagos realizados</p>
+            <hr style="border-top: 1px solid #b5262a;" />
+        </div>
+        <div class="col-12">
+            <table class="table text-center">
+                <thead>
+                    <tr style="background-color:#cecece">
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Monto($)</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (softcomputacion.Models.detallePago oDet in lstDetallesPago.OrderBy(x => x.idDetallePago))
+                    {
+                        stFecha = oDet.fechaPago.Day.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Month.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Year + " " + oDet.fechaPago.ToShortTimeString();
+                        <tr>
+                            <td>@stFecha</td>
+                            @if (oDet.tipoPago == "SALDO")
+                            {
+                                if (oDet.entrega > 0)
+                                {
+                                    <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                }
+                                else
+                                {
+                                    <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                }
+                                <td>SALDO </td>
+                            }
+                            else
+                            {
+                                <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <td>@oDet.metodoPago.nombre </td>
+                            }
+
+                        </tr>
+                    }
+                </tbody>
+            </table>
         </div>
     </div>
 </div>
+
+
+
+
+
+@section scripts{
+    <script src="~/Scripts/JsBarcode.all.min.js"></script>
+    <script>
+    $(document).ready(function () {
+        var idProducto = '@Model.idVenta';
+        $("#barcode").JsBarcode(idProducto);
+        });
+
+        function guardarPago(entregado, costoTotal, idVenta, idCliente, saldoCliente) {
+            var entrega = parseFloat($('#entrega').val()).toFixed(2);
+            var idMetodoPago = $('#select-MetodoPago').val();
+            var sobrante = 0.00;
+            var faltante = 0.00;
+            var saldo = 0.00;
+            entregado = (parseFloat(entregado.replace(',', '.'))).toFixed(2);
+
+            costoTotal = (parseFloat(costoTotal.replace(',', '.'))).toFixed(2);
+            var usoSaldo = false;
+            var guardarSaldo = false;
+
+            if ($('#chSaldo').is(':checked')) {
+                saldo = (parseFloat(saldoCliente.replace(',', '.'))).toFixed(2);
+                usoSaldo = true;
+            }
+
+            if ((entrega > 0 || saldo > 0) && entrega.includes("e") == false && entrega.includes("E") == false) {
+
+                faltante = (parseFloat(costoTotal - entregado)).toFixed(2);
+
+
+                if (idCliente != 0) {
+
+                    var nombreCliente = "@Model.cliente.nombre " + "@Model.cliente.apellido"
+
+                    var entregaMasSaldo = parseFloat(entrega);
+                    if (usoSaldo) {
+                        entregaMasSaldo = entregaMasSaldo + saldo;
+                    }
+                    if (parseFloat(entregaMasSaldo) > parseFloat(faltante)) {
+                        sobrante = (entrega - faltante).toFixed(2);
+                        //swal({
+                        //    title: "",
+                        //    text: "¿Desea guardar: $" + sobrante + " de saldo para " + nombreCliente + "?",
+                        //    type: "warning",
+                        //    dangerMode: true,
+                        //    showCancelButton: true,
+                        //    confirmButtonClass: "btn-outline-primary",
+                        //    confirmButtonText: "Aceptar",
+                        //    cancelButtonClass: "btn-outline-dark",
+                        //    cancelButtonText: "Cancelar",
+                        //    closeOnConfirm: false,
+                        //    closeOnCancel: false
+                        //},
+                        //    function (isConfirm) {
+                        //      if (isConfirm) {
+                        //        guardarSaldo = true;
+                        //    }
+                        //});
+                        
+                        if (confirm("¿Desea guardar: el resto del dinero como saldo para " + nombreCliente + "?")) {
+                            guardarSaldo = true;
+                        }
+                    }
+                }
+                else {
+                    if (entrega != costoTotal) {
+                        swal("Error", "Al ser CONSUMIDOR FINAL, el monto a pagar debe ser igual al total de la venta.", "error");
+                        return;
+                    }
+                }
+                var url = "@Url.Action("GuardarPago", "Venta")";
+                var data = { entrega: entrega, idMetodoPago: idMetodoPago, idVenta: idVenta, idCliente: idCliente, usoSaldo: usoSaldo, guardarSaldo : guardarSaldo };
+                $.post(url, data).done(function (data) {
+                    if (data) {
+                        location.reload();
+                    } else {
+                        swal("Error", "Ocurrió un error al registrar el pago.", "error");
+                    }
+                    
+                });
+            }
+            else
+            {
+                swal("Error", "No puedes ingresar valores menores a 0 ni caracteres que no sean numeros. \n Usar . (PUNTO) para DECIMALES", "error");
+            }
+        }
+
+    </script>
+}
