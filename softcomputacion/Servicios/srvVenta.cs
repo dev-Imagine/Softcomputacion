@@ -218,6 +218,37 @@ namespace softcomputacion.Servicios
             }
         }
 
+        public List<venta> ObtenerVentasReporte(DateTime fechaDesde, DateTime fechaHasta)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    fechaHasta = fechaHasta.AddHours(23.59).AddSeconds(59);
+                    List<venta> lstVenta;
+                    lstVenta = bd.venta.Where(x => x.fechaEmision >= fechaDesde && x.fechaEmision <= fechaHasta && x.idEstado != 9).ToList();
+                    string temp = "";
+                    foreach (venta oVenta in lstVenta.ToList())
+                    {
+                        if (oVenta.idCliente != 0 && oVenta.idCliente != null)
+                        {
+                            temp = oVenta.cliente.apellido;
+                        }
+                        temp = oVenta.usuario.nombre;
+                        temp = oVenta.estado.nombre;
+                        oVenta.detalleVenta.Count();
+                    }
+
+                    return lstVenta.OrderByDescending(x => x.fechaEmision).ToList();
+                }
+            }
+            catch (Exception)
+            {
+                return new List<venta>();
+            }
+        }
+
+
         public List<detallePago> ObtenerDetallesPagoDeVenta(int idVenta)
         {
             try

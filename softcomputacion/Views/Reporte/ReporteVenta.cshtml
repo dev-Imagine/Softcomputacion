@@ -51,17 +51,26 @@
                 foreach (var oReporteES in Model)
                 {
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-2 text-center">
+                        <div class="col-12 col-sm-6 col-md-1 text-center">
                             <i>@oReporteES.mes.ToString().PadLeft(2, '0') / @oReporteES.año</i>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-2 text-center">
+                        <div class="col-12 col-sm-6 col-md-1 text-center">
                             <i>Ventas:<strong> @oReporteES.cantVentaTotal</strong></i>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-4 text-center">
+                        <div class="col-12 col-sm-6 col-md-2 text-center">
                             <i>Ingresos totales:<strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-4 text-center">
+                        <div class="col-12 col-sm-6 col-md-2 text-center">
                             <i>Ingreso neto:<strong> $@Convert.ToString(Math.Round(oReporteES.ingresoNeto, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2 text-center">
+                            <i>Diferencia Neta:<strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal-oReporteES.ingresoNeto, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2 text-center">
+                            <i>Faltante total:<strong class="text-danger"> $@Convert.ToString(Math.Round(oReporteES.ventaTotal-oReporteES.abonadoTotal, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
+                        </div>
+                        <div class="col-12 col-sm-6 col-md-2 text-center">
+                            <i>Abonado total:<strong class="text-success"> $@Convert.ToString(Math.Round(oReporteES.abonadoTotal, 2)).Replace(",", ".").Replace(",00", "")</strong></i>
                         </div>
                         <div class="col-12">
                             <hr class="m-t-8 m-b-8" />

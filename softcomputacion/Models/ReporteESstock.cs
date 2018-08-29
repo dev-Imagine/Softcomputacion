@@ -15,7 +15,8 @@ namespace softcomputacion.Models
         public int entrada { get; set; }
         public decimal ventaTotal { get; set; }
         public int cantVentaTotal { get; set; }
-        public decimal ingresoNeto { get; set; }
+        public decimal ingresoNeto { get; set; }   
+        public decimal abonadoTotal { get; set; }
 
     }
 }

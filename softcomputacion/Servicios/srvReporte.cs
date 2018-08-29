@@ -162,7 +162,7 @@ namespace softcomputacion.Servicios
                 srvVenta sVenta = new srvVenta();          
                 using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
                 {
-                    lstVenta = sVenta.ObtenerVentas(fechaDesde, fechaHasta, 0);
+                    lstVenta = sVenta.ObtenerVentasReporte(fechaDesde, fechaHasta);
                     int mes = 0;
                     int año = 0;
                     foreach (venta oVenta in lstVenta)
@@ -194,13 +194,15 @@ namespace softcomputacion.Servicios
                             oReporte.ventaTotal = oVenta.costoTotal;
                             oReporte.cantVentaTotal = 1;
                             oReporte.ingresoNeto = oVenta.costoTotal - neto;
+                            oReporte.abonadoTotal = Convert.ToDecimal(oVenta.entregado);
                             lstReporteStock.Add(oReporte);
                             oReporte = new ReporteESstock();
                         }
                         else
                         {
                             lstReporteStock.Where(x => x.mes == mes && x.año == año).FirstOrDefault().ventaTotal = lstReporteStock.Where(x => x.mes == mes).FirstOrDefault().ventaTotal + oVenta.costoTotal;
-                            lstReporteStock.Where(x => x.mes == mes && x.año == año).FirstOrDefault().ingresoNeto = lstReporteStock.Where(x => x.mes == mes).FirstOrDefault().ingresoNeto + (oVenta.costoTotal - neto);
+                            lstReporteStock.Where(x => x.mes == mes && x.año == año).FirstOrDefault().ingresoNeto = lstReporteStock.Where(x => x.mes == mes).FirstOrDefault().ingresoNeto + (oVenta.costoTotal - neto);                            
+                            lstReporteStock.Where(x => x.mes == mes && x.año == año).FirstOrDefault().abonadoTotal = lstReporteStock.Where(x => x.mes == mes && x.año == año).FirstOrDefault().abonadoTotal + Convert.ToDecimal(oVenta.entregado);
                             lstReporteStock.Where(x => x.mes == mes && x.año == año).FirstOrDefault().cantVentaTotal++;
                         }                        
                     }
