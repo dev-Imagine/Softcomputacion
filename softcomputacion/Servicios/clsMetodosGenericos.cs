@@ -48,7 +48,7 @@ namespace softcomputacion.Servicios
                     return "text-warning";
                 case 11:
                     return "text-success";
-                case 12:
+                case 13:
                     return "text-danger";
                 default:
                     return "#000";
