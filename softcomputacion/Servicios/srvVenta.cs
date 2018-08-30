@@ -219,7 +219,7 @@ namespace softcomputacion.Servicios
                 {
                     fechaHasta = fechaHasta.AddHours(23.59).AddSeconds(59);
                     List<venta> lstVenta;
-                    lstVenta = bd.venta.Where(x => x.fechaEmision >= fechaDesde && x.fechaEmision <= fechaHasta && x.idEstado == 10 && x.idEstado == 11).ToList();
+                    lstVenta = bd.venta.Where(x => x.fechaEmision >= fechaDesde && x.fechaEmision <= fechaHasta && (x.idEstado == 10 || x.idEstado == 11)).ToList();
                     string temp = "";
                     foreach (venta oVenta in lstVenta.ToList())
                     {
