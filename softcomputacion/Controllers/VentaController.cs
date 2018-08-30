@@ -34,8 +34,6 @@ namespace softcomputacion.Controllers
                 if (Session["venta"] == null)
                 {
                     Session["venta"] = new venta();
-                    //Session["lstProducto"] = new List<producto>();
-                    //lstProductos = new List<producto>();
                 }
                 ViewBag.lstCategorias = sCategoria.ObtenerCategorias();
                 ViewBag.lstEstados = sEstado.ObtenerEstados("VENTA");
@@ -418,7 +416,7 @@ namespace softcomputacion.Controllers
                 bool boCancelada = sVenta.CancelarVenta(idVenta);
                 if (boCancelada)
                 {
-                    return RedirectToAction("NuevaVenta","Venta");
+                    return RedirectToAction("VistaVenta", "Venta", new { idVenta = idVenta });
                 }
                 else
                 {

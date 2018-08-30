@@ -22,10 +22,13 @@
             <button class="btn btn-dark float-left w-100 m-t-10" onclick="location.href='@Url.Action("NuevaVenta","Venta")'"><i class="fas fa-shopping-cart"></i>&nbsp;&nbsp; Nueva venta</button>
         </div>
         <div class="col-12 col-sm-6 col-md-4 offset-md-4 col-lg-3 offset-lg-6 col-xl-2 offset-xl-8">
-            <form method="post" action="@Url.Action("CancelarVenta", "Venta", new { idVenta= Model.idVenta })">
-                @Html.AntiForgeryToken()
-                <button type="submit" class="btn btn-outline-dark float-right w-100 m-t-10"><i class="fas fa-times"></i>&nbsp;&nbsp; Cancelar venta</button>
-            </form>
+            @if (Model.idEstado == 9 || Model.idEstado == 10 || Model.idEstado == 11)
+            {
+                <form method="post" action="@Url.Action("CancelarVenta", "Venta", new { idVenta= Model.idVenta })">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-dark float-right w-100 m-t-10"><i class="fas fa-times"></i>&nbsp;&nbsp; Cancelar venta</button>
+                </form>
+            }
         </div>
     </div>
 </div>
@@ -219,7 +222,7 @@
                         {
                             if (oDet.tipoPago == "VENTA CANCELADA")
                             {
-                                <th class="text-success">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
                                 <td>VENTA CANCELADA</td>
                             }
                             else

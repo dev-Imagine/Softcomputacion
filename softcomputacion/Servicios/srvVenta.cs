@@ -270,7 +270,7 @@ namespace softcomputacion.Servicios
                     // cambio el estado a la venta y le pongo el 0 el monto entregado
                     venta oVenta = bd.venta.Where(x => x.idVenta == idVenta).FirstOrDefault();
                     decimal dMontoEntregado = Convert.ToDecimal(oVenta.entregado);
-                    oVenta.idEstado = 13;
+                    oVenta.idEstado = 12;
                     oVenta.entregado = 0;
                     bd.Entry(oVenta).State = System.Data.Entity.EntityState.Modified;
                     // si la venta tiene entregado y no es consumidor final
@@ -289,7 +289,7 @@ namespace softcomputacion.Servicios
                         oDetallePago.idMetodoPago = 1;
                         bd.Entry(oDetallePago).State = System.Data.Entity.EntityState.Added;
                     }
-                        bd.SaveChanges();
+                    bd.SaveChanges();
                     return true;
                 }
             }
