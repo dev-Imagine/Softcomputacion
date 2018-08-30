@@ -418,7 +418,7 @@ namespace softcomputacion.Controllers
                 bool boCancelada = sVenta.CancelarVenta(idVenta);
                 if (boCancelada)
                 {
-                    return RedirectToAction("NuevaVenta","Venta");
+                    return RedirectToAction("VistaVenta", "Venta",new { idVenta  = idVenta });
                 }
                 else
                 {
