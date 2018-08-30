@@ -16,11 +16,26 @@
     }
 }
 <br />
+<div class="container-fluid">
+    <div class="row oculto-impresion">
+        <div class="col-12 col-sm-6 col-md-4 col-lg-3 col-xl-2">
+            <button class="btn btn-dark float-left w-100 m-t-10" onclick="location.href='@Url.Action("NuevaVenta","Venta")'"><i class="fas fa-shopping-cart"></i>&nbsp;&nbsp; Nueva venta</button>
+        </div>
+        <div class="col-12 col-sm-6 col-md-4 offset-md-4 col-lg-3 offset-lg-6 col-xl-2 offset-xl-8">
+            @if (Model.idEstado == 9 || Model.idEstado == 10 || Model.idEstado == 11)
+            {
+                <form method="post" action="@Url.Action("CancelarVenta", "Venta", new { idVenta= Model.idVenta })">
+                    @Html.AntiForgeryToken()
+                    <button type="submit" class="btn btn-outline-dark float-right w-100 m-t-10"><i class="fas fa-times"></i>&nbsp;&nbsp; Cancelar venta</button>
+                </form>
+            }
+        </div>
+    </div>
+</div>
 
 <div class="container">
-    <div class="row oculto-impresion">
-        <button class="btn btn-dark " onclick="location.href='@Url.Action("NuevaVenta","Venta")'"><i class="fas fa-shopping-cart"></i>&nbsp;&nbsp; Nueva venta</button>
-    </div>
+
+
     <br />
     <div class="row ">
         <div class="col-12 col-md-6">
@@ -115,13 +130,18 @@
             <hr />
             <p class="text-center" style="font-size:18px;">Documento no válido como factura.</p>
             <br />
-            <hr />
-            <br />
         </div>
     </div>
-    @if (Model.idEstado != 11)
+    @if (Model.idEstado == 10 || Model.idEstado == 9)
     {
         <div class="row oculto-impresion">
+            <div class="col-12">
+                <hr style="border-top: 1px solid #b5262a;" />
+                <br />
+                <h3 class="text-center">Pagos</h3>
+                <br />
+            </div>
+
             @if (Model.cliente.saldo > 0)
             {
                 <div class="col-12">
@@ -160,9 +180,7 @@
             </div>
             <div class="col-12 col-md-6 offset-md-3 offset-lg-0 col-lg-4">
                 <div class="container-login100-form-btn m-b-20">
-                    <button class="login100-form-btn fs-20" style="height:56px;text-transform: none;" onclick="guardarPago( '@Model.entregado','@Model.costoTotal','@Model.idVenta','@Model.idCliente','@Model.cliente.saldo')" type="button">
-                        <i class="fas fa-dollar-sign"></i>&nbsp; Realizar pago
-                    </button>
+                    <button id="btnGuardarPago" class="btn btn-outline-danger fs-20 w-100" style="height: 57px;" onclick="guardarPago( '@Model.entregado','@Model.costoTotal','@Model.idVenta','@Model.idCliente','@Model.cliente.saldo')" type="button"><i class="fas fa-dollar-sign"></i>&nbsp; Realizar pago</button>
                 </div>
             </div>
         </div>
@@ -186,27 +204,36 @@
                     @foreach (softcomputacion.Models.detallePago oDet in lstDetallesPago.OrderBy(x => x.idDetallePago))
                     {
                         stFecha = oDet.fechaPago.Day.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Month.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Year + " " + oDet.fechaPago.ToShortTimeString();
-                        <tr>
-                            <td>@stFecha</td>
-                            @if (oDet.tipoPago == "SALDO")
+                    <tr>
+                        <td>@stFecha</td>
+                        @if (oDet.tipoPago == "SALDO")
+                        {
+                            if (oDet.entrega > 0)
                             {
-                                if (oDet.entrega > 0)
-                                {
-                                    <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
-                                }
-                                else
-                                {
-                                    <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
-                                }
-                                <td>SALDO </td>
+                                <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
                             }
                             else
                             {
                                 <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
-                                <td>@oDet.metodoPago.nombre </td>
+                            }
+                            <td>SALDO</td>
+                        }
+                        else
+                        {
+                            if (oDet.tipoPago == "VENTA CANCELADA")
+                            {
+                                <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <td>VENTA CANCELADA</td>
+                            }
+                            else
+                            {
+                                <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <td>@oDet.metodoPago.nombre</td>
                             }
 
-                        </tr>
+                        }
+
+                    </tr>
                     }
                 </tbody>
             </table>
@@ -227,6 +254,7 @@
         });
 
         function guardarPago(entregado, costoTotal, idVenta, idCliente, saldoCliente) {
+            $('#btnGuardarPago').attr("disabled", true);
             var entrega = parseFloat($('#entrega').val()).toFixed(2);
             var idMetodoPago = $('#select-MetodoPago').val();
             var sobrante = 0.00;
@@ -276,7 +304,7 @@
                         //        guardarSaldo = true;
                         //    }
                         //});
-                        
+
                         if (confirm("¿Desea guardar: el resto del dinero como saldo para " + nombreCliente + "?")) {
                             guardarSaldo = true;
                         }
@@ -285,6 +313,7 @@
                 else {
                     if (entrega != costoTotal) {
                         swal("Error", "Al ser CONSUMIDOR FINAL, el monto a pagar debe ser igual al total de la venta.", "error");
+                        $('#btnGuardarPago').attr("disabled", false);
                         return;
                     }
                 }
@@ -296,12 +325,13 @@
                     } else {
                         swal("Error", "Ocurrió un error al registrar el pago.", "error");
                     }
-                    
+                    $('#btnGuardarPago').attr("disabled", false);
                 });
             }
             else
             {
                 swal("Error", "No puedes ingresar valores menores a 0 ni caracteres que no sean numeros. \n Usar . (PUNTO) para DECIMALES", "error");
+                $('#btnGuardarPago').attr("disabled", false);
             }
         }
 
