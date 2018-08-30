@@ -209,9 +209,10 @@ namespace softcomputacion.Servicios
                 }
                 return lstReporteStock;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return new List<ReporteESstock>();
+                throw ex;
+                //return new List<ReporteESstock>();
             }
         }
     }
