@@ -41,8 +41,6 @@ namespace softcomputacion.Servicios
                 throw ex;
             }
         }
-
-
         public venta guardarVenta(venta oVenta)
         {
             try
@@ -94,7 +92,6 @@ namespace softcomputacion.Servicios
                 throw ex;
             }
         }
-
         public venta ModificarVenta(venta oVenta)
         {
             try
@@ -127,7 +124,6 @@ namespace softcomputacion.Servicios
                 throw ex;
             }
         }
-
         public detallePago GuardarDetallePago(detallePago oPago)
         {
             try
@@ -144,8 +140,6 @@ namespace softcomputacion.Servicios
                 throw ex;
             }
         }
-
-
         public venta ObtenerVenta(int idVenta)
         {
             try
@@ -217,7 +211,6 @@ namespace softcomputacion.Servicios
                 return new List<venta>();
             }
         }
-
         public List<venta> ObtenerVentasReporte(DateTime fechaDesde, DateTime fechaHasta)
         {
             try
@@ -226,7 +219,7 @@ namespace softcomputacion.Servicios
                 {
                     fechaHasta = fechaHasta.AddHours(23.59).AddSeconds(59);
                     List<venta> lstVenta;
-                    lstVenta = bd.venta.Where(x => x.fechaEmision >= fechaDesde && x.fechaEmision <= fechaHasta && x.idEstado != 9).ToList();
+                    lstVenta = bd.venta.Where(x => x.fechaEmision >= fechaDesde && x.fechaEmision <= fechaHasta && x.idEstado == 10 && x.idEstado == 11).ToList();
                     string temp = "";
                     foreach (venta oVenta in lstVenta.ToList())
                     {
@@ -247,8 +240,6 @@ namespace softcomputacion.Servicios
                 return new List<venta>();
             }
         }
-
-
         public List<detallePago> ObtenerDetallesPagoDeVenta(int idVenta)
         {
             try
@@ -268,6 +259,43 @@ namespace softcomputacion.Servicios
             catch (Exception)
             {
                 return new List<detallePago>();
+            }
+        }
+        public bool CancelarVenta(int idVenta)
+        {
+            try
+            {
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    // cambio el estado a la venta y le pongo el 0 el monto entregado
+                    venta oVenta = bd.venta.Where(x => x.idVenta == idVenta).FirstOrDefault();
+                    decimal dMontoEntregado = Convert.ToDecimal(oVenta.entregado);
+                    oVenta.idEstado = 13;
+                    oVenta.entregado = 0;
+                    bd.Entry(oVenta).State = System.Data.Entity.EntityState.Modified;
+                    // si la venta tiene entregado y no es consumidor final
+                    if (dMontoEntregado >= 0 && oVenta.idCliente != null && oVenta.idCliente != 0)
+                    {
+                        // le agrego lo entregado como saldo al cliente
+                        cliente oCliente = bd.cliente.Where(x => x.idCliente == oVenta.idCliente).FirstOrDefault();
+                        oCliente.saldo = oCliente.saldo + dMontoEntregado;
+                        bd.Entry(oCliente).State = System.Data.Entity.EntityState.Modified;
+                        // creo un detalle en DetallePago para guardar que se le cargó el saldo al cliente
+                        detallePago oDetallePago = new detallePago();
+                        oDetallePago.entrega = dMontoEntregado;
+                        oDetallePago.fechaPago = DateTime.Now;
+                        oDetallePago.idVenta = oVenta.idVenta;
+                        oDetallePago.tipoPago = "VENTA CANCELADA";
+                        oDetallePago.idMetodoPago = 1;
+                        bd.Entry(oDetallePago).State = System.Data.Entity.EntityState.Added;
+                    }
+                        bd.SaveChanges();
+                    return true;
+                }
+            }
+            catch (Exception)
+            {
+                return false;
             }
         }
     }

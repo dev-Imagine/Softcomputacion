@@ -403,6 +403,32 @@ namespace softcomputacion.Controllers
                 return Json(false);
             }
         }
-        
+        [HttpPost, ValidateAntiForgeryToken]
+        public ActionResult CancelarVenta(int idVenta)
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                srvVenta sVenta = new srvVenta();
+                bool boCancelada = sVenta.CancelarVenta(idVenta);
+                if (boCancelada)
+                {
+                    return RedirectToAction("NuevaVenta","Venta");
+                }
+                else
+                {
+                    throw new Exception();
+                }
+            }
+            catch (Exception)
+            {
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar cancelar la venta." });
+            }
+        }
     }
 }
