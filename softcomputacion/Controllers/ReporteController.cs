@@ -54,7 +54,28 @@ namespace softcomputacion.Controllers
             }
             
         }
+        public ActionResult ReporteDeudaClientes()
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null || oUsuario.idTipoUsuario != 2)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                srvReporte sReporte = new srvReporte();
+                List<cliente> lstClientesDeudores = sReporte.obtenerClientesDeudores();
+                
+                return View(lstClientesDeudores);
+            }
+            catch (Exception)
+            {
 
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
+
+        }
         //Post Busqueda.
         [HttpPost]
         public ActionResult ReporteStockES(DateTime? fechaDesde = null, DateTime? fechaHasta = null, int idProducto = 0)

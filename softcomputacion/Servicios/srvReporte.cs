@@ -150,9 +150,6 @@ namespace softcomputacion.Servicios
                 return new List<ReporteESstock>();
             }
         }
-
-
-
         public List<ReporteESstock> obtenerReporteVentas(DateTime fechaDesde, DateTime fechaHasta)
         {
             try
@@ -213,6 +210,32 @@ namespace softcomputacion.Servicios
             {
                 throw ex;
                 //return new List<ReporteESstock>();
+            }
+        }
+        public List<cliente> obtenerClientesDeudores()
+        {
+            try
+            {
+                List<venta> lstVentas;
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    lstVentas = bd.venta.Where(x => (x.idEstado == 9 || x.idEstado == 10) && x.entregado < x.costoTotal).ToList();
+                    List<cliente> lstClientes = new List<cliente>();
+                    int i = 0;
+                    foreach (venta oVenta in lstVentas)
+                    {
+                        if (lstClientes.Where(x => x.idCliente == oVenta.idCliente).Count() == 0)
+                        {
+                            lstClientes.Add(oVenta.cliente);
+                        }
+                        lstClientes.Where(x => x.idCliente == oVenta.idCliente).FirstOrDefault().venta.Add(oVenta);
+                    }
+                    return lstClientes.OrderByDescending(x => x.venta.Sum(z => z.costoTotal - z.entregado)).ToList();
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
             }
         }
     }

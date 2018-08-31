@@ -24,7 +24,7 @@
         <div class="col-12 col-sm-6 text-center">
             <div class="col-12 col-sm-6 text-center text-danger fs-22">
                 @{
-                    dDeuda = Model.Sum(x => x.costoTotal) - Convert.ToDecimal(Model.Sum(x => x.entregado));
+                    dDeuda = Model.Where(x=> x.idEstado==9 || x.idEstado == 10 || x.idEstado == 11).Sum(x => x.costoTotal) - Convert.ToDecimal(Model.Sum(x => x.entregado));
                 }
                 Total de deuda: $@Convert.ToString(Math.Round(dDeuda, 2)).Replace(",", ".").Replace(",00", "")
             </div>
