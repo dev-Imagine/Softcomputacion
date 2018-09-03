@@ -117,17 +117,24 @@ namespace softcomputacion.Controllers
         }
 
         [HttpPost, ValidateAntiForgeryToken]
-        public ActionResult GuardarModificarCliente(cliente oCliente)
+        public ActionResult GuardarModificarCliente(cliente oCliente, string saldo = "")
         {
             try
             {
                 usuario oSession = (usuario)Session["Usuario"];
+                
                 if (oSession == null || oSession.idTipoUsuario != 2)
                 {
                     Session.Clear();
                     return RedirectToAction("Index", "Home");
                 }
                 srvCliente sCliente = new srvCliente();
+                if (saldo != "0" && saldo != "")
+                {
+                    saldo = saldo.Replace(".", ",");
+                    decimal dSaldo = Convert.ToDecimal(saldo);
+                    oCliente.saldo = dSaldo;
+                }
                 sCliente.GuardarModificarCliente(oCliente);
                 return RedirectToAction("ListarClientes");
             }
