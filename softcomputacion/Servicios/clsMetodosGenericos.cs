@@ -55,5 +55,10 @@ namespace softcomputacion.Servicios
 
             }
         }
+        public static double ConvertirUSDaARS(double dPrecio, double ValorUSD)
+        {
+            dPrecio = Math.Round((dPrecio * ValorUSD), 0);
+            return dPrecio;
+        }
     }
 }

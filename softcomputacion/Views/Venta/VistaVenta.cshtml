@@ -92,7 +92,7 @@
                         <p>Cantidad: <i>@oDetalle.cantidad</i></p>
                     </div>
                     <div class="col-6 col-md-4 col-lg-2 text-center">
-                        <p>P/Unit: $@Convert.ToString(Math.Round(oDetalle.costoIndividual, 2)).Replace(",", ".").Replace(",00", "")</p>
+                        <p>P/Unit: $@Convert.ToString(Math.Round(oDetalle.costoIndividual, 0)).Replace(",", ".").Replace(",00", "")</p>
                     </div>
                     <div class="col-12 col-md-6">
                         @if (oDetalle.producto.garantia == "" || oDetalle.producto.garantia == null)
@@ -106,7 +106,7 @@
 
                     </div>
                     <div class="col-12 col-md-6 text-center text-sm-center text-md-right">
-                        <p class="fs-20" style="color:#000">*$@Convert.ToString(Math.Round(oDetalle.costoGrupal, 2)).Replace(",", ".").Replace(",00", "")</p>
+                        <p class="fs-20" style="color:#000">*$@Convert.ToString(Math.Round(oDetalle.costoGrupal, 0)).Replace(",", ".").Replace(",00", "")</p>
                     </div>
                     <div class="col-12">
                         <hr />
@@ -120,10 +120,10 @@
 
     <div class="row ">
         <div class="col-12">
-            <p class="text-right fs-30" style="color:#000">Total: $@Convert.ToString(Math.Round(Model.costoTotal, 2)).Replace(",", ".").Replace(",00", "")</p>
+            <p class="text-right fs-30" style="color:#000">Total: $@Convert.ToString(Math.Round(Model.costoTotal, 0)).Replace(",", ".").Replace(",00", "")</p>
         </div>
         <div class="col-12">
-            <p class="text-right fs-18" style="color:#000">Abonado: $@Convert.ToString(Math.Round(Convert.ToDouble(Model.entregado), 2)).Replace(",", ".").Replace(",00", "")</p>
+            <p class="text-right fs-18" style="color:#000">Abonado: $@Convert.ToString(Math.Round(Convert.ToDouble(Model.entregado), 0)).Replace(",", ".").Replace(",00", "")</p>
         </div>
     </div>
     <div class="row ">
@@ -148,7 +148,7 @@
                     <div class="funkyradio">
                         <div class="funkyradio-success">
                             <input id="chSaldo" type="checkbox" name="checkbox" />
-                            <label for="chSaldo" style="border-color:#28a745">Utilizar saldo ($@Convert.ToString(Math.Round(Convert.ToDouble(Model.cliente.saldo), 2)).Replace(",", ".").Replace(",00", ""))</label>
+                            <label for="chSaldo" style="border-color:#28a745">Utilizar saldo ($@Convert.ToString(Math.Round(Convert.ToDouble(Model.cliente.saldo), 0)).Replace(",", ".").Replace(",00", ""))</label>
                         </div>
                     </div>
                     <br />
@@ -175,7 +175,7 @@
             </div>
             <div class="col-12 col-md-6 col-lg-4">
                 <div class="wrap-input100 m-b-20">
-                    <input class="input100" type="number" name="entrega" min="0" id="entrega" title="Usar . (PUNTO) en vez de , (COMA) para los DECIMALES" placeholder="Entrega " value="0">
+                    <input class="input100" type="number" name="entrega" min="0" id="entrega" placeholder="Entrega " value="0">
                 </div>
             </div>
             <div class="col-12 col-md-6 offset-md-3 offset-lg-0 col-lg-4">
@@ -210,11 +210,11 @@
                         {
                             if (oDet.entrega > 0)
                             {
-                                <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 0)).Replace(",", ".").Replace(",00", "")</th>
                             }
                             else
                             {
-                                <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 0)).Replace(",", ".").Replace(",00", "")</th>
                             }
                             <td>SALDO</td>
                         }
@@ -222,12 +222,12 @@
                         {
                             if (oDet.tipoPago == "VENTA CANCELADA")
                             {
-                                <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 0)).Replace(",", ".").Replace(",00", "")</th>
                                 <td>VENTA CANCELADA</td>
                             }
                             else
                             {
-                                <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 0)).Replace(",", ".").Replace(",00", "")</th>
                                 <td>@oDet.metodoPago.nombre</td>
                             }
 

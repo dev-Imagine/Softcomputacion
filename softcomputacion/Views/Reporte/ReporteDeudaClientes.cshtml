@@ -35,7 +35,7 @@
                     @{
                         decimal dDeuda = oCliente.venta.Where(x => x.idEstado == 9 || x.idEstado == 10 || x.idEstado == 11).Sum(x => x.costoTotal) - Convert.ToDecimal(oCliente.venta.Sum(x => x.entregado));
                     }
-                    <p class="text-danger"> -$@Convert.ToString(Math.Round(dDeuda, 2)).Replace(",", ".").Replace(",00", "")</p>
+                    <p class="text-danger"> -$@Convert.ToString(Math.Round(dDeuda, 0)).Replace(",", ".").Replace(",00", "")</p>
                 </div>
 
                 <div class="col-12">

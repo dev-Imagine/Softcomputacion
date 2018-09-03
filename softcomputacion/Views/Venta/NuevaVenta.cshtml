@@ -120,19 +120,16 @@
                     double PrecioContadoARS = 0;
                     double PrecioListaARS = 0;
                     double PrecioGremioARS = 0;
-                    double PrecioCostoARS = 0;
                     foreach (var oProducto in Model)
                     {
                         PrecioContadoARS = Convert.ToDouble(oProducto.precioContado);
                         PrecioListaARS = Convert.ToDouble(oProducto.precioLista);
                         PrecioGremioARS = Convert.ToDouble(oProducto.precioGremio);
-                        PrecioCostoARS = Convert.ToDouble(oProducto.precioCosto);
                         if (oProducto.precioFijo == false)//precio guardado en USD
                         {
-                            PrecioContadoARS = PrecioContadoARS * ValorUSD;
-                            PrecioListaARS = PrecioListaARS * ValorUSD;
-                            PrecioGremioARS = PrecioGremioARS * ValorUSD;
-                            PrecioCostoARS = PrecioCostoARS * ValorUSD;
+                            PrecioContadoARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioContadoARS, ValorUSD);
+                            PrecioListaARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioListaARS, ValorUSD);
+                            PrecioGremioARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioGremioARS, ValorUSD);
                         }
                         stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(oProducto.idEstado);
                         if (oProducto.stockActual == 0)

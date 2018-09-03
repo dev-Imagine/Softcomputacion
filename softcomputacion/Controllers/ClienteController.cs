@@ -132,7 +132,7 @@ namespace softcomputacion.Controllers
                 if (saldo != "0" && saldo != "")
                 {
                     saldo = saldo.Replace(".", ",");
-                    decimal dSaldo = Convert.ToDecimal(saldo);
+                    decimal dSaldo = Math.Round(Convert.ToDecimal(saldo),0);
                     oCliente.saldo = dSaldo;
                 }
                 sCliente.GuardarModificarCliente(oCliente);

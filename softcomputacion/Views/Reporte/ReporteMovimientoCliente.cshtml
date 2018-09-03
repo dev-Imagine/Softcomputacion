@@ -22,30 +22,34 @@
                     <br />
                 </div>
             </div>
-            @* Form de busqueda *@
-            <form method="post" action="@Url.Action("ReporteMovimientoCliente", "Reporte")" autocomplete="off">
-                <div class="row">
-                    <div>
-                        <input class="dis-none" type="number" name="idCliente" id="idCliente" min="0" value="@arrFiltros[0]">
-                    </div>
-                    <div class="col-6 col-md-3 col-lg-3" >                           
-                        <p style=" border-bottom: 1px #000000 solid; font-size: 20px " id="pNombreCliente">@arrFiltros[1]</p>                        
-                    </div>
-                    <div class="col-7 col-md-3 col-lg-1">
-                         <button type="button" class="btn btn-outline-primary" style="width:100%" onclick="llamarBusquedaCliente()"><i class="fas fa-share"></i></button>
-                    </div>
-                    <div class="col-7 col-md-3 col-lg-2">
-                        <div class="container-login100-form-btn m-b-20">
-                            <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
-                                <i class="fas fa-search"></i>
-                            </button>
+            <div class="row">
+                <div class="col-12 col-md-8 offset-md-2 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+                    @* Form de busqueda *@
+                    <form id="frmMovCliente" method="post" action="@Url.Action("ReporteMovimientoCliente", "Reporte")" autocomplete="off">
+                       
+                        <div>
+                            <input class="dis-none" type="number" name="idCliente" id="idCliente" min="0" value="@arrFiltros[0]">
                         </div>
-                    </div>
-                    <div class="col-12">
-                        <br />
-                    </div>
+
+                        <div class="input-group mb-3 " onclick="llamarBusquedaCliente()" style="cursor:pointer">
+                            <div class="input-group-prepend" style="width:80%">
+                                <span class="input-group-text w-100" id="pNombreCliente">@arrFiltros[1]</span>
+                            </div>
+                            <div class="input-group-append" style="width:20%">
+                                <button class="btn btn-outline-primary w-100" type="button" ><i class="fas fa-share"></i></button>
+                            </div>
+                        </div>
+
+                           
+                        <hr />
+                           
+                     
+                    </form>
+
                 </div>
-            </form>
+
+            </div>
+                
         </div>
         <div class="col-12 col-xl-10 offset-xl-1">
             <table class="table text-center">
@@ -58,7 +62,7 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @if (Model.Count != 0 || Model != null  )
+                    @if (Model.Count != 0 || Model != null)
                     {
                         foreach (softcomputacion.Models.detallePago oDet in Model)
                         {
@@ -71,11 +75,11 @@
                                 {
                                     if (oDet.entrega > 0)
                                     {
-                                        <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                        <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 0)).Replace(",", ".").Replace(",00", "")</th>
                                     }
                                     else
                                     {
-                                        <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                        <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 0)).Replace(",", ".").Replace(",00", "")</th>
                                     }
                                     <td>SALDO</td>
                                 }
@@ -83,12 +87,12 @@
                                 {
                                     if (oDet.tipoPago == "VENTA CANCELADA")
                                     {
-                                        <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                        <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 0)).Replace(",", ".").Replace(",00", "")</th>
                                         <td>VENTA CANCELADA</td>
                                     }
                                     else
                                     {
-                                        <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                        <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 0)).Replace(",", ".").Replace(",00", "")</th>
                                         <td>@oDet.metodoPago.nombre</td>
                                     }
 
@@ -96,7 +100,7 @@
 
                             </tr>
                         }
-                    }                    
+                    }
                 </tbody>
             </table>
 
@@ -123,6 +127,9 @@
         $('#popupBuscarCliente').modal('toggle');
         $('#idCliente').val(idCLiente);
         $('#pNombreCliente').text(apellido + " " + nombre);
+        if (idCLiente != 0) {
+            $("#frmMovCliente").submit();
+        }
     }
 </script>
 

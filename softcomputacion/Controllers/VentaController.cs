@@ -366,7 +366,7 @@ namespace softcomputacion.Controllers
                     oDetalleP.fechaPago = DateTime.Now;
                     oDetalleP.idMetodoPago = idMetodoPago;
                     oDetalleP.idVenta = idVenta;
-                    oDetalleP.entrega = entregoSaldo * -1;
+                    oDetalleP.entrega = Math.Round(entregoSaldo * -1,0);
                     oDetalleP.tipoPago = "SALDO";
                     sVenta.GuardarDetallePago(oDetalleP);
                 }
@@ -376,7 +376,7 @@ namespace softcomputacion.Controllers
                     oDetalleP.fechaPago = DateTime.Now;
                     oDetalleP.idMetodoPago = idMetodoPago;
                     oDetalleP.idVenta = idVenta;
-                    oDetalleP.entrega = entregoDinero * -1;
+                    oDetalleP.entrega = Math.Round(entregoDinero * -1,0);
                     oDetalleP.tipoPago = "DINERO";
                     sVenta.GuardarDetallePago(oDetalleP);
                 }
@@ -386,13 +386,13 @@ namespace softcomputacion.Controllers
                     oDetalleP.fechaPago = DateTime.Now;
                     oDetalleP.idMetodoPago = idMetodoPago;
                     oDetalleP.idVenta = idVenta;
-                    oDetalleP.entrega = saldoAgregadoDinero;
+                    oDetalleP.entrega = Math.Round(saldoAgregadoDinero,0);
                     oDetalleP.tipoPago = "SALDO";
                     sVenta.GuardarDetallePago(oDetalleP);
                 }
 
 
-                oVenta.entregado = oVenta.entregado + EntregaMasSaldo;
+                oVenta.entregado = Math.Round(Convert.ToDecimal(oVenta.entregado) + EntregaMasSaldo, 0);
                 sVenta.ModificarVenta(oVenta);
                 return Json(true);
             }

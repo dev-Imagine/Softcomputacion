@@ -74,17 +74,17 @@
                 foreach (softcomputacion.Models.ReporteRankingGastoCliente oReporte in Model)
                 {
                     <div class="row">
-                        <div class="col-12 col-sm-6 col-md-4 text-center">
+                        <div class="col-12 col-sm-6 col-md-6 text-center text-sm-left text-xl-center">
                             <p>Cliente:</p>
                             <i>@oReporte.nombreCliente</i>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-2 text-center">
+                        <div class="col-6 col-sm-3 col-md-3 text-center">
                             <p>Cantidad de ventas:</p>
                             <strong> @oReporte.cantidadVentas</strong>
                         </div>
-                        <div class="col-12 col-sm-6 col-md-3 text-center">
+                        <div class="col-6 col-sm-3 col-md-3 text-center">
                             <p>Gasto Total:</p>
-                            <strong> $@Convert.ToString(Math.Round(oReporte.gastoTotal, 2)).Replace(",", ".").Replace(",00", "")</strong>
+                            <strong> $@Convert.ToString(Math.Round(oReporte.gastoTotal, 0)).Replace(",", ".").Replace(",00", "")</strong>
                         </div>
                         
                         <div class="col-12">

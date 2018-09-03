@@ -249,7 +249,15 @@ namespace softcomputacion.Controllers
                 
                 srvDetallePago sDetalle = new srvDetallePago();
                 List<detallePago> model = sDetalle.obtenerDetallePagoCliente(idCliente);
-                ViewBag.filtros = idCliente + ";" + model.FirstOrDefault().venta.cliente.apellido + " " + model.First().venta.cliente.nombre;
+                if (model.Count()>0)
+                {
+                    ViewBag.filtros = idCliente + ";" + model.FirstOrDefault().venta.cliente.apellido + " " + model.First().venta.cliente.nombre;
+                }
+                else
+                {
+                    ViewBag.filtros = "0;Seleccione un cliente";
+                }
+                
                 return View(model);
             }
             catch (Exception ex)

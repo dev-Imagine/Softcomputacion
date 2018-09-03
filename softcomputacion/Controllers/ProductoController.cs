@@ -226,6 +226,13 @@ namespace softcomputacion.Controllers
                 oProducto.precioCosto = Convert.ToDecimal(precioCosto.Replace(".", ","));
                 oProducto.precioGremio = Convert.ToDecimal(precioGremio.Replace(".", ","));
                 oProducto.precioLista = Convert.ToDecimal(precioLista.Replace(".", ","));
+                if (oProducto.precioFijo == true)
+                {
+                    oProducto.precioContado = Math.Round(oProducto.precioContado, 0);
+                    oProducto.precioCosto = Math.Round(oProducto.precioCosto, 0);
+                    oProducto.precioGremio = Math.Round(oProducto.precioGremio, 0);
+                    oProducto.precioLista = Math.Round(oProducto.precioLista, 0);
+                }
                 foreach (string idProv in idProveedor)
                 {
                     if (idProv != "")
@@ -316,7 +323,7 @@ namespace softcomputacion.Controllers
                         dUSD = dUSD / ValorUSD;
                         break;
                     case "USD"://precio viene en USD - calcular precio ARS
-                        dARS = dARS * ValorUSD;
+                        dARS = Math.Round(dARS * ValorUSD);
                         break;
                     default:
                         return Json("");

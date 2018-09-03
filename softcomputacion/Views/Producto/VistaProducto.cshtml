@@ -10,10 +10,13 @@
     double dLista = Convert.ToDouble(Model.precioLista);
     if (Model.precioFijo == false)
     {
-        dContado = dContado * ValorUSD;
-        dGremio = dGremio * ValorUSD;
-        dLista = dLista * ValorUSD;
+        dContado = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(dContado, ValorUSD);
+        dGremio = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(dGremio, ValorUSD);
+        dLista = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(dLista, ValorUSD);
     }
+    dContado = Math.Round(dContado, 0);
+    dGremio = Math.Round(dGremio, 0);
+    dLista = Math.Round(dLista, 0);
 }
 
 <br /><br />
