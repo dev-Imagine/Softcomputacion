@@ -76,6 +76,52 @@ namespace softcomputacion.Controllers
             }
 
         }
+
+        public ActionResult ReporteMovimientoCliente()
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null || oUsuario.idTipoUsuario != 2)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                ViewBag.filtros = ";";
+                List<detallePago> model = new List<detallePago>();
+                ViewBag.DatosChart = "";
+                return View(model);
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
+
+        }
+
+        public ActionResult ReporteRankingGastoClientes()
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null || oUsuario.idTipoUsuario != 2)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                ViewBag.filtros = ";;";
+                List<ReporteRankingGastoCliente> model = new List<ReporteRankingGastoCliente>();
+                return View(model);
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
+
+        }
+
         //Post Busqueda.
         [HttpPost]
         public ActionResult ReporteStockES(DateTime? fechaDesde = null, DateTime? fechaHasta = null, int idProducto = 0)
@@ -182,6 +228,77 @@ namespace softcomputacion.Controllers
                 return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
             }
            
+        }
+
+        [HttpPost]
+        public ActionResult ReporteMovimientoCliente(int idCliente = 0)
+        {
+            try
+            {
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null || oUsuario.idTipoUsuario != 2 )
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                    
+                }
+                if (idCliente == 0)
+                {
+                    return RedirectToAction("ReporteMovimientoCliente", "Reporte");
+                }
+                
+                srvDetallePago sDetalle = new srvDetallePago();
+                List<detallePago> model = sDetalle.obtenerDetallePagoCliente(idCliente);
+                ViewBag.filtros = idCliente + ";" + model.FirstOrDefault().venta.cliente.apellido + " " + model.First().venta.cliente.nombre;
+                return View(model);
+            }
+            catch (Exception ex)
+            {
+                string error = ex.ToString();
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
+
+        }
+        [HttpPost]
+        public ActionResult ReporteRankingGastoClientes(int cantidadRanking, string fechaDesde, string fechaHasta)
+        {
+            try
+            {
+                if (fechaDesde == "")
+                {
+                    fechaDesde = "01/01/2000";
+                }
+                if (fechaHasta == "")
+                {
+                    fechaHasta = "01/01/3000";
+                }
+                usuario oUsuario = (usuario)Session["Usuario"];
+                if (oUsuario == null || oUsuario.idTipoUsuario != 2)
+                {
+                    Session.Clear();
+                    return RedirectToAction("Index", "Home");
+                }
+                
+                srvReporte sReporte = new srvReporte();
+                List<ReporteRankingGastoCliente> model = new List<ReporteRankingGastoCliente>();
+                model = sReporte.obtenerRankingCostoCliente(fechaDesde, fechaHasta);
+                ViewBag.filtros = cantidadRanking + ";" + fechaDesde + ";" + fechaHasta;
+                if (cantidadRanking == 0)
+                {
+                    return View(model.OrderByDescending(x => x.gastoTotal).ToList());                    
+                }
+                else
+                {
+                    return View(model.OrderByDescending(x => x.gastoTotal).Take(cantidadRanking).ToList());
+                }
+                
+            }
+            catch (Exception)
+            {
+
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar obtener los datos del servidor." });
+            }
+
         }
 
         //Metodos

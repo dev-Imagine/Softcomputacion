@@ -1,0 +1,128 @@
+﻿@{
+    @model List<softcomputacion.Models.detallePago>
+    ViewBag.Title = "Reportes";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    string[] arrFiltros = Convert.ToString(ViewBag.filtros).Split(';');
+    string stFecha = "";
+    if (arrFiltros[0] == "")
+    {
+        arrFiltros[1] = "Seleccione un Cliente";
+    }
+}
+
+
+<div class="container-fluid">
+    <div class="row">
+        @Html.Partial("_IndiceReporte")
+        <div class="col-12 col-md-12 offset-lg-2 col-lg-8 offset-xl-2 col-xl-8 text-center" style="">
+            <div class="row">
+                <div class="col-12">
+                    <br />
+                    <h1 class="text-center"> Movimientos de un Cliente </h1>
+                    <br />
+                </div>
+            </div>
+            @* Form de busqueda *@
+            <form method="post" action="@Url.Action("ReporteMovimientoCliente", "Reporte")" autocomplete="off">
+                <div class="row">
+                    <div>
+                        <input class="dis-none" type="number" name="idCliente" id="idCliente" min="0" value="@arrFiltros[0]">
+                    </div>
+                    <div class="col-6 col-md-3 col-lg-3" >                           
+                        <p style=" border-bottom: 1px #000000 solid; font-size: 20px " id="pNombreCliente">@arrFiltros[1]</p>                        
+                    </div>
+                    <div class="col-7 col-md-3 col-lg-1">
+                         <button type="button" class="btn btn-outline-primary" style="width:100%" onclick="llamarBusquedaCliente()"><i class="fas fa-share"></i></button>
+                    </div>
+                    <div class="col-7 col-md-3 col-lg-2">
+                        <div class="container-login100-form-btn m-b-20">
+                            <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <br />
+                    </div>
+                </div>
+            </form>
+        </div>
+        <div class="col-12 col-xl-10 offset-xl-1">
+            <table class="table text-center">
+                <thead>
+                    <tr style="background-color:#cecece">
+                        <th scope="col">Fecha</th>
+                        <th scope="col">Nro Venta</th>
+                        <th scope="col">Monto($)</th>
+                        <th scope="col"></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @if (Model.Count != 0 || Model != null  )
+                    {
+                        foreach (softcomputacion.Models.detallePago oDet in Model)
+                        {
+                            stFecha = oDet.fechaPago.Day.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Month.ToString().PadLeft(2, '0') + "/" + oDet.fechaPago.Year + " " + oDet.fechaPago.ToShortTimeString();
+
+                            <tr>
+                                <td>@stFecha</td>
+                                <td>@oDet.idVenta</td>
+                                @if (oDet.tipoPago == "SALDO")
+                                {
+                                    if (oDet.entrega > 0)
+                                    {
+                                        <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                    }
+                                    else
+                                    {
+                                        <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                    }
+                                    <td>SALDO</td>
+                                }
+                                else
+                                {
+                                    if (oDet.tipoPago == "VENTA CANCELADA")
+                                    {
+                                        <th class="text-success">$ +@Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                        <td>VENTA CANCELADA</td>
+                                    }
+                                    else
+                                    {
+                                        <th class="text-danger">$ @Convert.ToString(Math.Round(Convert.ToDouble(oDet.entrega), 2)).Replace(",", ".").Replace(",00", "")</th>
+                                        <td>@oDet.metodoPago.nombre</td>
+                                    }
+
+                                }
+
+                            </tr>
+                        }
+                    }                    
+                </tbody>
+            </table>
+
+        </div>
+    </div>
+</div>
+<div id="div-popup-BuscarCliente"></div>
+
+
+
+<script>
+    function llamarBusquedaCliente() {
+        var url = "@Url.Action("_PopUpBuscarCliente", "Cliente")";
+            var data = {};
+            $.post(url, data).done(function (data) {
+                if (data.length > 0) {
+                    $('#div-popup-BuscarCliente').html(data);
+                    $('#popupBuscarCliente').modal('show');
+                }
+            });
+    }
+
+    function SelecionarCliente(idCLiente, apellido, nombre) {
+        $('#popupBuscarCliente').modal('toggle');
+        $('#idCliente').val(idCLiente);
+        $('#pNombreCliente').text(apellido + " " + nombre);
+    }
+</script>
+

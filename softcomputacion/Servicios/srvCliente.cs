@@ -34,7 +34,7 @@ namespace softcomputacion.Servicios
             {
                 throw ex;
             }
-        }
+        }        
         public List<venta> ObtenerVentas(int idCliente)
         {
             try

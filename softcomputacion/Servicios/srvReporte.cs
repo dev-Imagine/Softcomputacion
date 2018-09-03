@@ -238,5 +238,43 @@ namespace softcomputacion.Servicios
                 throw ex;
             }
         }
+
+        public List<ReporteRankingGastoCliente> obtenerRankingCostoCliente(string fechaDesde, string fechaHasta)
+        {
+            try
+            {
+                DateTime dtFechaDesde = Convert.ToDateTime(fechaDesde).Date;
+                DateTime dtFechaHasta = Convert.ToDateTime(fechaHasta).AddHours(23.59).AddSeconds(59);
+                List<ReporteRankingGastoCliente> lstReporte = new List<ReporteRankingGastoCliente>();
+                using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
+                {
+                    ReporteRankingGastoCliente oReporte = new ReporteRankingGastoCliente();
+                    oReporte.cantidadVentas = 0;
+                    oReporte.gastoTotal = 0;
+                    oReporte.nombreCliente = "";
+                    srvCliente sCliente = new srvCliente();
+                    List<cliente> lstCliente = new List<cliente>();
+                    lstCliente = bd.cliente.ToList();
+                    foreach (cliente oCLie in lstCliente)
+                    {
+                        oReporte.nombreCliente = oCLie.apellido + " " + oCLie.nombre;
+                        foreach (venta oVenta in oCLie.venta.Where(x=> x.fechaEmision >= dtFechaDesde &&  x.fechaEmision <= dtFechaHasta && (x.idEstado == 10 || x.idEstado == 11)))
+                        {
+                            oReporte.cantidadVentas = oReporte.cantidadVentas + 1;
+                            oReporte.gastoTotal = Convert.ToDecimal(oReporte.gastoTotal) + Convert.ToDecimal(oVenta.entregado);
+                        }
+                        lstReporte.Add(oReporte);
+                        oReporte = new ReporteRankingGastoCliente();
+                    }
+
+
+                    return lstReporte;
+                }
+            }
+            catch (Exception ex)
+            {
+                throw ex;
+            }
+        }
     }
 }
