@@ -159,6 +159,7 @@
         
         // descontar
         var StockActual = '@Model.stockActual';
+        
         if (parseInt(cantidad) > 0 && parseInt(cantidad) <= parseInt(StockActual)) {
             var url = "@Url.Action("DescontarStock", "Producto")";
             var data = { idProducto:@Model.idProducto, cantidad: cantidad };
@@ -179,6 +180,7 @@
         }
         else
         {
+            alert(cantidad);
             swal("Ocurrió un error \n \n", "No existe stock suficiente.", "error");
         }
     }

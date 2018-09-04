@@ -36,13 +36,17 @@ namespace softcomputacion.Servicios
                     bd.Database.ExecuteSqlCommand("DELETE FROM proveedorXproducto WHERE idProducto = @id", new System.Data.SqlClient.SqlParameter("id", oProducto.idProducto));
                     foreach (proveedorXproducto oPxp in oProducto.proveedorXproducto.ToList())
                     {
-                        bd.Entry(oPxp).State = System.Data.Entity.EntityState.Added;
+                        proveedorXproducto oProV = new proveedorXproducto();
+                        oProV.idProveedor = oPxp.idProveedor;
+                        oProV.idProducto = oPxp.idProducto;
+                        bd.Entry(oProV).State = System.Data.Entity.EntityState.Added;
                     }
                     oProducto.proveedorXproducto.Clear();
                     bd.Entry(oProducto).State = System.Data.Entity.EntityState.Modified;
                     bd.SaveChanges();
-                    return oProducto;
+                    
                 }
+                return oProducto;
             }
             catch (Exception ex)
             {
