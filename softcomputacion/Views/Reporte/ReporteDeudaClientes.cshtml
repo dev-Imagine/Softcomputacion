@@ -26,16 +26,16 @@
                     <strong> @oCliente.nombre, @oCliente.apellido</strong>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 text-center">
-                    <p>
+                    <p class="fs-18">
                         Cant ventas:
-                        <strong> @oCliente.venta.Count()</strong>
+                        <strong> @oCliente.venta.Where(x => x.idEstado == 9 || x.idEstado == 10).Count()</strong>
                     </p>
                 </div>
                 <div class="col-12 col-sm-6 col-md-4 text-center">
                     @{
                         decimal dDeuda = oCliente.venta.Where(x => x.idEstado == 9 || x.idEstado == 10 || x.idEstado == 11).Sum(x => x.costoTotal) - Convert.ToDecimal(oCliente.venta.Sum(x => x.entregado));
                     }
-                    <p class="text-danger"> -$@Convert.ToString(Math.Round(dDeuda, 0)).Replace(",", ".").Replace(",00", "")</p>
+                    <p class="text-danger fs-18"> -$@Convert.ToString(Math.Round(dDeuda, 0)).Replace(",", ".").Replace(",00", "")</p>
                 </div>
 
                 <div class="col-12">

@@ -219,9 +219,8 @@ namespace softcomputacion.Servicios
                 List<venta> lstVentas;
                 using (BDSoftComputacionEntities bd = new BDSoftComputacionEntities())
                 {
-                    lstVentas = bd.venta.Where(x => (x.idEstado == 9 || x.idEstado == 10) && x.entregado < x.costoTotal).ToList();
+                    lstVentas = bd.venta.Where(x => (x.idEstado == 9 || x.idEstado == 10) && x.entregado < x.costoTotal && x.idCliente !=0 && x.idCliente != null).ToList();
                     List<cliente> lstClientes = new List<cliente>();
-                    int i = 0;
                     foreach (venta oVenta in lstVentas)
                     {
                         if (lstClientes.Where(x => x.idCliente == oVenta.idCliente).Count() == 0)
