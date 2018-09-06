@@ -123,18 +123,27 @@ namespace softcomputacion.Controllers
             {
                 usuario oSession = (usuario)Session["Usuario"];
                 
-                if (oSession == null || oSession.idTipoUsuario != 2)
+                if (oSession == null)
                 {
                     Session.Clear();
                     return RedirectToAction("Index", "Home");
                 }
                 srvCliente sCliente = new srvCliente();
-                if (saldo != "0" && saldo != "")
+                if (oSession.idTipoUsuario == 2)
                 {
-                    saldo = saldo.Replace(".", ",");
-                    decimal dSaldo = Math.Round(Convert.ToDecimal(saldo),0);
-                    oCliente.saldo = dSaldo;
+                    if (saldo != "0" && saldo != "")
+                    {
+                        saldo = saldo.Replace(".", ",");
+                        decimal dSaldo = Math.Round(Convert.ToDecimal(saldo), 0);
+                        oCliente.saldo = dSaldo;
+                    }
                 }
+                else
+                {
+                    oCliente.saldo = Math.Round(Convert.ToDecimal(saldo), 0);
+                }
+
+                
                 sCliente.GuardarModificarCliente(oCliente);
                 return RedirectToAction("ListarClientes");
             }

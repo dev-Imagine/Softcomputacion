@@ -411,25 +411,58 @@ namespace softcomputacion.Controllers
         [OutputCache(Duration = 3600, Location =System.Web.UI.OutputCacheLocation.Server)]
         public double GetValorUsd()
         {
-            using (var client = new HttpClient())
+            try
             {
-                client.BaseAddress = new Uri("http://ws.geeklab.com.ar");
-                var responseTask = client.GetAsync("dolar/get-dolar-json.php");
-                responseTask.Wait();
-                var result = responseTask.Result;
-                if (result.IsSuccessStatusCode)
+                using (var client = new HttpClient())
                 {
-                    var readTask = result.Content.ReadAsStringAsync();
-                    readTask.Wait();
-                    //  {\"libre\":\"28.41\",\"blue\":\"28.65\"}
-                    string stResult = readTask.Result.Substring(10, 5).Replace(".",",");
-                    return Convert.ToDouble(stResult);
+                    client.BaseAddress = new Uri("http://ws.geeklab.com.ar");
+                    var responseTask = client.GetAsync("dolar/get-dolar-json.php");
+                    responseTask.Wait();
+                    var result = responseTask.Result;
+                    if (result.IsSuccessStatusCode)
+                    {
+                        var readTask = result.Content.ReadAsStringAsync();
+                        readTask.Wait();
+                        //  {\"libre\":\"28.41\",\"blue\":\"28.65\"}
+                        string stResult = readTask.Result.Substring(10, 5).Replace(".", ",");
+                        return Convert.ToDouble(stResult);
+                    }
+                    else //web api sent error response 
+                    {
+                        throw new Exception();
+                    }
                 }
-                else //web api sent error response 
+            }
+            catch(Exception)
+            {
+                try
+                {
+                    using (var client = new HttpClient())
+                    {
+                        client.BaseAddress = new Uri("http://api.bluelytics.com.ar");
+                        var responseTask = client.GetAsync("v2/latest");
+                        responseTask.Wait();
+                        var result = responseTask.Result;
+                        if (result.IsSuccessStatusCode)
+                        {
+                            var readTask = result.Content.ReadAsStringAsync();
+                            readTask.Wait();
+                            //  {"oficial": {"value_avg": 38.28, "value_sell": 39.28, "value_buy": 37.28}, "blue": {"value_avg": 38.514, "value_sell": 39.2, "value_buy": 37.827999999999996}
+                            string stResult = readTask.Result.Substring(26, 5).Replace(".", ",");
+                            return Convert.ToDouble(stResult);
+                        }
+                        else //web api sent error response 
+                        {
+                            throw new Exception();
+                        }
+                    }
+                }
+                catch (Exception)
                 {
                     return 0;
                 }
             }
+            
         }
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult EliminarProducto(int idProducto)

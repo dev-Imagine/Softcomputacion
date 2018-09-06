@@ -1,4 +1,6 @@
-﻿
+﻿@{ 
+    softcomputacion.Models.usuario oUsuario = (softcomputacion.Models.usuario)Session["Usuario"];
+}
 <form class="validate-form" method="post" action="@Url.Action("GuardarModificarCliente","Cliente")" autocomplete="off">
     @Html.AntiForgeryToken()
     <span id="spanFRM1" class="login100-form-title p-b-5">
@@ -11,7 +13,7 @@
 
     <input name="oCliente.idCliente" value="0" id="frmId" class="dis-none">
     <div class="wrap-input100 validate-input m-b-20" data-validate="DNI">
-        <input class="input100" type="text" name="oCliente.dni" maxlength="8" pattern=".{8,}"   required title="8 digitos minimo" id="frmDni" placeholder="DNI" value="">
+        <input class="input100" type="text" name="oCliente.dni" maxlength="8" pattern=".{8,}" required title="8 digitos minimo" id="frmDni" placeholder="DNI" value="">
     </div>
     <div class="wrap-input100 validate-input m-b-20" data-validate="Nombre">
         <input class="input100" type="text" name="oCliente.nombre" id="frmNombre" placeholder="Nombre" value="">
@@ -25,14 +27,23 @@
     <div class="wrap-input100 m-b-20">
         <input class="input100" type="text" name="oCliente.direccion" id="frmDireccion" placeholder="Dirección" value="">
     </div>
-    <div class="wrap-input100 m-b-20">
-        <input class="input100" type="number" name="saldo" step=".1" min="0" id="frmSaldo" placeholder="Saldo" value="">
-    </div> 
+    @if (oUsuario.idTipoUsuario == 2)
+    {
+        <div class="wrap-input100 m-b-20">
+            <input class="input100" type="number" name="saldo" step=".1" min="0" id="frmSaldo" placeholder="Saldo" value="">
+        </div>
+    }
+    else
+    {
+        <div class="wrap-input100 m-b-20 d-none">
+            <input class="input100" type="number" name="saldo" step=".1" min="0" id="frmSaldo" placeholder="Saldo" value="">
+        </div>
+    }
     <div class="container-login100-form-btn">
 
         <div id="btnModificar" class="btn-group w-full" role="group">
             <button type="reset" class="btn btn-dark" style="width:50%" onclick="CancelarModificar()">Cancelar</button>
-            <button type="submit" id="btnGuardar" class="btn btn-success" style="width:50%">Guardar</button> 
+            <button type="submit" id="btnGuardar" class="btn btn-success" style="width:50%">Guardar</button>
         </div>
 
     </div>
