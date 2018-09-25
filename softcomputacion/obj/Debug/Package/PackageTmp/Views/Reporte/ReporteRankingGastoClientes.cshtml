@@ -1,0 +1,105 @@
+﻿@{
+    ViewBag.Title = "Reportes";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+    string[] arrFiltros = Convert.ToString(ViewBag.filtros).Split(';');
+    if (arrFiltros[0] == "")
+    {
+        arrFiltros[0] = "0";
+    }
+}
+@model List<softcomputacion.Models.ReporteRankingGastoCliente>
+<div class="container-fluid">
+    <div class="row">
+        @Html.Partial("_IndiceReporte")
+        <div class="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+            <div class="row">
+                <div class="col-12">
+                    <br />
+                    <h1 class="text-center"> GASTO CLIENTES </h1>
+                    <br />
+                </div>
+            </div>
+            @* Form de busqueda *@
+            <form method="post" action="@Url.Action("ReporteRankingGastoClientes", "Reporte")" autocomplete="off">
+                <div class="row">
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-2">
+                        <div class="wrap-input100 m-b-20">
+                            <input class="input100" type="number" name="cantidadRanking" id="cantidadRanking" min="0" placeholder="Desde" value="@Convert.ToInt32(arrFiltros[0])">
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+                        <div class="wrap-input100 m-b-20">
+                            <input class="input100" type="text" name="fechaDesde" id="fechaDesde" placeholder="Desde" value="@arrFiltros[1]" onfocus="(this.type='date')">
+                        </div>
+                    </div>
+                    <div class="col-12 col-sm-6 col-md-4 col-lg-4">
+                        <div class="wrap-input100 m-b-20">
+                            <input class="input100" type="text" name="fechaHasta" id="fechaHasta" placeholder="Hasta" value="@arrFiltros[2]" onfocus="(this.type='date')">
+                        </div>
+                    </div>
+
+                    <div class="col-12 col-md-4 col-lg-2">
+                        <div class="container-login100-form-btn m-b-20">
+                            <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
+                                <i class="fas fa-search"></i>
+                            </button>
+                        </div>
+                    </div>
+                    <div class="col-12">
+                        <br />
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-12 col-lg-10 offset-lg-1 col-xl-8 offset-xl-2">
+            @if (Model != null)
+            {
+                if (arrFiltros[0] == "0")
+                {
+                    arrFiltros[0] = "obtienen todos";
+                }
+                else
+                {
+                    arrFiltros[0] = "obtiene un Top-" + arrFiltros[0];
+                }
+                if (arrFiltros[1] != "")
+                {
+                    <div class="text-center">
+                        <strong style="text-align:center">Se @arrFiltros[0] desde la fecha @arrFiltros[1] hasta @arrFiltros[2] .</strong>
+                    </div>
+                    <br />
+                }
+                
+                foreach (softcomputacion.Models.ReporteRankingGastoCliente oReporte in Model)
+                {
+                    <div class="row">
+                        <div class="col-12 col-sm-6 col-md-6 text-center text-sm-left text-xl-center">
+                            <p>Cliente:</p>
+                            <i>@oReporte.nombreCliente</i>
+                        </div>
+                        <div class="col-6 col-sm-3 col-md-3 text-center">
+                            <p>Cantidad de ventas:</p>
+                            <strong> @oReporte.cantidadVentas</strong>
+                        </div>
+                        <div class="col-6 col-sm-3 col-md-3 text-center">
+                            <p>Gasto Total:</p>
+                            <strong> $@Convert.ToString(Math.Round(oReporte.gastoTotal, 0)).Replace(",", ".").Replace(",00", "")</strong>
+                        </div>
+                        
+                        <div class="col-12">
+                            <hr class="m-t-8 m-b-8" />
+                        </div>
+                    </div>
+
+                }
+            }
+
+        </div>
+
+        <div class="col-12">
+            <hr class="m-t-8 m-b-8" />
+        </div>
+      
+    </div>
+</div>

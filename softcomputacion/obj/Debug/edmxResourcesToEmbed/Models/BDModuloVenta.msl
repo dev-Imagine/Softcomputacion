@@ -162,5 +162,13 @@
         </MappingFragment>
       </EntityTypeMapping>
     </EntitySetMapping>
+    <EntitySetMapping Name="valorUSD">
+      <EntityTypeMapping TypeName="BDModuloVentaModel.valorUSD">
+        <MappingFragment StoreEntitySet="valorUSD">
+          <ScalarProperty Name="valorUSD1" ColumnName="valorUSD" />
+          <ScalarProperty Name="id" ColumnName="id" />
+        </MappingFragment>
+      </EntityTypeMapping>
+    </EntitySetMapping>
   </EntityContainerMapping>
 </Mapping>

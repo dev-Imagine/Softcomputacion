@@ -34,6 +34,7 @@
         <AssociationConnector Association="BDModuloVentaModel.FK_hostorialStock_producto" />
         <AssociationConnector Association="BDModuloVentaModel.FK_producto_subcategoria" />
         <AssociationConnector Association="BDModuloVentaModel.FK_proveedorXproducto_producto" />
+        <EntityTypeShape EntityType="BDModuloVentaModel.valorUSD" Width="1.5" PointX="0.75" PointY="0.75" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

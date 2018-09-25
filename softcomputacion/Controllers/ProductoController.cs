@@ -88,6 +88,7 @@ namespace softcomputacion.Controllers
                 ViewBag.lstEstados = sEstado.ObtenerEstados("PRODUCTO");
                 ViewBag.filtros = ";;;";
                 ViewBag.ValorUSD = GetValorUsd();
+                ViewBag.ValorUSDReal = GetValorUsdReal();
                 PagedList<producto> model = new PagedList<producto>(lstProductos.ToList(), nroPagina, tamañoPagina);
                 return View(model);
             }
@@ -117,6 +118,7 @@ namespace softcomputacion.Controllers
                 ViewBag.lstEstados = sEstado.ObtenerEstados("PRODUCTO");
                 ViewBag.filtros = Convert.ToString(nombreProducto + ";" + idCategoria + ";" + idSubCategoria + ";" + idEstado);
                 ViewBag.ValorUSD = GetValorUsd();
+                ViewBag.ValorUSDReal = GetValorUsdReal();
                 PagedList<producto> model = new PagedList<producto>(lstProductos.ToList(), 1, 10);
                 return View(model);
             }
@@ -408,61 +410,48 @@ namespace softcomputacion.Controllers
             }
 
         }
-        [OutputCache(Duration = 3600, Location =System.Web.UI.OutputCacheLocation.Server)]
-        public double GetValorUsd()
+        public ActionResult ActualizarPrecioUSD(string ValorUSD)
         {
             try
             {
-                using (var client = new HttpClient())
-                {
-                    client.BaseAddress = new Uri("http://ws.geeklab.com.ar");
-                    var responseTask = client.GetAsync("dolar/get-dolar-json.php");
-                    responseTask.Wait();
-                    var result = responseTask.Result;
-                    if (result.IsSuccessStatusCode)
-                    {
-                        var readTask = result.Content.ReadAsStringAsync();
-                        readTask.Wait();
-                        //  {\"libre\":\"28.41\",\"blue\":\"28.65\"}
-                        string stResult = readTask.Result.Substring(10, 5).Replace(".", ",");
-                        return Convert.ToDouble(stResult);
-                    }
-                    else //web api sent error response 
-                    {
-                        throw new Exception();
-                    }
-                }
+                double USD = Convert.ToDouble(ValorUSD.Replace(".", ","));
+                srvValorUSD sValorUSD = new srvValorUSD();
+                sValorUSD.ActualizarValorUsd(USD);
+                return RedirectToAction("ListarProducto", "Producto");
             }
-            catch(Exception)
+            catch (Exception)
             {
-                try
+                return RedirectToAction("Error", "Error", new { stError = "Se produjo un error al intentar actualizar el precio del dólar." });
+            }
+        }
+        public double GetValorUsd()
+        {
+            srvValorUSD sValorUSD = new srvValorUSD();
+            return sValorUSD.ObtenerValorUsd();
+        }
+
+        [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
+        public double GetValorUsdReal()
+        {
+            using (var client = new HttpClient())
+            {
+                client.BaseAddress = new Uri("http://ws.geeklab.com.ar");
+                var responseTask = client.GetAsync("dolar/get-dolar-json.php");
+                responseTask.Wait();
+                var result = responseTask.Result;
+                if (result.IsSuccessStatusCode)
                 {
-                    using (var client = new HttpClient())
-                    {
-                        client.BaseAddress = new Uri("http://api.bluelytics.com.ar");
-                        var responseTask = client.GetAsync("v2/latest");
-                        responseTask.Wait();
-                        var result = responseTask.Result;
-                        if (result.IsSuccessStatusCode)
-                        {
-                            var readTask = result.Content.ReadAsStringAsync();
-                            readTask.Wait();
-                            //  {"oficial": {"value_avg": 38.28, "value_sell": 39.28, "value_buy": 37.28}, "blue": {"value_avg": 38.514, "value_sell": 39.2, "value_buy": 37.827999999999996}
-                            string stResult = readTask.Result.Substring(26, 5).Replace(".", ",");
-                            return Convert.ToDouble(stResult);
-                        }
-                        else //web api sent error response 
-                        {
-                            throw new Exception();
-                        }
-                    }
+                    var readTask = result.Content.ReadAsStringAsync();
+                    readTask.Wait();
+                    //  {\"libre\":\"28.41\",\"blue\":\"28.65\"}
+                    string stResult = readTask.Result.Substring(10, 5).Replace(".", ",");
+                    return Convert.ToDouble(stResult);
                 }
-                catch (Exception)
+                else //web api sent error response 
                 {
                     return 0;
                 }
             }
-            
         }
         [HttpPost, ValidateAntiForgeryToken]
         public ActionResult EliminarProducto(int idProducto)

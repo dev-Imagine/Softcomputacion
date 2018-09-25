@@ -229,6 +229,9 @@
     <Compile Include="Models\usuario.cs">
       <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
+    <Compile Include="Models\valorUSD.cs">
+      <DependentUpon>BDModuloVenta.tt</DependentUpon>
+    </Compile>
     <Compile Include="Models\venta.cs">
       <DependentUpon>BDModuloVenta.tt</DependentUpon>
     </Compile>
@@ -243,6 +246,7 @@
     <Compile Include="Servicios\srvProveedor.cs" />
     <Compile Include="Servicios\srvReporte.cs" />
     <Compile Include="Servicios\srvUsuario.cs" />
+    <Compile Include="Servicios\srvValorUSD.cs" />
     <Compile Include="Servicios\srvVenta.cs" />
   </ItemGroup>
   <ItemGroup>

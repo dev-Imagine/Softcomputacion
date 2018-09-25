@@ -10,13 +10,20 @@
     {
         stProveedores = stProveedores + oProveedorxProducto.idProveedor + ";";
     }
-    
+
 }
 <br /><br />
       <div class="container-fluid">
           <div class="row">
               <div class="col-12 col-lg-8 offset-lg-2 text-center">
-                  <h2>Nuevo producto</h2>
+                  @if (oProducto.idProducto != 0 && oProducto != null)
+                  {
+                      <h2>Modificar producto</h2>
+                  }
+                  else
+                  {
+                      <h2>Nuevo producto</h2>
+                  }
               </div>
           </div>
           <hr style="border-top: 2px solid #b5262a;" />

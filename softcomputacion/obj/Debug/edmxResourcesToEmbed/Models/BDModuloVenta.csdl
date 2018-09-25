@@ -75,6 +75,7 @@
       <End Role="producto" EntitySet="producto" />
       <End Role="proveedorXproducto" EntitySet="proveedorXproducto" />
     </AssociationSet>
+    <EntitySet Name="valorUSD" EntityType="BDModuloVentaModel.valorUSD" />
   </EntityContainer>
   <EntityType Name="categoria">
     <Key>
@@ -193,10 +194,10 @@
     <Property Name="fechaEmision" Type="DateTime" Nullable="false" Precision="3" />
     <Property Name="idUsuario" Type="Int32" Nullable="false" />
     <Property Name="costoTotal" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-    <Property Name="cantidadProductosTotal" Type="Int32" />
+    <Property Name="cantidadProductosTotal" Type="Int32" Nullable="false" />
     <Property Name="idCliente" Type="Int32" />
     <Property Name="idEstado" Type="Int32" Nullable="false" />
-    <Property Name="entregado" Type="Decimal" Precision="19" Scale="4" />
+    <Property Name="entregado" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
     <NavigationProperty Name="cliente" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="venta" ToRole="cliente" />
     <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="venta" ToRole="detalleVenta" />
     <NavigationProperty Name="usuario" Relationship="BDModuloVentaModel.FK_venta_usuario" FromRole="venta" ToRole="usuario" />
@@ -433,4 +434,11 @@
       </Dependent>
     </ReferentialConstraint>
   </Association>
+  <EntityType Name="valorUSD">
+    <Key>
+      <PropertyRef Name="id" />
+    </Key>
+    <Property Name="id" Type="Int32" Nullable="false" />
+    <Property Name="valorUSD1" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+  </EntityType>
 </Schema>

@@ -34,13 +34,13 @@
                                 <p class="fs-14">Cantidad: <i id="i-cant-@oDetalle.idProducto">@oDetalle.cantidad</i></p>
                             </div>
                             <div class="col-6 col-sm-6 col-md-6 p-l-5 p-r-5 text-right">
-                                <p class="fs-14">P/Unit: $@oDetalle.costoIndividual</p>
+                                <p class="fs-14">P/Unit: $@Math.Round(oDetalle.costoIndividual, 0)</p>
                             </div>
                         </div>
                     </div>
 
                     <div class="col-12 col-md-2 col-lg-2 p-l-0 p-r-0 text-center">
-                        <p class="fs-20" style="color:#000">*$ <i id="iCostoGrupal-@oDetalle.idProducto">@oDetalle.costoGrupal</i> </p>
+                        <p class="fs-20" style="color:#000">*$ <i id="iCostoGrupal-@oDetalle.idProducto">@Math.Round(oDetalle.costoGrupal,0)</i> </p>
                     </div>
                     <div class="col-12">
                         <div class="clearfix">
@@ -63,13 +63,6 @@
     }
     <hr style="border-top: 1px solid #b5262a;" />
     <div class="row">
-        @*<div class="col-12 col-md-6 col-lg-12 text-center m-b-5 m-t-8" style="color:#666666">
-            <p>
-                <span>CLIENTE: <strong class="text-left fs-17 pCliente" id="@oVenta.idCliente">@oVenta.cliente.apellido @oVenta.cliente.nombre &nbsp;&nbsp;&nbsp;</strong></span>
-                <span onclick="BorrarCliente()" class="far fa-times-circle text-danger fs-24" style="cursor:pointer;"></span>
-                <button onclick="_PopUpBuscarCliente()" class="btn btn-outline-info"><i class="fas fa-share"></i> Cliente</button>
-            </p>
-        </div>*@
         <div class="col-12 col-sm-10 col-lg-12 col-xl-10 text-center">
             <p class="p-t-6">CLIENTE: <strong class="text-left fs-17 pCliente" id="@oVenta.idCliente">@oVenta.cliente.apellido @oVenta.cliente.nombre &nbsp;&nbsp;&nbsp;</strong></p>
         </div>
@@ -84,25 +77,10 @@
 
 
     </div>
-    @*<hr style="border-top: 1px solid #b5262a;" />
-    <div class="row">
-        <div class="col-12 col-sm-6 col-md-6 col-lg-12 col-xl-6 text-center m-b-0 m-t-0" >
-            <div class="wrap-input100 m-b-20" data-validate="">
-                <select id="select-Categorias" onchange="" class="form-control input100" style="border:0px; height: 55px;" name="idMetodoPago">
-                    <option selected value="0">Metodo de pago</option>
-                    <option value="0">Contado</option>
-                    <option value="0">Cuenta corriente</option>
-                    <option value="0">Cuotas</option>
-                    <option value="0">Tarjeta</option>
-
-                </select>
-            </div>
-        </div>
-    </div>*@
     <hr style="border-top: 1px solid #b5262a;" />
     <div class="row ">
         <div class="col-12">
-            <p id="" class="text-right fs-20" style="color:#000">Total:$ <i id="iTotal">@total</i></p>
+            <p id="" class="text-right fs-20" style="color:#000">Total:$ <i id="iTotal">@Math.Round(total,0)</i></p>
         </div>
     </div>
     <hr style="border-top: 1px solid #b5262a;" />

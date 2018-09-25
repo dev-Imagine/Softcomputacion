@@ -25,10 +25,10 @@ namespace softcomputacion.Models
         public System.DateTime fechaEmision { get; set; }
         public int idUsuario { get; set; }
         public decimal costoTotal { get; set; }
-        public Nullable<int> cantidadProductosTotal { get; set; }
+        public int cantidadProductosTotal { get; set; }
         public Nullable<int> idCliente { get; set; }
         public int idEstado { get; set; }
-        public Nullable<decimal> entregado { get; set; }
+        public decimal entregado { get; set; }
     
         public virtual cliente cliente { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]

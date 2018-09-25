@@ -60,23 +60,23 @@
                         </div>
                         <div class="col-12 col-sm-6 col-md-2 text-center">
                             <p>Ingresos totales:</p>
-                            <strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal, 2)).Replace(",", ".").Replace(",00", "")</strong>
+                            <strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal, 0)).Replace(",", ".").Replace(",00", "")</strong>
                         </div>
                         <div class="col-12 col-sm-6 col-md-2 text-center">
-                            <p>Ingreso neto:</p>
-                            <strong> $@Convert.ToString(Math.Round(oReporteES.ingresoNeto, 2)).Replace(",", ".").Replace(",00", "")</strong>
+                            <p>Costos:</p>
+                            <strong> $@Convert.ToString(Math.Round(oReporteES.ingresoNeto, 0)).Replace(",", ".").Replace(",00", "")</strong>
                         </div>
                         <div class="col-12 col-sm-6 col-md-2 text-center">
-                            <p>Diferencia Neta:</p>
-                            <strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal - oReporteES.ingresoNeto, 2)).Replace(",", ".").Replace(",00", "")</strong>
+                            <p>Ingreso Neto:</p>
+                            <strong> $@Convert.ToString(Math.Round(oReporteES.ventaTotal - oReporteES.ingresoNeto, 0)).Replace(",", ".").Replace(",00", "")</strong>
                         </div>
                         <div class="col-12 col-sm-6 col-md-2 text-center">
                             <p>Faltante total:</p>
-                            <strong class="text-danger"> $@Convert.ToString(Math.Round(oReporteES.ventaTotal - oReporteES.abonadoTotal, 2)).Replace(",", ".").Replace(",00", "")</strong>
+                            <strong class="text-danger"> $@Convert.ToString(Math.Round(oReporteES.ventaTotal - oReporteES.abonadoTotal, 0)).Replace(",", ".").Replace(",00", "")</strong>
                         </div>
                         <div class="col-12 col-sm-6 col-md-2 text-center">
                             <p>Abonado total:</p>
-                            <strong class="text-success"> $@Convert.ToString(Math.Round(oReporteES.abonadoTotal, 2)).Replace(",", ".").Replace(",00", "")</strong>
+                            <strong class="text-success"> $@Convert.ToString(Math.Round(oReporteES.abonadoTotal, 0)).Replace(",", ".").Replace(",00", "")</strong>
                         </div>
                         <div class="col-12">
                             <hr class="m-t-8 m-b-8" />
@@ -133,5 +133,5 @@
             chart.draw(dataChart, options);
 
         }*@
-    </script>
+    @*</script>*@
 }

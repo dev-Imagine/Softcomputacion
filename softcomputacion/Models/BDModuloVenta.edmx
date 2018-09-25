@@ -139,6 +139,13 @@
           <Property Name="contraseña" Type="varchar" MaxLength="50" Nullable="false" />
           <Property Name="fechaBaja" Type="datetime" />
         </EntityType>
+        <EntityType Name="valorUSD">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="int" Nullable="false" />
+          <Property Name="valorUSD" Type="money" Nullable="false" />
+        </EntityType>
         <EntityType Name="venta">
           <Key>
             <PropertyRef Name="idVenta" />
@@ -147,12 +154,12 @@
           <Property Name="fechaEmision" Type="datetime" Nullable="false" />
           <Property Name="idUsuario" Type="int" Nullable="false" />
           <Property Name="costoTotal" Type="money" Nullable="false" />
-          <Property Name="cantidadProductosTotal" Type="int" />
+          <Property Name="cantidadProductosTotal" Type="int" Nullable="false" />
           <Property Name="idCliente" Type="int" />
           <Property Name="idEstado" Type="int" Nullable="false" />
-          <Property Name="entregado" Type="money" />
+          <Property Name="entregado" Type="money" Nullable="false" />
         </EntityType>
-        <Association Name="FK_detallePago_motodoPago">
+        <Association Name="FK_detallePago_metodoPago">
           <End Role="metodoPago" Type="Self.metodoPago" Multiplicity="1" />
           <End Role="detallePago" Type="Self.detallePago" Multiplicity="*" />
           <ReferentialConstraint>
@@ -346,8 +353,9 @@
           <EntitySet Name="subcategoria" EntityType="Self.subcategoria" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="tipoUsuario" EntityType="Self.tipoUsuario" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="usuario" EntityType="Self.usuario" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="valorUSD" EntityType="Self.valorUSD" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="venta" EntityType="Self.venta" Schema="dbo" store:Type="Tables" />
-          <AssociationSet Name="FK_detallePago_motodoPago" Association="Self.FK_detallePago_motodoPago">
+          <AssociationSet Name="FK_detallePago_metodoPago" Association="Self.FK_detallePago_metodoPago">
             <End Role="metodoPago" EntitySet="metodoPago" />
             <End Role="detallePago" EntitySet="detallePago" />
           </AssociationSet>
@@ -487,6 +495,7 @@
             <End Role="producto" EntitySet="producto" />
             <End Role="proveedorXproducto" EntitySet="proveedorXproducto" />
           </AssociationSet>
+          <EntitySet Name="valorUSD" EntityType="BDModuloVentaModel.valorUSD" />
         </EntityContainer>
         <EntityType Name="categoria">
           <Key>
@@ -605,10 +614,10 @@
           <Property Name="fechaEmision" Type="DateTime" Nullable="false" Precision="3" />
           <Property Name="idUsuario" Type="Int32" Nullable="false" />
           <Property Name="costoTotal" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
-          <Property Name="cantidadProductosTotal" Type="Int32" />
+          <Property Name="cantidadProductosTotal" Type="Int32" Nullable="false" />
           <Property Name="idCliente" Type="Int32" />
           <Property Name="idEstado" Type="Int32" Nullable="false" />
-          <Property Name="entregado" Type="Decimal" Precision="19" Scale="4" />
+          <Property Name="entregado" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
           <NavigationProperty Name="cliente" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="venta" ToRole="cliente" />
           <NavigationProperty Name="detalleVenta" Relationship="BDModuloVentaModel.FK_detalleVenta_venta" FromRole="venta" ToRole="detalleVenta" />
           <NavigationProperty Name="usuario" Relationship="BDModuloVentaModel.FK_venta_usuario" FromRole="venta" ToRole="usuario" />
@@ -845,6 +854,13 @@
             </Dependent>
           </ReferentialConstraint>
         </Association>
+        <EntityType Name="valorUSD">
+          <Key>
+            <PropertyRef Name="id" />
+          </Key>
+          <Property Name="id" Type="Int32" Nullable="false" />
+          <Property Name="valorUSD1" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
+        </EntityType>
         </Schema>
     </edmx:ConceptualModels>
     <!-- C-S mapping content -->
@@ -1009,6 +1025,14 @@
                 <ScalarProperty Name="observacion" ColumnName="observacion" />
                 <ScalarProperty Name="nombre" ColumnName="nombre" />
                 <ScalarProperty Name="idProducto" ColumnName="idProducto" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="valorUSD">
+            <EntityTypeMapping TypeName="BDModuloVentaModel.valorUSD">
+              <MappingFragment StoreEntitySet="valorUSD">
+                <ScalarProperty Name="valorUSD1" ColumnName="valorUSD" />
+                <ScalarProperty Name="id" ColumnName="id" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

@@ -6,6 +6,7 @@
     string[] filtros = ViewBag.filtros.Split(';');
     string stColorStock = "";
     double ValorUSD = (double)ViewBag.ValorUSD;
+    double ValorUSDReal = (double)ViewBag.ValorUSDReal;
     softcomputacion.Models.usuario oUsuario = (softcomputacion.Models.usuario)Session["Usuario"];
 
 }
@@ -38,269 +39,304 @@
                             <div class="handle"></div>
                         </button>
                     </div>
-                    <div class="ml-auto p-2 bd-highlight">
-                        Valor $USD: <valorUsd class="text-primary fs-20"> $ARS @ValorUSD</valorUsd>
+                    <div class="ml-auto p-2 bd-highlight text-center">
+                        <p class="fs-20">Valor $USD: <valorUsd class="text-primary fs-20"> $ARS @ValorUSD</valorUsd>&nbsp;&nbsp;<a href="" data-toggle="modal" data-target="#actualizarUSD"><i class="fas fa-pencil-alt text-primary fs-16"></i></a></p>
+                        <p>Valor real $USD: <span class="text-info">$ARS @ValorUSDReal</span></p>
                     </div>
                 </div>
             </div>
         </div>
     }
-        <div class="row">
-            <div class="col-12 col-lg-12">
-                <div class="row">
-                    <div class="col-12 col-lg-11">
-                        @* Form de busqueda *@
-                        <form method="post" action="@Url.Action("ListarProducto", "Producto")" autocomplete="off">
-                            <div class="row">
-                                <div class="col-12 col-md-6 col-lg-4">
-                                    <div class="wrap-input100 m-b-20">
-                                        <input class="input100" type="text" name="nombreProducto" placeholder="Nombre del producto" value="@filtros[0]">
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-2">
-                                    <div class="wrap-input100 ¡ m-b-20" data-validate="">
-                                        <select id="select-Categorias" onchange="CargarComboSubcategoria()" onload="CargarComboSubcategoria()" class="form-control input100" style="border:0px; height: 55px;" name="idCategoria">
-                                            <option selected value="0">Categoría</option>
-
-                                            @foreach (softcomputacion.Models.categoria oCategoria in lstCategorias)
-                                            {
-                                                if (oCategoria.idCategoria.ToString() == filtros[1])
-                                                {
-                                                    <option selected value="@oCategoria.idCategoria">@oCategoria.nombre</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@oCategoria.idCategoria">@oCategoria.nombre</option>
-                                                }
-
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-2">
-                                    <div class="wrap-input100 ¡ m-b-20" data-validate="">
-                                        <select disabled id="select-Subcategoria" class="form-control input100" style="border:0px; height: 55px;" name="idSubCategoria">
-                                            <option selected value="0">Subcategoria</option>
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-6 col-lg-2">
-                                    <div class="wrap-input100 ¡ m-b-20" data-validate="">
-                                        <select id="select-Estado" class="form-control input100" style="border:0px; height: 55px;" name="idEstado">
-                                            <option selected value="0">Estado</option>
-
-                                            @foreach (softcomputacion.Models.estado oEstado in lstEstados)
-                                            {
-                                                if (oEstado.idEstado.ToString() == filtros[3])
-                                                {
-                                                    <option selected value="@oEstado.idEstado">@oEstado.nombre</option>
-                                                }
-                                                else
-                                                {
-                                                    <option value="@oEstado.idEstado">@oEstado.nombre</option>
-                                                }
-
-                                            }
-                                        </select>
-                                    </div>
-                                </div>
-                                <div class="col-12 col-md-12 col-lg-2">
-                                    <div class="container-login100-form-btn m-b-20">
-                                        <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
-                                            <i class="fas fa-search"></i>
-                                        </button>
-                                    </div>
+    <div class="row">
+        <div class="col-12 col-lg-12">
+            <div class="row">
+                <div class="col-12 col-lg-11">
+                    @* Form de busqueda *@
+                    <form method="post" action="@Url.Action("ListarProducto", "Producto")" autocomplete="off">
+                        <div class="row">
+                            <div class="col-12 col-md-6 col-lg-4">
+                                <div class="wrap-input100 m-b-20">
+                                    <input class="input100" type="text" name="nombreProducto" placeholder="Nombre del producto" value="@filtros[0]">
                                 </div>
                             </div>
-                        </form>
-                    </div>
+                            <div class="col-12 col-md-6 col-lg-2">
+                                <div class="wrap-input100 ¡ m-b-20" data-validate="">
+                                    <select id="select-Categorias" onchange="CargarComboSubcategoria()" onload="CargarComboSubcategoria()" class="form-control input100" style="border:0px; height: 55px;" name="idCategoria">
+                                        <option selected value="0">Categoría</option>
 
-                    @if (oUsuario.idTipoUsuario == 2)
-                    {
-                        <div class="col-12 col-md-12 col-lg-1">
-                            <div class="container-login100-form-btn m-b-20">
-                                <button class="btn fs-22 btn-dark w-full" style="height:56px;" onclick="location.href='@Url.Action("Producto","Producto")'">
-                                    <i class="fas fa-plus"></i>
-                                </button>
+                                        @foreach (softcomputacion.Models.categoria oCategoria in lstCategorias)
+                                        {
+                                            if (oCategoria.idCategoria.ToString() == filtros[1])
+                                            {
+                                                <option selected value="@oCategoria.idCategoria">@oCategoria.nombre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@oCategoria.idCategoria">@oCategoria.nombre</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">
+                                <div class="wrap-input100 ¡ m-b-20" data-validate="">
+                                    <select disabled id="select-Subcategoria" class="form-control input100" style="border:0px; height: 55px;" name="idSubCategoria">
+                                        <option selected value="0">Subcategoria</option>
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-6 col-lg-2">
+                                <div class="wrap-input100 ¡ m-b-20" data-validate="">
+                                    <select id="select-Estado" class="form-control input100" style="border:0px; height: 55px;" name="idEstado">
+                                        <option selected value="0">Estado</option>
+
+                                        @foreach (softcomputacion.Models.estado oEstado in lstEstados)
+                                        {
+                                            if (oEstado.idEstado.ToString() == filtros[3])
+                                            {
+                                                <option selected value="@oEstado.idEstado">@oEstado.nombre</option>
+                                            }
+                                            else
+                                            {
+                                                <option value="@oEstado.idEstado">@oEstado.nombre</option>
+                                            }
+
+                                        }
+                                    </select>
+                                </div>
+                            </div>
+                            <div class="col-12 col-md-12 col-lg-2">
+                                <div class="container-login100-form-btn m-b-20">
+                                    <button class="login100-form-btn fs-22" style="height:56px;" type="submit">
+                                        <i class="fas fa-search"></i>
+                                    </button>
+                                </div>
                             </div>
                         </div>
-                    }
+                    </form>
                 </div>
 
-
-
-                <hr style="border-top: 1px solid #b5262a;" />
-                <br />
+                @if (oUsuario.idTipoUsuario == 2)
+                {
+                    <div class="col-12 col-md-12 col-lg-1">
+                        <div class="container-login100-form-btn m-b-20">
+                            <button class="btn fs-22 btn-dark w-full" style="height:56px;" onclick="location.href='@Url.Action("Producto","Producto")'">
+                                <i class="fas fa-plus"></i>
+                            </button>
+                        </div>
+                    </div>
+                }
             </div>
-            <div class="row container-fluid">
-                <!--Lista de Productos-->
-                <div class="m-b-15 col-12 col-lg-12">
-                    @{
-                        double PrecioContadoUSD =0;
-                        double PrecioListaUSD = 0;
-                        double PrecioGremioUSD = 0;
-                        double PrecioCostoUSD = 0;
-                        double PrecioContadoARS = 0;
-                        double PrecioListaARS = 0;
-                        double PrecioGremioARS = 0;
-                        double PrecioCostoARS = 0;
-                        foreach (var oProducto in Model)
+
+
+
+            <hr style="border-top: 1px solid #b5262a;" />
+            <br />
+        </div>
+        <div class="row container-fluid">
+            <!--Lista de Productos-->
+            <div class="m-b-15 col-12 col-lg-12">
+                @{
+                    double PrecioContadoUSD = 0;
+                    double PrecioListaUSD = 0;
+                    double PrecioGremioUSD = 0;
+                    double PrecioCostoUSD = 0;
+                    double PrecioContadoARS = 0;
+                    double PrecioListaARS = 0;
+                    double PrecioGremioARS = 0;
+                    double PrecioCostoARS = 0;
+                    foreach (var oProducto in Model)
+                    {
+                        PrecioContadoUSD = Convert.ToDouble(oProducto.precioContado);
+                        PrecioListaUSD = Convert.ToDouble(oProducto.precioLista);
+                        PrecioGremioUSD = Convert.ToDouble(oProducto.precioGremio);
+                        PrecioCostoUSD = Convert.ToDouble(oProducto.precioCosto);
+                        PrecioContadoARS = Convert.ToDouble(oProducto.precioContado);
+                        PrecioListaARS = Convert.ToDouble(oProducto.precioLista);
+                        PrecioGremioARS = Convert.ToDouble(oProducto.precioGremio);
+                        PrecioCostoARS = Convert.ToDouble(oProducto.precioCosto);
+                        if (oProducto.precioFijo == false)//precio guardado en USD
                         {
-                            PrecioContadoUSD = Convert.ToDouble(oProducto.precioContado);
-                            PrecioListaUSD = Convert.ToDouble(oProducto.precioLista);
-                            PrecioGremioUSD = Convert.ToDouble(oProducto.precioGremio);
-                            PrecioCostoUSD = Convert.ToDouble(oProducto.precioCosto);
-                            PrecioContadoARS = Convert.ToDouble(oProducto.precioContado);
-                            PrecioListaARS = Convert.ToDouble(oProducto.precioLista);
-                            PrecioGremioARS = Convert.ToDouble(oProducto.precioGremio);
-                            PrecioCostoARS = Convert.ToDouble(oProducto.precioCosto);
-                            if (oProducto.precioFijo == false)//precio guardado en USD
+                            PrecioContadoARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioContadoARS, ValorUSD);
+                            PrecioListaARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioListaARS, ValorUSD);
+                            PrecioGremioARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioGremioARS, ValorUSD);
+                            PrecioCostoARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioCostoARS, ValorUSD);
+                        }
+                        else
+                        {
+                            PrecioContadoUSD = PrecioContadoUSD / ValorUSD;
+                            PrecioListaUSD = PrecioListaUSD / ValorUSD;
+                            PrecioGremioUSD = PrecioGremioUSD / ValorUSD;
+                            PrecioCostoUSD = PrecioCostoUSD / ValorUSD;
+                        }
+
+                        stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(oProducto.idEstado);
+
+                        <div id="div-@oProducto.idProducto" class="row item-tabla m-b-15">
+                            <div class="col-12 col-md-11 " style="text-align:left;">
+                                <div class="row">
+                                    <div class="col-12 col-sm-12 col-md-5">
+                                        <p class="login100-form-title fs-20 p-l-5 text-left">
+                                            @*<strong>Producto:</strong>*@
+                                            <span id="spanNombreProducto-@oProducto.idProducto">
+                                                <strong>@oProducto.categoria.nombre @oProducto.subcategoria.nombre - @oProducto.nombre</strong>
+                                            </span>
+                                        </p>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-md-3">
+                                        <p class="login100-form-title fs-15 text-center">
+                                            <span>Stock Actual:</span>
+                                            <span id="spanActual-@oProducto.idProducto">
+                                                <i>@oProducto.stockActual</i>
+                                            </span>
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-4">
+                                        <p class="login100-form-title fs-17 text-center">
+                                            <span class="badge fs-20" style="color: @stColorStock; width: 180px;">@oProducto.estado.nombre</span>
+                                        </p>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                        <p class="login100-form-title p-b-10 fs-15 text-center">
+
+                                            @if (oUsuario.idTipoUsuario == 2)
+                                            {
+                                                <span> Costo: <precio class="text-success fs-12">$USD</precio></span>
+                                                <input class="Valor-USDARS" id="inpCosto-@oProducto.idProducto" style="background-color:#f2f2f2;text-align:right; width:58px;" type="number" name="precioCosto" Valor-USD="@PrecioCostoUSD.ToString().Replace(",",".")" Valor-ARS="@PrecioCostoARS.ToString().Replace(",",".")" value="@Convert.ToString(Math.Round(PrecioCostoUSD, 2)).Replace(",",".")">
+                                                <span onclick="ActualizarPrecios(@oProducto.idProducto,'Costo')" class="far fa-save" style="cursor:pointer"></span>
+                                            }
+
+                                        </p>
+                                    </div>
+
+                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                        <p class="login100-form-title p-b-10 fs-15 text-center">
+
+                                            @if (oUsuario.idTipoUsuario == 1)
+                                            {
+                                                <span>Gremio: <precio class="text-primary fs-12">$ARS</precio> @PrecioGremioARS</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Gremio <precio class="text-success fs-12">$USD</precio></span>
+                                                <input class="Valor-USDARS" id="inpGremio-@oProducto.idProducto" style="background-color:#f2f2f2;text-align:right; width:58px;" type="number" name="precioGremio" Valor-USD="@PrecioGremioUSD.ToString().Replace(",",".")" Valor-ARS="@PrecioGremioARS.ToString().Replace(",",".")" value="@Convert.ToString(Math.Round(PrecioGremioUSD, 2)).Replace(",",".")">
+                                                <span onclick="ActualizarPrecios(@oProducto.idProducto,'Gremio')" class="far fa-save" style="cursor:pointer"></span>
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                        <p class="login100-form-title p-b-10 fs-15 text-center">
+
+                                            @if (oUsuario.idTipoUsuario == 1)
+                                            {
+                                                <span>Contado: <precio class="text-primary fs-12">$ARS</precio> @PrecioContadoARS</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Contado <precio class="text-success fs-12">$USD</precio></span>
+                                                <input class="Valor-USDARS" id="inpContado-@oProducto.idProducto" style="background-color:#f2f2f2;text-align:right; width:58px;" type="number" name="precioContado" Valor-USD="@PrecioContadoUSD.ToString().Replace(",",".")" Valor-ARS="@PrecioContadoARS.ToString().Replace(",",".")" value="@Convert.ToString(Math.Round(PrecioContadoUSD, 2)).Replace(",",".")">
+                                                <span onclick="ActualizarPrecios(@oProducto.idProducto,'Contado')" class="far fa-save" style="cursor:pointer"></span>
+                                            }
+                                        </p>
+                                    </div>
+                                    <div class="col-12 col-sm-6 col-md-6 col-lg-3">
+                                        <p class="login100-form-title p-b-10 fs-15 text-center">
+
+                                            @if (oUsuario.idTipoUsuario == 1)
+                                            {
+                                                <span>Lista: <precio class="text-primary fs-12">$ARS</precio> @PrecioListaARS</span>
+                                            }
+                                            else
+                                            {
+                                                <span>Lista <precio class="text-success fs-12">$USD</precio></span>
+                                                <input class="Valor-USDARS" id="inpLista-@oProducto.idProducto" style="background-color:#f2f2f2; text-align:right; width:58px;" type="number" name="precioContado" Valor-USD="@PrecioListaUSD.ToString().Replace(",",".")" Valor-ARS="@PrecioListaARS.ToString().Replace(",",".")" value="@Convert.ToString(Math.Round(PrecioListaUSD, 2)).Replace(",",".")">
+                                                <span onclick="ActualizarPrecios(@oProducto.idProducto,'Lista')" class="far fa-save" style="cursor:pointer"></span>
+                                            }
+                                        </p>
+                                    </div>
+
+
+                                </div>
+                            </div>
+                            @if (oUsuario.idTipoUsuario == 2)
                             {
-                                PrecioContadoARS = PrecioContadoARS * ValorUSD;
-                                PrecioListaARS = PrecioListaARS * ValorUSD;
-                                PrecioGremioARS = PrecioGremioARS * ValorUSD;
-                                PrecioCostoARS = PrecioCostoARS * ValorUSD;
+                                <div class="col-12 col-md-1">
+                                    <form method="post" action="@Url.Action("Producto", "Producto", new { idProducto = oProducto.idProducto })">
+                                        @Html.AntiForgeryToken()
+                                        <div class="btn-group w-full" role="group">
+                                            <button type="submit" class="btn btn-outline-dark" style="width:100%"><i class="fas fa-pen"></i></button>
+                                        </div>
+                                    </form>
+                                </div>
                             }
                             else
                             {
-                                PrecioContadoUSD = PrecioContadoUSD / ValorUSD;
-                                PrecioListaUSD = PrecioListaUSD / ValorUSD;
-                                PrecioGremioUSD = PrecioGremioUSD / ValorUSD;
-                                PrecioCostoUSD = PrecioCostoUSD / ValorUSD;
-                            }
-
-                            stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(oProducto.idEstado);
-
-                            <div id="div-@oProducto.idProducto" class="row item-tabla m-b-15">
-                                <div class="col-12 col-md-11 " style="text-align:left;">
-                                    <div class="row">
-                                        <div class="col-12 col-sm-12 col-md-5">
-                                            <p class="login100-form-title fs-22 p-l-5 text-left">
-                                                @*<strong>Producto:</strong>*@
-                                                <span id="spanNombreProducto-@oProducto.idProducto">
-                                                    <strong>@oProducto.categoria.nombre @oProducto.subcategoria.nombre - @oProducto.nombre</strong>
-                                                </span>
-                                            </p>
+                                <div class="col-12 col-md-1">
+                                    <form method="post" action="@Url.Action("VistaProducto", "Producto", new { idProducto = oProducto.idProducto })">
+                                        @Html.AntiForgeryToken()
+                                        <div class="btn-group w-full" role="group">
+                                            <button type="submit" class="btn btn-outline-dark" style="width:100%"><i class="fas fa-list-alt"></i></button>
                                         </div>
-
-                                        <div class="col-12 col-sm-6 col-md-3">
-                                            <p class="login100-form-title fs-15 text-center">
-                                                <span>Stock Actual:</span>
-                                                <span id="spanActual-@oProducto.idProducto">
-                                                    <i>@oProducto.stockActual</i>
-                                                </span>
-                                            </p>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-4">
-                                            <p class="login100-form-title fs-17 text-center">
-                                                <span class="badge fs-20" style="color: @stColorStock; width: 180px;">@oProducto.estado.nombre</span>
-                                            </p>
-                                        </div>
-
-                                        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-                                            <p class="login100-form-title p-b-10 fs-15 text-center">
-
-                                                @if (oUsuario.idTipoUsuario == 2)
-                                                {
-                                                    <span> Costo: <precio class="text-success fs-12">$USD</precio></span>
-                                                    <input class="Valor-USDARS" id="inpCosto-@oProducto.idProducto" style="background-color:#f2f2f2;text-align:right; width:58px;" type="number" name="precioCosto" Valor-USD="@PrecioCostoUSD.ToString().Replace(",",".")" Valor-ARS="@PrecioCostoARS.ToString().Replace(",",".")" value="@Convert.ToString(Math.Round(PrecioCostoUSD, 2)).Replace(",",".")">
-                                                    <span onclick="ActualizarPrecios(@oProducto.idProducto,'Costo')" class="far fa-save" style="cursor:pointer"></span>
-                                                }
-
-                                            </p>
-                                        </div>
-
-                                        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-                                            <p class="login100-form-title p-b-10 fs-15 text-center">
-
-                                                @if (oUsuario.idTipoUsuario == 1)
-                                                {
-                                                    <span>Gremio: <precio class="text-primary fs-12">$ARS</precio> @PrecioGremioARS</span>
-                                                }
-                                                else
-                                                {
-                                                    <span>Gremio <precio class="text-success fs-12">$USD</precio></span>
-                                                    <input class="Valor-USDARS" id="inpGremio-@oProducto.idProducto" style="background-color:#f2f2f2;text-align:right; width:58px;" type="number" name="precioGremio" Valor-USD="@PrecioGremioUSD.ToString().Replace(",",".")" Valor-ARS="@PrecioGremioARS.ToString().Replace(",",".")" value="@Convert.ToString(Math.Round(PrecioGremioUSD, 2)).Replace(",",".")">
-                                                    <span onclick="ActualizarPrecios(@oProducto.idProducto,'Gremio')" class="far fa-save" style="cursor:pointer"></span>
-                                                }
-                                            </p>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-                                            <p class="login100-form-title p-b-10 fs-15 text-center">
-
-                                                @if (oUsuario.idTipoUsuario == 1)
-                                                {
-                                                <span>Contado: <precio class="text-primary fs-12">$ARS</precio> @PrecioContadoARS</span>
-                                                }
-                                                else
-                                                {
-                                                    <span>Contado <precio class="text-success fs-12">$USD</precio></span>
-                                                    <input class="Valor-USDARS" id="inpContado-@oProducto.idProducto" style="background-color:#f2f2f2;text-align:right; width:58px;" type="number" name="precioContado" Valor-USD="@PrecioContadoUSD.ToString().Replace(",",".")" Valor-ARS="@PrecioContadoARS.ToString().Replace(",",".")" value="@Convert.ToString(Math.Round(PrecioContadoUSD, 2)).Replace(",",".")">
-                                                    <span onclick="ActualizarPrecios(@oProducto.idProducto,'Contado')" class="far fa-save" style="cursor:pointer"></span>
-                                                }
-                                            </p>
-                                        </div>
-                                        <div class="col-12 col-sm-6 col-md-6 col-lg-3">
-                                            <p class="login100-form-title p-b-10 fs-15 text-center">
-
-                                                @if (oUsuario.idTipoUsuario == 1)
-                                                {
-                                                <span>Lista: <precio class="text-primary fs-12">$ARS</precio> @PrecioListaARS</span>
-                                                }
-                                                else
-                                                {
-                                                    <span>Lista <precio class="text-success fs-12">$USD</precio></span>
-                                                    <input class="Valor-USDARS" id="inpLista-@oProducto.idProducto" style="background-color:#f2f2f2; text-align:right; width:58px;" type="number" name="precioContado" Valor-USD="@PrecioListaUSD.ToString().Replace(",",".")" Valor-ARS="@PrecioListaARS.ToString().Replace(",",".")" value="@Convert.ToString(Math.Round(PrecioListaUSD, 2)).Replace(",",".")">
-                                                    <span onclick="ActualizarPrecios(@oProducto.idProducto,'Lista')" class="far fa-save" style="cursor:pointer"></span>
-                                                }
-                                            </p>
-                                        </div>
-
-
-                                    </div>
+                                    </form>
                                 </div>
-                                @if (oUsuario.idTipoUsuario == 2)
-                                {
-                                    <div class="col-12 col-md-1">
-                                        <form method="post" action="@Url.Action("Producto", "Producto", new { idProducto = oProducto.idProducto })">
-                                            @Html.AntiForgeryToken()
-                                            <div class="btn-group w-full" role="group">
-                                                <button type="submit" class="btn btn-outline-dark" style="width:100%"><i class="fas fa-pen"></i></button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                }
-                                else
-                                {
-                                    <div class="col-12 col-md-1">
-                                        <form method="post" action="@Url.Action("VistaProducto", "Producto", new { idProducto = oProducto.idProducto })">
-                                            @Html.AntiForgeryToken()
-                                            <div class="btn-group w-full" role="group">
-                                                <button type="submit" class="btn btn-outline-dark" style="width:100%"><i class="fas fa-list-alt"></i></button>
-                                            </div>
-                                        </form>
-                                    </div>
-                                }
-                            </div>
-                        }
+                            }
+                        </div>
                     }
-                </div>
-            </div><div class="row container-fluid text-center">
-                <div id="div-paginacion" class="col-12">
-                    @Html.PagedListPager(Model, nroPagina => Url.Action("ListarProducto", "Producto", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
-                </div>
-                <div class="col-12">
-                    @Model.FirstItemOnPage a @Model.LastItemOnPage productos de un total de @Model.TotalItemCount Productos.
-                </div>
-
-
-
+                }
             </div>
+        </div><div class="row container-fluid text-center">
+            <div id="div-paginacion" class="col-12">
+                @Html.PagedListPager(Model, nroPagina => Url.Action("ListarProducto", "Producto", new { nroPagina, tamañoPagina = Model.PageSize, paginacion = true }), new PagedListRenderOptions() { ClassToApplyToFirstListItemInPager = null, ClassToApplyToLastListItemInPager = null, UlElementClasses = new[] { "pagination", "justify-content-center" }, LiElementClasses = new[] { "page-item" } })
+            </div>
+            <div class="col-12">
+                @Model.FirstItemOnPage a @Model.LastItemOnPage productos de un total de @Model.TotalItemCount Productos.
+            </div>
+
+
+
         </div>
     </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="actualizarUSD" tabindex="-1" role="dialog" aria-hidden="true">
+    <div class="modal-dialog modal-dialog-centered" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Actualizar precio USD</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <form action="@Url.Action("ActualizarPrecioUSD","Producto")" method="post">
+                <div class="modal-body">
+                    <div class="input-group mb-3">
+                        <div class="input-group-prepend">
+                            <span class="input-group-text text-primary fs-24">$ARS</span>
+                        </div>
+                        <input type="number" class="form-control fs-24 text-center" name="ValorUSD" placeholder="Precio dolar" aria-label="Precio dolar" step="any" value="@Convert.ToString(Math.Round(ValorUSD, 2)).Replace(",",".").Replace(",00","")" />
+                    </div>
+
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-dark" data-dismiss="modal">Cancelar</button>
+                    <button type="submit" class="btn btn-success">Actualizar</button>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
 
 @section scripts{
-<script>
+    <script>
+    $(document).ready(function () {
+        $('#btnConversor').click();
+    });
+
+
     var stMoneda = "USD";
 
      function CargarComboSubcategoria() {
@@ -326,11 +362,11 @@
 
     //tipoPrecio: Costo,Gremio,Contado,Lista
      function ActualizarPrecios(idProducto, tipoPrecio) {
-         var precio = $('#inp' + tipoPrecio + '-' + idProducto).val();   
-         var url = "@Url.Action("ActualizarPrecios", "Producto")";       
-         var token = $('input[name="__RequestVerificationToken"]').val();        
+         var precio = $('#inp' + tipoPrecio + '-' + idProducto).val();
+         var url = "@Url.Action("ActualizarPrecios", "Producto")";
+         var token = $('input[name="__RequestVerificationToken"]').val();
          var data = { precio: precio.replace(".", ","), tipoPrecio: tipoPrecio, idProducto: idProducto, stMoneda: stMoneda, __RequestVerificationToken: token };
-         if (parseFloat(precio) >= 0) {             
+         if (parseFloat(precio) >= 0) {
              $.post(url, data).done(function (data) {
                  if (data.length != 0) {
                      data = data.split(';');
@@ -346,7 +382,7 @@
          {
              swal("Ocurrió un error", "No se puede guardar valores negativos.", "error");
          }
-         
+
      }
 
     function ConvertirPrecios() {
@@ -374,5 +410,5 @@
             });
         }
     }
-</script>
+    </script>
 }

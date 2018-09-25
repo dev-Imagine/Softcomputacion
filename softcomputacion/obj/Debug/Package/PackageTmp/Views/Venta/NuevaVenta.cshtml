@@ -120,19 +120,16 @@
                     double PrecioContadoARS = 0;
                     double PrecioListaARS = 0;
                     double PrecioGremioARS = 0;
-                    double PrecioCostoARS = 0;
                     foreach (var oProducto in Model)
                     {
                         PrecioContadoARS = Convert.ToDouble(oProducto.precioContado);
                         PrecioListaARS = Convert.ToDouble(oProducto.precioLista);
                         PrecioGremioARS = Convert.ToDouble(oProducto.precioGremio);
-                        PrecioCostoARS = Convert.ToDouble(oProducto.precioCosto);
                         if (oProducto.precioFijo == false)//precio guardado en USD
                         {
-                            PrecioContadoARS = PrecioContadoARS * ValorUSD;
-                            PrecioListaARS = PrecioListaARS * ValorUSD;
-                            PrecioGremioARS = PrecioGremioARS * ValorUSD;
-                            PrecioCostoARS = PrecioCostoARS * ValorUSD;
+                            PrecioContadoARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioContadoARS, ValorUSD);
+                            PrecioListaARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioListaARS, ValorUSD);
+                            PrecioGremioARS = softcomputacion.Servicios.clsMetodosGenericos.ConvertirUSDaARS(PrecioGremioARS, ValorUSD);
                         }
                         stColorStock = softcomputacion.Servicios.srvEstado.ObtenerColorEstado(oProducto.idEstado);
                         if (oProducto.stockActual == 0)
@@ -154,7 +151,7 @@
                                 </p>
                             </div>
                             <div class="col-12 col-sm-6 col-md-6 col-lg-4">
-                                <select id="select-precio-@oProducto.idProducto" class="form-control input100 p-l-5 p-r-5" style="border:0px;" name="idPrecio">
+                                <select id="select-precio-@oProducto.idProducto" class="form-control input100 p-l-5 p-r-5" name="idPrecio">
                                     <option selected value="@PrecioContadoARS">Contado: $@PrecioContadoARS</option>
                                     <option value="@PrecioListaARS">Lista: $@PrecioListaARS</option>
                                     <option value="@PrecioGremioARS">Gremio: $@PrecioGremioARS</option>
