@@ -433,18 +433,37 @@ namespace softcomputacion.Controllers
         [OutputCache(Duration = 3600, Location = System.Web.UI.OutputCacheLocation.Server)]
         public double GetValorUsdReal()
         {
+            //using (var client = new HttpClient())
+            //{
+            //    client.BaseAddress = new Uri("http://ws.geeklab.com.ar");
+            //    var responseTask = client.GetAsync("dolar/get-dolar-json.php");
+            //    responseTask.Wait();
+            //    var result = responseTask.Result;
+            //    if (result.IsSuccessStatusCode)
+            //    {
+            //        var readTask = result.Content.ReadAsStringAsync();
+            //        readTask.Wait();
+            //        //  {\"libre\":\"28.41\",\"blue\":\"28.65\"}
+            //        string stResult = readTask.Result.Substring(10, 5).Replace(".", ",");
+            //        return Convert.ToDouble(stResult);
+            //    }
+            //    else //web api sent error response 
+            //    {
+            //        return 0;
+            //    }
+            //}
             using (var client = new HttpClient())
             {
-                client.BaseAddress = new Uri("http://ws.geeklab.com.ar");
-                var responseTask = client.GetAsync("dolar/get-dolar-json.php");
+                client.BaseAddress = new Uri("https://www.icbc.com.ar");
+                var responseTask = client.GetAsync("ICBC_CotizacionMonedaWEB/cotizacion/dolar");
                 responseTask.Wait();
                 var result = responseTask.Result;
                 if (result.IsSuccessStatusCode)
                 {
                     var readTask = result.Content.ReadAsStringAsync();
                     readTask.Wait();
-                    //  {\"libre\":\"28.41\",\"blue\":\"28.65\"}
-                    string stResult = readTask.Result.Substring(10, 5).Replace(".", ",");
+                    //  {\"valorCompra\":\"35,4000\",\"valorVenta\":\"37,1000","fecha":"18/10/2018","hora":"10:29"}
+                    string stResult = readTask.Result.Substring(39, 5).Replace(".", ",");
                     return Convert.ToDouble(stResult);
                 }
                 else //web api sent error response 

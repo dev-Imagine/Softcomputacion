@@ -103,7 +103,7 @@
                     foreach (var oVenta in Model)
                     {
                         stFechaHs = oVenta.fechaEmision.Day.ToString().PadLeft(2, '0') + "/" + oVenta.fechaEmision.Month.ToString().PadLeft(2, '0') + "/" + oVenta.fechaEmision.Year + " " + oVenta.fechaEmision.Hour.ToString().PadLeft(2, '0') + ":" + oVenta.fechaEmision.Minute.ToString().PadLeft(2, '0');
-                        stTotal = Convert.ToString(Math.Round(oVenta.costoTotal, 2)).Replace(",", ".").Replace(",00", "");
+                        stTotal = Convert.ToString(Math.Round(oVenta.costoTotal, 0)).Replace(",", ".").Replace(",00", "");
                 <div class="row">
                     <div class="col-12 p-b-5 p-t-10 item-lista-venta" style="text-align:left;" onclick="window.open('@Url.Action("VistaVenta","Venta", new { idVenta = oVenta.idVenta })')">
                         <div class="row">
