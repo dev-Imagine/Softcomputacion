@@ -40,5 +40,7 @@ namespace softcomputacion.Models
         public virtual DbSet<estado> estado { get; set; }
         public virtual DbSet<producto> producto { get; set; }
         public virtual DbSet<valorUSD> valorUSD { get; set; }
+        public virtual DbSet<mensajeXusuario> mensajeXusuario { get; set; }
+        public virtual DbSet<reparacion> reparacion { get; set; }
     }
 }

@@ -19,6 +19,7 @@ namespace softcomputacion.Models
         {
             this.venta = new HashSet<venta>();
             this.producto = new HashSet<producto>();
+            this.reparacion = new HashSet<reparacion>();
         }
     
         public int idEstado { get; set; }
@@ -29,5 +30,7 @@ namespace softcomputacion.Models
         public virtual ICollection<venta> venta { get; set; }
         [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
         public virtual ICollection<producto> producto { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<reparacion> reparacion { get; set; }
     }
 }

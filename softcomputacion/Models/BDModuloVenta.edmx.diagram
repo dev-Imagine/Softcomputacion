@@ -35,6 +35,13 @@
         <AssociationConnector Association="BDModuloVentaModel.FK_producto_subcategoria" />
         <AssociationConnector Association="BDModuloVentaModel.FK_proveedorXproducto_producto" />
         <EntityTypeShape EntityType="BDModuloVentaModel.valorUSD" Width="1.5" PointX="0.75" PointY="0.75" />
+        <EntityTypeShape EntityType="BDModuloVentaModel.mensajeXusuario" Width="1.5" PointX="8.375" PointY="11" />
+        <EntityTypeShape EntityType="BDModuloVentaModel.reparacion" Width="1.5" PointX="8.375" PointY="14.75" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_mensajeXusuario_cliente" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_reparacion_cliente" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_reparacion_estado" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_mensajeXusuario_usuario" />
+        <AssociationConnector Association="BDModuloVentaModel.FK_reparacion_usuario" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>
