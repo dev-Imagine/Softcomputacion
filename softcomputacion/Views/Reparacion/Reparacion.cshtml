@@ -1,0 +1,104 @@
+﻿
+@{
+    ViewBag.Title = "Reparacion";
+    Layout = "~/Views/Shared/_UsuarioLogueado.cshtml";
+}
+<br /><br />
+<div class="container-fluid">
+    <div class="row">
+        <div class="col-12 col-lg-8 offset-lg-2 text-center">
+            <h2>Nueva reparación</h2>
+        </div>
+    </div>
+    <hr style="border-top: 2px solid #b5262a;" />
+    <div class="row">
+        <div class="col-12 col-md-10 offset-md-1 col-lg-8 offset-lg-2">
+            <form class="validate-form row" method="post" action="@Url.Action("GuardarModificarReparacion", "Reparacion")" autocomplete="off">
+                @Html.AntiForgeryToken()
+                <input class="d-none" type="text" id="idCliente" name="oReporte.idCliente">
+                <div class="col-12 col-md-12">
+                    <div class="row">
+                        <div class="col-12 col-sm-10 col-lg-12 col-xl-10 text-center">
+                            <p class="p-t-6">CLIENTE: <strong class="text-left fs-17 pCliente" id="">Cliente &nbsp;&nbsp;&nbsp;</strong></p>
+                        </div>
+                        <div class="col-4 offset-4 col-sm-2 offset-sm-0 col-lg-4 offset-lg-4 col-xl-2 offset-xl-0">
+                            <div class="btn-group w-full" role="group">
+                                <button type="button" class="btn btn-outline-primary" style="width:100%" onclick="_PopUpBuscarCliente()"><i class="fas fa-share"></i></button>
+                                <button type="button" class="btn btn-outline-danger" style="width:100%" onclick="BorrarCliente()"><i class="fas fa-times-circle"></i></button>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="col-12 col-md-12">
+                    <label for="frmNombre">Producto</label>
+                    <div class="wrap-input100 validate-input m-b-20" data-validate="Garantia">
+                        <input class="input100" type="text" name="oReporte.producto" placeholder="Producto">
+                    </div>
+                </div>
+
+                <div class="col-12">
+                    <label for="frmNombre">Observación</label>
+                    <div class="wrap-input100 m-b-20">
+                        <textarea class="input100 p-t-15" style="height:100px" type="text" name="oReparacion.observacion" placeholder="Observacion"></textarea>
+                    </div>
+                </div>
+
+
+
+                <!--btns-->
+                <div class="col-12 col-md-10 offset-md-1 col-lg-10 offset-lg-1">
+                    <div class="container-login100-form-btn m-t-20 m-b-30">
+                        <button id="btnGuardar" type="submit" class="btn btn-success fs-22" style="width:100%">Guardar</button>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div id="div-popup-BuscarCliente"></div>
+
+
+
+@section scripts{
+
+
+
+
+
+
+    
+    <script>
+         function _PopUpBuscarCliente() {
+
+            var url = "@Url.Action("_PopUpBuscarCliente", "Cliente")";
+            var data = {};
+            $.post(url, data).done(function (data) {
+                if (data.length > 0) {
+                    $('#div-popup-BuscarCliente').html(data);
+                    $('#popupBuscarCliente').modal('show');
+                }
+            });
+        }
+
+        function SelecionarCliente(idCliente, apellido, nombre) {
+            console.log(idCliente, apellido, nombre);
+            $('.pCliente').removeAttr('id');
+            $('.pCliente').attr('id', idCliente);
+            $('#idCliente').val(idCliente);
+            $('#' + idCliente).html(apellido + " " + nombre + " &nbsp;&nbsp;&nbsp;");
+            $('#popupBuscarCliente').modal('toggle');
+
+        }
+
+        function BorrarCliente() {
+            $('#idCliente').val('');
+            $('.pCliente').removeAttr('id');
+            $('.pCliente').attr('id', data.idCliente);
+            $('#' + data.idCliente).html(data.apellido + " " + data.nombre + " &nbsp;&nbsp;&nbsp;");
+
+        }
+    </script>
+}
+
+

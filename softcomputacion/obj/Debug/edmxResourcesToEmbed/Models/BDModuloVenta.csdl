@@ -76,6 +76,28 @@
       <End Role="proveedorXproducto" EntitySet="proveedorXproducto" />
     </AssociationSet>
     <EntitySet Name="valorUSD" EntityType="BDModuloVentaModel.valorUSD" />
+    <EntitySet Name="mensajeXusuario" EntityType="BDModuloVentaModel.mensajeXusuario" />
+    <EntitySet Name="reparacion" EntityType="BDModuloVentaModel.reparacion" />
+    <AssociationSet Name="FK_mensajeXusuario_cliente" Association="BDModuloVentaModel.FK_mensajeXusuario_cliente">
+      <End Role="cliente" EntitySet="cliente" />
+      <End Role="mensajeXusuario" EntitySet="mensajeXusuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK_reparacion_cliente" Association="BDModuloVentaModel.FK_reparacion_cliente">
+      <End Role="cliente" EntitySet="cliente" />
+      <End Role="reparacion" EntitySet="reparacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_reparacion_estado" Association="BDModuloVentaModel.FK_reparacion_estado">
+      <End Role="estado" EntitySet="estado" />
+      <End Role="reparacion" EntitySet="reparacion" />
+    </AssociationSet>
+    <AssociationSet Name="FK_mensajeXusuario_usuario" Association="BDModuloVentaModel.FK_mensajeXusuario_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="mensajeXusuario" EntitySet="mensajeXusuario" />
+    </AssociationSet>
+    <AssociationSet Name="FK_reparacion_usuario" Association="BDModuloVentaModel.FK_reparacion_usuario">
+      <End Role="usuario" EntitySet="usuario" />
+      <End Role="reparacion" EntitySet="reparacion" />
+    </AssociationSet>
   </EntityContainer>
   <EntityType Name="categoria">
     <Key>
@@ -98,6 +120,8 @@
     <Property Name="telefono" Type="String" MaxLength="50" FixedLength="false" Unicode="false" />
     <Property Name="saldo" Type="Decimal" Precision="19" Scale="4" Nullable="false" />
     <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_venta_cliente" FromRole="cliente" ToRole="venta" />
+    <NavigationProperty Name="mensajeXusuario" Relationship="BDModuloVentaModel.FK_mensajeXusuario_cliente" FromRole="cliente" ToRole="mensajeXusuario" />
+    <NavigationProperty Name="reparacion" Relationship="BDModuloVentaModel.FK_reparacion_cliente" FromRole="cliente" ToRole="reparacion" />
   </EntityType>
   <EntityType Name="detalleVenta">
     <Key>
@@ -185,6 +209,8 @@
     <Property Name="fechaBaja" Type="DateTime" Precision="3" />
     <NavigationProperty Name="tipoUsuario" Relationship="BDModuloVentaModel.FK_usuario_tipoUsuario" FromRole="usuario" ToRole="tipoUsuario" />
     <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_venta_usuario" FromRole="usuario" ToRole="venta" />
+    <NavigationProperty Name="mensajeXusuario" Relationship="BDModuloVentaModel.FK_mensajeXusuario_usuario" FromRole="usuario" ToRole="mensajeXusuario" />
+    <NavigationProperty Name="reparacion" Relationship="BDModuloVentaModel.FK_reparacion_usuario" FromRole="usuario" ToRole="reparacion" />
   </EntityType>
   <EntityType Name="venta">
     <Key>
@@ -322,6 +348,7 @@
     <Property Name="tipo" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="false" />
     <NavigationProperty Name="venta" Relationship="BDModuloVentaModel.FK_venta_estado" FromRole="estado" ToRole="venta" />
     <NavigationProperty Name="producto" Relationship="BDModuloVentaModel.FK_producto_estado" FromRole="estado" ToRole="producto" />
+    <NavigationProperty Name="reparacion" Relationship="BDModuloVentaModel.FK_reparacion_estado" FromRole="estado" ToRole="reparacion" />
   </EntityType>
   <Association Name="FK_venta_estado">
     <End Type="BDModuloVentaModel.estado" Role="estado" Multiplicity="1" />
@@ -441,4 +468,91 @@
     <Property Name="id" Type="Int32" Nullable="false" />
     <Property Name="valorUSD1" Type="Decimal" Nullable="false" Precision="19" Scale="4" />
   </EntityType>
+  <EntityType Name="mensajeXusuario">
+    <Key>
+      <PropertyRef Name="idMensaje" />
+    </Key>
+    <Property Name="idMensaje" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="idUsuario" Type="Int32" />
+    <Property Name="idCliente" Type="Int32" />
+    <Property Name="mensaje" Type="String" Nullable="false" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="cliente" Relationship="BDModuloVentaModel.FK_mensajeXusuario_cliente" FromRole="mensajeXusuario" ToRole="cliente" />
+    <NavigationProperty Name="usuario" Relationship="BDModuloVentaModel.FK_mensajeXusuario_usuario" FromRole="mensajeXusuario" ToRole="usuario" />
+  </EntityType>
+  <EntityType Name="reparacion">
+    <Key>
+      <PropertyRef Name="idReparacion" />
+    </Key>
+    <Property Name="idReparacion" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="fecha" Type="DateTime" Nullable="false" Precision="3" />
+    <Property Name="idEstado" Type="Int32" Nullable="false" />
+    <Property Name="idCliente" Type="Int32" Nullable="false" />
+    <Property Name="idUsuario" Type="Int32" Nullable="false" />
+    <Property Name="observaciones" Type="String" MaxLength="Max" FixedLength="false" Unicode="false" />
+    <Property Name="producto" Type="String" MaxLength="350" FixedLength="false" Unicode="false" />
+    <NavigationProperty Name="cliente" Relationship="BDModuloVentaModel.FK_reparacion_cliente" FromRole="reparacion" ToRole="cliente" />
+    <NavigationProperty Name="estado" Relationship="BDModuloVentaModel.FK_reparacion_estado" FromRole="reparacion" ToRole="estado" />
+    <NavigationProperty Name="usuario" Relationship="BDModuloVentaModel.FK_reparacion_usuario" FromRole="reparacion" ToRole="usuario" />
+  </EntityType>
+  <Association Name="FK_mensajeXusuario_cliente">
+    <End Type="BDModuloVentaModel.cliente" Role="cliente" Multiplicity="0..1" />
+    <End Type="BDModuloVentaModel.mensajeXusuario" Role="mensajeXusuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cliente">
+        <PropertyRef Name="idCliente" />
+      </Principal>
+      <Dependent Role="mensajeXusuario">
+        <PropertyRef Name="idCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_reparacion_cliente">
+    <End Type="BDModuloVentaModel.cliente" Role="cliente" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.reparacion" Role="reparacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="cliente">
+        <PropertyRef Name="idCliente" />
+      </Principal>
+      <Dependent Role="reparacion">
+        <PropertyRef Name="idCliente" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_reparacion_estado">
+    <End Type="BDModuloVentaModel.estado" Role="estado" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.reparacion" Role="reparacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="estado">
+        <PropertyRef Name="idEstado" />
+      </Principal>
+      <Dependent Role="reparacion">
+        <PropertyRef Name="idEstado" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_mensajeXusuario_usuario">
+    <End Type="BDModuloVentaModel.usuario" Role="usuario" Multiplicity="0..1" />
+    <End Type="BDModuloVentaModel.mensajeXusuario" Role="mensajeXusuario" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="mensajeXusuario">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_reparacion_usuario">
+    <End Type="BDModuloVentaModel.usuario" Role="usuario" Multiplicity="1" />
+    <End Type="BDModuloVentaModel.reparacion" Role="reparacion" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="usuario">
+        <PropertyRef Name="idUsuario" />
+      </Principal>
+      <Dependent Role="reparacion">
+        <PropertyRef Name="idUsuario" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
 </Schema>

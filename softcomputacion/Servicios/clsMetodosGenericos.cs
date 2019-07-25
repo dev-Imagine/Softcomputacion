@@ -55,6 +55,23 @@ namespace softcomputacion.Servicios
 
             }
         }
+        public static string ObtenerColorEstadoReparacion(int idEstado)
+        {
+            switch (idEstado)
+            {
+                case 15:
+                    return "text-info";
+                case 16:
+                    return "text-success";
+                case 17:
+                    return "text-danger";
+                case 18:
+                    return "text-secondary";
+                default:
+                    return "#000";
+
+            }
+        }
         public static double ConvertirUSDaARS(double dPrecio, double ValorUSD)
         {
             dPrecio = Math.Round((dPrecio * ValorUSD), 0);
